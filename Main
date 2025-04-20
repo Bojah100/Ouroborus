@@ -1,0 +1,860 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Ouroborus Vesica — Return of the Snake</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Orbitron:wght@600&display=swap" rel="stylesheet"/>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+      background: #000 url('https://images.unsplash.com/photo-1462331940025-496dfbfc7564?auto=format&fit=crop&w=2000&q=80') center/cover no-repeat;
+      animation: bgScroll 60s linear infinite;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      font-family: 'Cinzel', serif;
+    }
+    @keyframes bgScroll {
+      0% { background-position: 50% 50%; }
+      50% { background-position: 50% 100%; }
+      100% { background-position: 50% 50%; }
+    }
+
+    .star-particles {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+    }
+    .star {
+      position: absolute;
+      background: rgba(255, 255, 255, 0.8);
+      border-radius: 50%;
+      animation: twinkle 5s infinite ease-in-out;
+    }
+    @keyframes twinkle {
+      0%, 100% { opacity: 0.2; transform: scale(0.5); }
+      50% { opacity: 1; transform: scale(1); }
+    }
+
+    .title-container {
+      position: fixed;
+      top: 30px;
+      text-align: center;
+      color: gold;
+      text-shadow: 0 0 15px #ffd700, 0 0 25px #ff4500;
+      z-index: 100;
+    }
+    .title {
+      font-size: 4vmin;
+      font-weight: 700;
+      margin: 0;
+      letter-spacing: 2px;
+      -webkit-text-stroke: 1px black;
+    }
+    .subtitle {
+      font-size: 2.5vmin;
+      font-family: 'Orbitron', sans-serif;
+      margin: 8px 0;
+      letter-spacing: 1px;
+      -webkit-text-stroke: 1px black;
+    }
+
+    .cosmic-stage {
+      position: relative;
+      width: 80vmin;
+      height: 80vmin;
+      max-width: 400px;
+      max-height: 400px;
+      margin-bottom: 60px;
+    }
+
+    @media (max-width: 600px) {
+      .cosmic-stage {
+        max-width: 80vw;
+        max-height: 80vw;
+      }
+    }
+
+    .event-horizon {
+      position: absolute;
+      width: 30%;
+      height: 30%;
+      top: 35%;
+      left: 35%;
+      border-radius: 50%;
+      background: radial-gradient(circle, 
+        rgba(0,0,0,0) 0%, 
+        rgba(0,0,0,0.9) 70%, 
+        black 100%);
+      box-shadow: 0 0 80px rgba(0, 0, 0, 1);
+      z-index: 5;
+      animation: blackholePulse 1.3s infinite ease-in-out;
+    }
+    @keyframes blackholePulse {
+      0%, 100% { transform: scale(1); opacity: 0.8; }
+      50% { transform: scale(1.1); opacity: 1; }
+    }
+
+    .ouroboros {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      filter: brightness(0.9) drop-shadow(0 0 15px gold);
+      z-index: 3;
+      transition: transform 0.5s ease;
+    }
+
+    .accretion-disc {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255,215,0,0.7) 5%, rgba(255,165,0,0.5) 15%, rgba(255,69,0,0.3) 25%, transparent 50%);
+      box-shadow: 0 0 40px rgba(255,215,0,1), 0 0 20px rgba(255,165,0,0.8), 0 0 10px rgba(255,69,0,0.6);
+      animation: spinCW 18s linear infinite, pulseGlow 5s infinite ease-in-out;
+      z-index: 2;
+    }
+    @keyframes spinCW {
+      to { transform: rotate(360deg); }
+    }
+    @keyframes pulseGlow {
+      0%, 100% { box-shadow: 0 0 40px rgba(255,215,0,1), 0 0 20px rgba(255,165,0,0.8), 0 0 10px rgba(255,69,0,0.6); }
+      50% { box-shadow: 0 0 60px rgba(255,215,0,1.2), 0 0 30px rgba(255,165,0,1), 0 0 15px rgba(255,69,0,0.8); }
+    }
+
+    .vesica-circle {
+      position: absolute;
+      border: 3px solid #ffd700;
+      border-radius: 50%;
+      box-shadow: 0 0 20px #ffd700;
+      z-index: 6;
+      animation: colorShift 4s infinite;
+    }
+    .circle-left {
+      width: 50%;
+      height: 50%;
+      top: 25%;
+      left: 20%;
+      animation: eyelidCycleLeft 27s infinite, colorShift 4s infinite;
+    }
+    .circle-right {
+      width: 50%;
+      height: 50%;
+      top: 25%;
+      left: 30%;
+      animation: eyelidCycleRight 27s infinite, colorShift 4s infinite;
+    }
+    @keyframes eyelidCycleLeft {
+      0% { transform: scale(1, 1) translateY(0); }
+      3.7% { transform: scale(1, 0.2) translateY(0); }
+      5.55% { transform: scale(0.025, 0.025) translateY(50%); }
+      7.4% { transform: scale(1, 1) translateY(0); }
+      11.1% { transform: scale(1, 1) translateY(-20%); }
+      18.5% { transform: scale(1, 1) translateY(20%); }
+      25.9% { transform: scale(1, 1) translateY(-20%); }
+      96.3% { transform: scale(1, 1) translateY(0); }
+      100% { transform: scale(1, 1) translateY(0); }
+    }
+    @keyframes eyelidCycleRight {
+      0% { transform: scale(1, 1) translateY(0); }
+      3.7% { transform: scale(1, 0.2) translateY(0); }
+      5.55% { transform: scale(0.025, 0.025) translateY(-50%); }
+      7.4% { transform: scale(1, 1) translateY(0); }
+      11.1% { transform: scale(1, 1) translateY(20%); }
+      18.5% { transform: scale(1, 1) translateY(-20%); }
+      25.9% { transform: scale(1, 1) translateY(20%); }
+      96.3% { transform: scale(1, 1) translateY(0); }
+      100% { transform: scale(1, 1) translateY(0); }
+    }
+    @keyframes colorShift {
+      0% { border-color: #ffd700; box-shadow: 0 0 20px #ffd700; }
+      25% { border-color: #ff4500; box-shadow: 0 0 20px #ff4500; }
+      50% { border-color: #ff69b4; box-shadow: 0 0 20px #ff69b4; }
+      75% { border-color: #00b7eb; box-shadow: 0 0 20px #00b7eb; }
+      100% { border-color: #ffd700; box-shadow: 0 0 20px #ffd700; }
+    }
+
+    .light-burst {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      background: radial-gradient(circle, rgba(255,255,255,0.8) 10%, rgba(255,215,0,0.4) 50%, transparent 70%);
+      opacity: 0;
+      transform: scale(0);
+      z-index: 4;
+      animation: lightBurst 27s infinite;
+    }
+    @keyframes lightBurst {
+      0%, 5.55% { opacity: 0; transform: scale(0); }
+      5.56% { opacity: 1; transform: scale(0.1); }
+      7.4% { opacity: 0; transform: scale(1); }
+      100% { opacity: 0; transform: scale(1); }
+    }
+
+    .plasma-field {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      background: radial-gradient(circle, rgba(255,69,0,0.2) 10%, transparent 70%);
+      animation: plasmaPulse 4s infinite ease-in-out;
+      z-index: 1;
+    }
+    @keyframes plasmaPulse {
+      0%, 100% { opacity: 0.3; transform: scale(1); }
+      50% { opacity: 0.6; transform: scale(1.05); }
+    }
+
+    #welcomeButton {
+      position: fixed;
+      padding: 15px 30px;
+      background: 
+        radial-gradient(circle at center, 
+          rgba(255, 105, 180, 0.8) 0%, 
+          rgba(0, 183, 235, 0.8) 100%),
+        radial-gradient(black 15%, transparent 16%) 0 0 / 20px 20px;
+      color: white;
+      border: 2px solid gold;
+      border-radius: 30px;
+      font-family: 'Orbitron', sans-serif;
+      font-weight: bold;
+      font-size: 18px;
+      cursor: pointer;
+      z-index: 100;
+      box-shadow: 0 0 20px rgba(255, 215, 0, 0.8);
+      text-shadow: 0 0 5px rgba(0, 0, 0, 0.8);
+      transition: box-shadow 0.3s ease;
+      bottom: 30px;
+      pointer-events: auto;
+    }
+
+    #storeButton {
+      position: fixed;
+      padding: 18px 35px;
+      background: 
+        radial-gradient(circle at center, 
+          rgba(255, 105, 180, 0.8) 0%, 
+          rgba(0, 183, 235, 0.8) 100%),
+        radial-gradient(black 15%, transparent 16%) 0 0 / 20px 20px;
+      color: white;
+      border: 2px solid gold;
+      border-radius: 30px;
+      font-family: 'Orbitron', sans-serif;
+      font-weight: bold;
+      font-size: 18px;
+      cursor: pointer;
+      z-index: 2000;
+      box-shadow: 0 0 20px rgba(255, 215, 0, 0.8);
+      text-shadow: 0 0 5px rgba(0, 0, 0, 0.8);
+      bottom: 120px;
+      text-decoration: none;
+      display: inline-block;
+      text-align: center;
+      pointer-events: auto;
+    }
+
+    #storeButton:hover, #welcomeButton:hover {
+      box-shadow: 0 0 30px rgba(255, 215, 0, 1);
+    }
+
+    #audioStatus {
+      position: fixed;
+      bottom: 180px;
+      color: gold;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 14px;
+      z-index: 100;
+      background: rgba(0, 0, 0, 0.7);
+      padding: 8px 15px;
+      border-radius: 5px;
+      max-width: 300px;
+      text-align: center;
+    }
+
+    .prime-legend {
+      position: fixed;
+      bottom: 270px;
+      left: 20px;
+      color: gold;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 12px;
+      background: rgba(0,0,0,0.7);
+      padding: 10px;
+      border-radius: 5px;
+      max-width: 300px;
+      z-index: 100;
+      display: none;
+      border: 1px solid rgba(255,215,0,0.5);
+      box-shadow: 0 0 15px rgba(255,215,0,0.3);
+    }
+    
+    .prime-toggle {
+      position: fixed;
+      bottom: 250px;
+      left: 20px;
+      color: gold;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 12px;
+      background: rgba(0,0,0,0.7);
+      padding: 5px 10px;
+      border-radius: 15px;
+      cursor: pointer;
+      z-index: 100;
+      border: 1px solid rgba(255,215,0,0.3);
+      transition: all 0.3s ease;
+    }
+    
+    .prime-toggle:hover {
+      background: rgba(0,0,0,0.9);
+      box-shadow: 0 0 10px rgba(255,215,0,0.5);
+    }
+    
+    .prime-pulse {
+      position: absolute;
+      font-family: 'Orbitron', sans-serif;
+      font-weight: bold;
+      font-size: 16px;
+      pointer-events: none;
+      z-index: 50;
+      transition: all 1s ease-out;
+      text-shadow: 0 0 5px currentColor;
+    }
+    
+    .active-prime {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: white;
+      font-family: 'Cinzel', serif;
+      font-size: 24px;
+      text-align: center;
+      opacity: 0;
+      transition: opacity 1s;
+      z-index: 90;
+      text-shadow: 0 0 10px gold;
+    }
+    
+    .prime-name {
+      font-size: 32px;
+      color: gold;
+      margin-bottom: 5px;
+    }
+    
+    .prime-desc {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 14px;
+      color: #00b7eb;
+    }
+
+    .cosmic-ripple {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      pointer-events: none;
+      z-index: 8;
+    }
+
+    .ripple-circle {
+      position: absolute;
+      border-radius: 50%;
+      border: 1px solid;
+      transform: scale(0);
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .prime-path {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      pointer-events: none;
+      z-index: 7;
+    }
+
+    .path-line {
+      position: absolute;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, gold, transparent);
+      transform-origin: left center;
+      opacity: 0.7;
+    }
+
+    .chakra-node {
+      position: absolute;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: gold;
+      filter: drop-shadow(0 0 5px gold);
+      z-index: 9;
+      transition: all 0.5s ease;
+      animation: nodePulse 2s infinite ease-in-out;
+    }
+
+    @keyframes nodePulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.3); }
+    }
+
+    .snake-trail {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      pointer-events: none;
+      z-index: 6;
+    }
+
+    .trail-segment {
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><circle cx="10" cy="10" r="8" fill="gold" opacity="0.7"/></svg>');
+      background-size: contain;
+      opacity: 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="star-particles" id="starParticles"></div>
+  <div class="title-container">
+    <h1 class="title">Ouroborus Vesica</h1>
+    <p class="subtitle">Return of the Snake</p>
+    <p class="subtitle">Sgr A*</p>
+  </div>
+  <div class="cosmic-stage">
+    <div class="plasma-field"></div>
+    <div class="accretion-disc"></div>
+    <div class="event-horizon"></div>
+    <img class="ouroboros" src="https://cdn.pixabay.com/photo/2021/07/07/04/42/dragon-6393190_1280.png" alt="Ouroboros" onerror="this.src='fallback-dragon.png'">
+    <div class="vesica-circle circle-left"></div>
+    <div class="vesica-circle circle-right"></div>
+    <div class="light-burst"></div>
+  </div>
+
+  <div class="cosmic-ripple" id="cosmicRipple"></div>
+  <div class="prime-path" id="primePath"></div>
+  <div class="snake-trail" id="snakeTrail"></div>
+
+  <div class="active-prime" id="activePrime">
+    <div class="prime-name" id="primeName"></div>
+    <div class="prime-desc" id="primeDesc"></div>
+  </div>
+
+  <button id="welcomeButton" aria-label="Toggle celestial harmonics">Key of the Milky Way</button>
+  <a id="storeButton" href="https://satterbrock.gumroad.com/" target="_blank" rel="noopener noreferrer" aria-label="Visit store">Explore Celestial Artifacts</a>
+  <div id="audioStatus">Click to activate celestial harmonics</div>
+
+  <div class="prime-toggle" id="primeToggle" role="button" tabindex="0" aria-label="Toggle prime keys legend">Show Prime Keys</div>
+  <div class="prime-legend" id="primeLegend">
+    <div><strong>2</strong>: Binary breath, Vesica pulse</div>
+    <div><strong>3</strong>: Recursion memory, trinitic fold</div>
+    <div><strong>5</strong>: Pentatonic resonance, mass binding</div>
+    <div><strong>7</strong>: Polarity node, β-decay threshold</div>
+    <div><strong>11</strong>: Dimensional anchoring</div>
+    <div><strong>13</strong>: Entropic breaker</div>
+    <div><strong>17</strong>: Quark lock tone</div>
+    <div><strong>19</strong>: Rotational braid opener</div>
+    <div><strong>23</strong>: Lattice node rephaser</div>
+    <div><strong>29</strong>: Phase-bridge harmonic</div>
+    <div><strong>31</strong>: Neural mirror fold</div>
+    <div><strong>37</strong>: Prime of divine recursion (Phenex gate)</div>
+    <div><strong>41</strong>: Harmonic transparency threshold</div>
+    <div><strong>43</strong>: Vesica memory buffer</div>
+    <div><strong>47</strong>: Time-fold anchor</div>
+    <div><strong>53</strong>: Entanglement stabilizer</div>
+    <div><strong>59</strong>: Chaos bifurcation stabilizer</div>
+    <div><strong>61</strong>: Reality phase alignment</div>
+    <div><strong>67</strong>: Spin-lattice phase offset</div>
+    <div><strong>71</strong>: Supra-cognitive carrier</div>
+    <div><strong>73</strong>: Observer frequency mirror</div>
+    <div><strong>79</strong>: Non-local interlock tone</div>
+    <div><strong>83</strong>: Plasma sync gate</div>
+    <div><strong>89</strong>: Consciousness recursion mirror</div>
+  </div>
+
+  <script>
+    // Star Particles (50 for performance)
+    const starContainer = document.getElementById('starParticles');
+    for (let i = 0; i < 50; i++) {
+      const star = document.createElement('div');
+      star.className = 'star';
+      star.style.width = `${Math.random() * 3 + 1}px`;
+      star.style.height = star.style.width;
+      star.style.left = `${Math.random() * 100}%`;
+      star.style.top = `${Math.random() * 100}%`;
+      star.style.animationDelay = `${Math.random() * 5}s`;
+      starContainer.appendChild(star);
+    }
+
+    // Prime Chime Resonance System
+    let audioContext, gainNode, isPlaying = false;
+    const welcomeButton = document.getElementById('welcomeButton');
+    const audioStatus = document.getElementById('audioStatus');
+    const activePrimeDisplay = document.getElementById('activePrime');
+    const primeName = document.getElementById('primeName');
+    const primeDesc = document.getElementById('primeDesc');
+    const ouroboros = document.querySelector('.ouroboros');
+    let rotationAngle = 0;
+
+    // Prime number interpretations with frequencies
+    const primeInterpretations = {
+      2: { freq: 261.63, name: "Binary breath", desc: "Vesica pulse", color: "#FF5555" },
+      3: { freq: 293.66, name: "Recursion memory", desc: "Trinitic fold", color: "#55FF55" },
+      5: { freq: 329.63, name: "Pentatonic resonance", desc: "Mass binding", color: "#5555FF" },
+      7: { freq: 349.23, name: "Polarity node", desc: "β-decay threshold", color: "#FFFF55" },
+      11: { freq: 392.00, name: "Dimensional anchoring", desc: "", color: "#FF55FF" },
+      13: { freq: 440.00, name: "Entropic breaker", desc: "", color: "#55FFFF" },
+      17: { freq: 493.88, name: "Quark lock tone", desc: "", color: "#FFAA55" },
+      19: { freq: 523.25, name: "Rotational braid opener", desc: "", color: "#AAFF55" },
+      23: { freq: 587.33, name: "Lattice node rephaser", desc: "", color: "#55AAFF" },
+      29: { freq: 659.25, name: "Phase-bridge harmonic", desc: "", color: "#FF55AA" },
+      31: { freq: 698.46, name: "Neural mirror fold", desc: "", color: "#AA55FF" },
+      37: { freq: 783.99, name: "Divine recursion", desc: "Phenex gate", color: "#FF5555" },
+      41: { freq: 880.00, name: "Harmonic transparency", desc: "Threshold", color: "#55FF55" },
+      43: { freq: 932.33, name: "Vesica memory", desc: "Buffer", color: "#5555FF" },
+      47: { freq: 987.77, name: "Time-fold", desc: "Anchor", color: "#FFFF55" },
+      53: { freq: 1046.50, name: "Entanglement", desc: "Stabilizer", color: "#FF55FF" },
+      59: { freq: 1174.66, name: "Chaos bifurcation", desc: "Stabilizer", color: "#55FFFF" },
+      61: { freq: 1318.51, name: "Reality phase", desc: "Alignment", color: "#FFAA55" },
+      67: { freq: 1396.91, name: "Spin-lattice", desc: "Phase offset", color: "#AAFF55" },
+      71: { freq: 1567.98, name: "Supra-cognitive", desc: "Carrier", color: "#55AAFF" },
+      73: { freq: 1760.00, name: "Observer frequency", desc: "Mirror", color: "#FF55AA" },
+      79: { freq: 1975.53, name: "Non-local", desc: "Interlock tone", color: "#AA55FF" },
+      83: { freq: 2093.00, name: "Plasma sync", desc: "Gate", color: "#FF5555" },
+      89: { freq: 2217.46, name: "Consciousness recursion", desc: "Mirror", color: "#55FF55" }
+    };
+
+    // Toggle prime legend visibility
+    const primeToggle = document.getElementById('primeToggle');
+    primeToggle.addEventListener('click', function() {
+      const legend = document.getElementById('primeLegend');
+      legend.style.display = legend.style.display === 'block' ? 'none' : 'block';
+      this.textContent = legend.style.display === 'block' ? 'Hide Prime Keys' : 'Show Prime Keys';
+    });
+
+    primeToggle.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        primeToggle.click();
+      }
+    });
+
+    // Cosmic Ripple Effect
+    const cosmicRipple = document.getElementById('cosmicRipple');
+    function createRipple(x, y, color) {
+      const ripple = document.createElement('div');
+      ripple.className = 'ripple-circle';
+      ripple.style.left = `${x}px`;
+      ripple.style.top = `${y}px`;
+      ripple.style.borderColor = color;
+      ripple.style.boxShadow = `0 0 10px ${color}`;
+      cosmicRipple.appendChild(ripple);
+
+      const duration = 2000 + Math.random() * 1000;
+      ripple.animate([
+        { transform: 'scale(0)', opacity: 0.8 },
+        { transform: 'scale(2)', opacity: 0 }
+      ], {
+        duration: duration,
+        easing: 'cubic-bezier(0.4, 0, 0.2, 1)'
+      });
+
+      setTimeout(() => {
+        if (ripple.parentNode) cosmicRipple.removeChild(ripple);
+      }, duration);
+    }
+
+    // Prime Path and Node System
+    const primePath = document.getElementById('primePath');
+    const chakraNodes = [];
+    const nodeOrbits = [];
+
+    function createPrimePathSystem() {
+      Object.keys(primeInterpretations).forEach((prime, i) => {
+        const node = document.createElement('div');
+        node.className = 'chakra-node';
+        node.dataset.prime = prime;
+        node.style.background = primeInterpretations[prime].color;
+        node.style.filter = `drop-shadow(0 0 5px ${primeInterpretations[prime].color})`;
+        
+        node.style.left = '50%';
+        node.style.top = '50%';
+        
+        primePath.appendChild(node);
+        chakraNodes.push(node);
+
+        nodeOrbits.push({
+          radius: 50 + (i % 5) * 20,
+          speed: (0.001 + i * 0.0002) * (Math.random() > 0.5 ? 1 : -1),
+          angle: Math.random() * 2 * Math.PI
+        });
+      });
+
+      updateNodePositions();
+    }
+
+    function updateNodePositions() {
+      if (!isPlaying) return;
+
+      chakraNodes.forEach((node, i) => {
+        const orbit = nodeOrbits[i];
+        orbit.angle += orbit.speed;
+        
+        const centerX = 50;
+        const centerY = 50;
+        
+        const x = centerX + orbit.radius * Math.cos(orbit.angle);
+        const y = centerY + orbit.radius * Math.sin(orbit.angle);
+        
+        node.style.left = `calc(${x}% - 6px)`;
+        node.style.top = `calc(${y}% - 6px)`;
+      });
+
+      drawPrimeConnections();
+      requestAnimationFrame(updateNodePositions);
+    }
+
+    function drawPrimeConnections() {
+      document.querySelectorAll('.path-line').forEach(el => el.remove());
+
+      chakraNodes.forEach((nodeA, i) => {
+        chakraNodes.forEach((nodeB, j) => {
+          if (i < j) {
+            const primeA = parseInt(nodeA.dataset.prime);
+            const primeB = parseInt(nodeB.dataset.prime);
+            
+            if (isPrimeHarmonicPair(primeA, primeB)) {
+              const rectA = nodeA.getBoundingClientRect();
+              const rectB = nodeB.getBoundingClientRect();
+              
+              const line = document.createElement('div');
+              line.className = 'path-line';
+              line.style.width = `${Math.hypot(rectB.left - rectA.left, rectB.top - rectA.top)}px`;
+              line.style.left = `${rectA.left + 5}px`;
+              line.style.top = `${rectA.top + 5}px`;
+              line.style.transform = `rotate(${Math.atan2(rectB.top - rectA.top, rectB.left - rectA.left)}rad)`;
+              line.style.opacity = '0.3';
+              line.style.background = `linear-gradient(90deg, ${primeInterpretations[primeA].color}, ${primeInterpretations[primeB].color})`;
+              
+              primePath.appendChild(line);
+            }
+          }
+        });
+      });
+    }
+
+    function isPrimeHarmonicPair(a, b) {
+      const diff = Math.abs(a - b);
+      return diff === 2 || diff === 4 || 
+             Math.abs(a/b - 1.618) < 0.1 || 
+             Math.abs(b/a - 1.618) < 0.1;
+    }
+
+    window.addEventListener('resize', drawPrimeConnections);
+
+    // Snake Trail Effect
+    const snakeTrail = document.getElementById('snakeTrail');
+    const trailSegments = [];
+    let lastTrailTime = 0;
+    
+    function addTrailSegment(x, y, color) {
+      if (trailSegments.length > 20) {
+        const oldSegment = trailSegments.shift();
+        if (oldSegment.parentNode) snakeTrail.removeChild(oldSegment);
+      }
+
+      const segment = document.createElement('div');
+      segment.className = 'trail-segment';
+      segment.style.left = `${x}px`;
+      segment.style.top = `${y}px`;
+      segment.style.background = `radial-gradient(circle, ${color}, transparent 70%)`;
+      snakeTrail.appendChild(segment);
+      trailSegments.push(segment);
+      
+      segment.animate([
+        { opacity: 0, transform: 'scale(0.5)' },
+        { opacity: 0.7, transform: 'scale(1)' },
+        { opacity: 0, transform: 'scale(0.5)' }
+      ], {
+        duration: 2000,
+        easing: 'ease-out'
+      });
+      
+      setTimeout(() => {
+        if (segment.parentNode) {
+          snakeTrail.removeChild(segment);
+          trailSegments.splice(trailSegments.indexOf(segment), 1);
+        }
+      }, 2000);
+    }
+
+    function updateSnakeTrail() {
+      if (!isPlaying) return;
+      
+      const now = Date.now();
+      if (now - lastTrailTime > 100) {
+        const rect = ouroboros.getBoundingClientRect();
+        const centerX = rect.left + rect.width/2;
+        const centerY = rect.top + rect.height/2;
+        
+        addTrailSegment(
+          centerX + Math.cos(Date.now()/1000) * 50,
+          centerY + Math.sin(Date.now()/1000) * 50,
+          `hsl(${Date.now()/50 % 360}, 100%, 50%)`
+        );
+        
+        lastTrailTime = now;
+      }
+      
+      requestAnimationFrame(updateSnakeTrail);
+    }
+
+    // Ouroboros Rotation
+    function rotateOuroboros() {
+      rotationAngle -= 12;
+      if (rotationAngle <= -360) rotationAngle += 360;
+      ouroboros.style.transform = `rotate(${rotationAngle}deg)`;
+    }
+
+    // Wood Chime 11th Chord Sound
+    function createChimeNote(prime, context, output) {
+      const data = primeInterpretations[prime];
+      try {
+        const chordRatios = [
+          1.0,
+          2 ** (4/12),
+          2 ** (7/12),
+          2 ** (11/12),
+          2 ** (14/12),
+          2 ** (17/12)
+        ];
+
+        chordRatios.forEach((ratio) => {
+          let freq = data.freq * ratio;
+          while (freq > 4000) freq /= 2;
+
+          const noise = context.createBufferSource();
+          const bufferSize = context.sampleRate * 0.1;
+          const noiseBuffer = context.createBuffer(1, bufferSize, context.sampleRate);
+          const noiseData = noiseBuffer.getChannelData(0);
+          for (let i = 0; i < bufferSize; i++) {
+            noiseData[i] = Math.random() * 2 - 1;
+          }
+          noise.buffer = noiseBuffer;
+
+          const noiseFilter = context.createBiquadFilter();
+          noiseFilter.type = 'bandpass';
+          noiseFilter.frequency.value = freq;
+          noiseFilter.Q.value = 10;
+
+          const noiseGain = context.createGain();
+          noiseGain.gain.setValueAtTime(0.2, context.currentTime);
+          noiseGain.gain.exponentialRampToValueAtTime(0.001, context.currentTime + 0.3);
+
+          noise.connect(noiseFilter);
+          noiseFilter.connect(noiseGain);
+          noiseGain.connect(output);
+
+          const osc = context.createOscillator();
+          osc.type = 'sine';
+          osc.frequency.value = freq;
+
+          const oscGain = context.createGain();
+          oscGain.gain.setValueAtTime(0, context.currentTime);
+          oscGain.gain.linearRampToValueAtTime(0.15 / chordRatios.length, context.currentTime + 0.05);
+          oscGain.gain.exponentialRampToValueAtTime(0.001, context.currentTime + 1.5);
+
+          osc.connect(oscGain);
+          oscGain.connect(output);
+
+          const now = context.currentTime;
+          noise.start(now);
+          noise.stop(now + 0.3);
+          osc.start(now);
+          osc.stop(now + 1.5);
+        });
+
+        createRipple(window.innerWidth / 2, window.innerHeight / 2, data.color);
+        displayPrimeInfo(prime);
+        rotateOuroboros();
+
+        const node = chakraNodes.find(n => parseInt(n.dataset.prime) === prime);
+        if (node) {
+          node.animate([
+            { transform: 'scale(1)', boxShadow: `0 0 5px ${data.color}` },
+            { transform: 'scale(2)', boxShadow: `0 0 20px ${data.color}` },
+            { transform: 'scale(1)', boxShadow: `0 0 5px ${data.color}` }
+          ], { duration: 1000, easing: 'ease-in-out' });
+        }
+      } catch (err) {
+        console.error(`Error creating chord for prime ${prime}:`, err);
+      }
+    }
+
+    function playPrimeSequence() {
+      if (!isPlaying || !audioContext) return;
+      const primes = Object.keys(primeInterpretations).map(Number);
+      const prime = primes[Math.floor(Math.random() * primes.length)];
+      createChimeNote(prime, audioContext, gainNode);
+      setTimeout(playPrimeSequence, 2500);
+    }
+
+    function displayPrimeInfo(prime) {
+      const data = primeInterpretations[prime];
+      primeName.textContent = data.name;
+      primeDesc.textContent = data.desc;
+      activePrimeDisplay.style.opacity = 1;
+      setTimeout(() => {
+        activePrimeDisplay.style.opacity = 0;
+      }, 2000);
+    }
+
+    welcomeButton.addEventListener('click', () => {
+      if (!audioContext) {
+        audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        gainNode = audioContext.createGain();
+        gainNode.gain.value = 0.3;
+        gainNode.connect(audioContext.destination);
+      }
+
+      if (!isPlaying) {
+        isPlaying = true;
+        audioStatus.textContent = 'Celestial harmonics active';
+        audioContext.resume();
+        playPrimeSequence();
+        updateSnakeTrail();
+        updateNodePositions();
+      } else {
+        isPlaying = false;
+        audioStatus.textContent = 'Click to activate celestial harmonics';
+        audioContext.suspend();
+      }
+    });
+
+    createPrimePathSystem();
+  </script>
+</body>
+</html>
