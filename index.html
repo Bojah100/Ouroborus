@@ -231,10 +231,10 @@
       height: 100%;
       top: 0;
       left: 0;
-      background: radial-gradient(circle, rgba(0,183,235,0.5) 10%, rgba(255,105,180,0.4) 30%, rgba(128,0,128,0.3) 50%, transparent 70%);
+      background: radial-gradient(circle, rgba(0,183,235,0.5) 10%, rgba(255,105,180,0.4) 30%, rgba(128,0,128,0.3) 50%, rgba(255,215,0,0.2) 70%, transparent 80%);
       z-index: 2;
-      animation: cymaticWave 2s infinite ease-in-out, cymaticMorph 4s infinite ease-in-out;
-      clip-path: polygon(30% 20%, 70% 20%, 80% 50%, 70% 80%, 30% 80%, 20% 50%);
+      animation: cymaticWave 2s infinite ease-in-out, cymaticMorph 4s infinite ease-in-out, cymaticVibrate 0.0234s infinite ease-in-out;
+      clip-path: polygon(50% 10%, 70% 20%, 90% 50%, 70% 80%, 50% 90%, 30% 80%, 10% 50%, 30% 20%);
       transform: perspective(600px) rotateX(50deg);
       box-shadow: 0 0 30px rgba(0,183,235,0.6);
     }
@@ -243,9 +243,14 @@
       50% { transform: perspective(600px) rotateX(50deg) scale(1.15); opacity: 0.8; }
     }
     @keyframes cymaticMorph {
-      0% { clip-path: polygon(30% 20%, 70% 20%, 80% 50%, 70% 80%, 30% 80%, 20% 50%); }
-      50% { clip-path: polygon(35% 15%, 65% 15%, 85% 45%, 65% 85%, 35% 85%, 15% 45%); }
-      100% { clip-path: polygon(30% 20%, 70% 20%, 80% 50%, 70% 80%, 30% 80%, 20% 50%); }
+      0% { clip-path: polygon(50% 10%, 70% 20%, 90% 50%, 70% 80%, 50% 90%, 30% 80%, 10% 50%, 30% 20%); }
+      50% { clip-path: polygon(55% 15%, 75% 25%, 85% 55%, 75% 85%, 45% 85%, 25% 75%, 15% 45%, 25% 15%); }
+      100% { clip-path: polygon(50% 10%, 70% 20%, 90% 50%, 70% 80%, 50% 90%, 30% 80%, 10% 50%, 30% 20%); }
+    }
+    @keyframes cymaticVibrate {
+      0% { transform: perspective(600px) rotateX(50deg) scale(1); }
+      50% { transform: perspective(600px) rotateX(50deg) scale(1.02); }
+      100% { transform: perspective(600px) rotateX(50deg) scale(1); }
     }
 
     .chakra-node {
@@ -254,7 +259,7 @@
       height: 10px;
       border-radius: 50%;
       box-shadow: 0 0 10px currentColor;
-      z-index: 10;
+      z-index: 11;
       animation: nodePulse 2s infinite ease-in-out, colorVeneer 10s infinite ease-in-out;
     }
     @keyframes nodePulse {
@@ -311,18 +316,18 @@
 
     #welcomeButton {
       position: fixed;
-      padding: 15px 30px;
+      padding: 18px 35px;
       background: 
         radial-gradient(circle at center, 
           rgba(255, 105, 180, 0.8) 0%, 
           rgba(0, 183, 235, 0.8) 100%),
-        radial-gradient(rgba(0, 0, 0, 1) 18%, transparent 19%) 0 0 / 20px 20px;
+        radial-gradient(rgba(0, 0, 0, 1) 20%, transparent 21%) 0 0 / 15px 15px;
       color: white;
       border: 2px solid gold;
       border-radius: 30px;
       font-family: 'Orbitron', sans-serif;
       font-weight: bold;
-      font-size: 18px;
+      font-size: 22px;
       cursor: pointer;
       z-index: 100;
       box-shadow: 0 0 20px rgba(255, 215, 0, 0.8);
@@ -330,22 +335,23 @@
       transition: box-shadow 0.3s ease;
       bottom: 30px;
       pointer-events: auto;
+      -webkit-text-stroke: 1px black;
     }
 
     #storeButton {
       position: fixed;
-      padding: 18px 35px;
+      padding: 20px 40px;
       background: 
         radial-gradient(circle at center, 
           rgba(255, 105, 180, 0.8) 0%, 
           rgba(0, 183, 235, 0.8) 100%),
-        radial-gradient(rgba(0, 0, 0, 1) 18%, transparent 19%) 0 0 / 20px 20px;
+        radial-gradient(rgba(0, 0, 0, 1) 20%, transparent 21%) 0 0 / 15px 15px;
       color: white;
       border: 2px solid gold;
       border-radius: 30px;
       font-family: 'Orbitron', sans-serif;
       font-weight: bold;
-      font-size: 18px;
+      font-size: 22px;
       cursor: pointer;
       z-index: 2000;
       box-shadow: 0 0 20px rgba(255, 215, 0, 0.8);
@@ -355,6 +361,7 @@
       display: inline-block;
       text-align: center;
       pointer-events: auto;
+      -webkit-text-stroke: 1px black;
     }
 
     #storeButton:hover, #welcomeButton:hover {
@@ -373,6 +380,24 @@
       border-radius: 5px;
       max-width: 300px;
       text-align: center;
+      -webkit-text-stroke: 1px black;
+      text-shadow: 0 0 3px rgba(0, 0, 0, 0.8);
+    }
+
+    #audioDebug {
+      position: fixed;
+      bottom: 220px;
+      color: gold;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 12px;
+      z-index: 100;
+      background: rgba(0, 0, 0, 0.7);
+      padding: 8px 15px;
+      border-radius: 5px;
+      max-width: 300px;
+      text-align: center;
+      -webkit-text-stroke: 1px black;
+      text-shadow: 0 0 3px rgba(0, 0, 0, 0.8);
     }
 
     .prime-legend {
@@ -392,23 +417,25 @@
       box-shadow: 0 0 15px rgba(255,215,0,0.3);
       max-height: 400px;
       overflow-y: auto;
+      -webkit-text-stroke: 1px black;
     }
 
     .prime-toggle {
       position: fixed;
-      bottom: 250px;
+      bottom: 260px;
       left: 20px;
       color: gold;
       font-family: 'Orbitron', sans-serif;
-      font-size: 12px;
+      font-size: 16px;
       background: rgba(0,0,0,0.7);
-      padding: 5px 10px;
+      padding: 8px 15px;
       border-radius: 15px;
       cursor: pointer;
       z-index: 100;
       border: 1px solid rgba(255,215,0,0.3);
       transition: all 0.3s ease;
       pointer-events: auto;
+      -webkit-text-stroke: 1px black;
     }
 
     .prime-toggle:hover {
@@ -425,6 +452,7 @@
       z-index: 50;
       transition: all 1s ease-out;
       text-shadow: 0 0 5px currentColor;
+      -webkit-text-stroke: 1px black;
     }
 
     .active-prime {
@@ -446,12 +474,14 @@
       font-size: 32px;
       color: gold;
       margin-bottom: 5px;
+      -webkit-text-stroke: 1px black;
     }
 
     .prime-desc {
       font-family: 'Orbitron', sans-serif;
       font-size: 14px;
       color: #00b7eb;
+      -webkit-text-stroke: 1px black;
     }
 
     .cosmic-ripple {
@@ -524,6 +554,7 @@
   <button id="welcomeButton" aria-label="Toggle celestial harmonics">Key of the Milky Way</button>
   <a id="storeButton" href="https://satterbrock.gumroad.com/" target="_blank" rel="noopener noreferrer" aria-label="Visit store">Explore Celestial Artifacts</a>
   <div id="audioStatus">Click to activate celestial harmonics</div>
+  <div id="audioDebug">Audio initializing...</div>
 
   <div class="prime-toggle" id="primeToggle" role="button" tabindex="0" aria-label="Toggle prime keys legend">Show Prime Keys</div>
   <div class="prime-legend" id="primeLegend"></div>
@@ -532,6 +563,11 @@
     // Debugging function
     function log(message) {
       console.log(`[Ouroborus Vesica] ${message}`);
+      const audioDebug = document.getElementById('audioDebug');
+      audioDebug.textContent = message;
+      setTimeout(() => {
+        if (audioDebug.textContent === message) audioDebug.textContent = 'Audio active';
+      }, 2000);
     }
 
     // Star Particles
@@ -549,7 +585,7 @@
     log('Star particles initialized');
 
     // Prime Chime Resonance System
-    let audioContext, gainNode, isPlaying = false;
+    let audioContext, gainNode, isPlaying = false, isAnimating = true;
     const welcomeButton = document.getElementById('welcomeButton');
     const audioStatus = document.getElementById('audioStatus');
     const activePrimeDisplay = document.getElementById('activePrime');
@@ -649,109 +685,258 @@
       gainNode.connect(audioContext.destination);
       audioContext.resume().then(() => {
         isPlaying = true;
+        isAnimating = true;
         audioStatus.textContent = 'Celestial harmonics active';
-        log('Audio context resumed');
+        welcomeButton.textContent = 'Pause Celestial Harmonics';
+        log(`Audio context resumed, state: ${audioContext.state}`);
+      }).catch(err => {
+        log(`Audio context resume failed: ${err}`);
+        audioStatus.textContent = 'Click again to activate harmonics';
       });
     }
 
-    function createPrimeChord(prime) {
+    function createGongDrone() {
+      const sineOsc = audioContext.createOscillator();
+      const squareOsc = audioContext.createOscillator();
+      const noteGain = audioContext.createGain();
+      const filter = audioContext.createBiquadFilter();
+      sineOsc.type = 'sine';
+      squareOsc.type = 'square';
+      sineOsc.frequency.setValueAtTime(42.7, audioContext.currentTime);
+      squareOsc.frequency.setValueAtTime(42.7, audioContext.currentTime);
+      filter.type = 'lowpass';
+      filter.frequency.setValueAtTime(400, audioContext.currentTime);
+      noteGain.gain.setValueAtTime(0.35, audioContext.currentTime);
+      noteGain.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + 8);
+      sineOsc.connect(filter);
+      squareOsc.connect(filter);
+      filter.connect(noteGain);
+      noteGain.connect(gainNode);
+      sineOsc.start();
+      squareOsc.start();
+      sineOsc.stop(audioContext.currentTime + 8);
+      squareOsc.stop(audioContext.currentTime + 8);
+      log('Javanese gong played at 42.7 Hz');
+    }
+
+    function createCustomWave() {
+      const real = new Float32Array(2);
+      const imag = new Float32Array(2);
+      real[0] = 0;
+      imag[0] = 0;
+      real[1] = 0.7; // 70% sine
+      imag[1] = 0.3; // 30% triangle approximation
+      return audioContext.createPeriodicWave(real, imag);
+    }
+
+    function createPrimeChorus(prime) {
+      if (audioContext.state === 'suspended') {
+        audioContext.resume().then(() => log(`Audio context resumed for prime chorus, state: ${audioContext.state}`));
+      }
       const baseFreq = primeInterpretations[prime].freq || 261.63 * (prime / 2);
-      const freqs = [baseFreq, baseFreq * 2, Math.min(baseFreq * 4, 20000)];
-      freqs.forEach((freq, i) => {
-        const oscillator = audioContext.createOscillator();
+      const freqs = [baseFreq / 2, baseFreq, Math.min(baseFreq * 2, 20000)];
+      freqs.forEach(freq => {
+        const oscs = [
+          { osc: audioContext.createOscillator(), detune: 0 },
+          { osc: audioContext.createOscillator(), detune: 6 },
+          { osc: audioContext.createOscillator(), detune: -6 },
+          { osc: audioContext.createOscillator(), detune: 4 },
+          { osc: audioContext.createOscillator(), detune: -4 },
+          { osc: audioContext.createOscillator(), detune: 2 }
+        ];
         const noteGain = audioContext.createGain();
-        const filter = audioContext.createBiquadFilter();
-        oscillator.type = i === 1 ? 'triangle' : 'sawtooth';
-        oscillator.frequency.setValueAtTime(freq, audioContext.currentTime);
-        if (i === 1) {
+        const lowPass = audioContext.createBiquadFilter();
+        const highPass = audioContext.createBiquadFilter();
+        lowPass.type = 'lowpass';
+        lowPass.frequency.setValueAtTime(2500, audioContext.currentTime);
+        highPass.type = 'highpass';
+        highPass.frequency.setValueAtTime(200, audioContext.currentTime);
+        oscs.forEach(({ osc, detune }) => {
+          osc.setPeriodicWave(createCustomWave());
+          osc.frequency.setValueAtTime(freq, audioContext.currentTime);
+          osc.detune.setValueAtTime(detune, audioContext.currentTime);
           const lfo = audioContext.createOscillator();
           const lfoGain = audioContext.createGain();
           lfo.type = 'sine';
-          lfo.frequency.setValueAtTime(5, audioContext.currentTime);
-          lfoGain.gain.setValueAtTime(freq * 0.01, audioContext.currentTime);
+          lfo.frequency.setValueAtTime(7.5, audioContext.currentTime);
+          lfoGain.gain.setValueAtTime(freq * 0.012, audioContext.currentTime);
           lfo.connect(lfoGain);
-          lfoGain.connect(oscillator.frequency);
+          lfoGain.connect(osc.frequency);
           lfo.start();
-          lfo.stop(audioContext.currentTime + 5);
-        }
-        if (i === 2) {
-          filter.type = 'lowpass';
-          filter.frequency.setValueAtTime(2000, audioContext.currentTime);
-          oscillator.connect(filter);
-          filter.connect(noteGain);
-        } else {
-          oscillator.connect(noteGain);
-        }
-        noteGain.gain.setValueAtTime(0.2, audioContext.currentTime);
-        noteGain.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + 5);
+          lfo.stop(audioContext.currentTime + 8);
+          osc.connect(lowPass);
+        });
+        lowPass.connect(highPass);
+        highPass.connect(noteGain);
+        noteGain.gain.setValueAtTime(0.4, audioContext.currentTime);
+        noteGain.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + 8);
         noteGain.connect(gainNode);
-        oscillator.start();
-        oscillator.stop(audioContext.currentTime + 5);
+        oscs.forEach(({ osc }) => {
+          osc.start();
+          osc.stop(audioContext.currentTime + 8);
+        });
       });
-      log(`Prime chord played for ${prime}: ${freqs.join(', ')} Hz`);
+      log(`Choral prime chorus for ${prime}: ${freqs.join(', ')} Hz, sustain 8s, context state: ${audioContext.state}`);
+      createWindEffect();
     }
 
-    function createLightChord(prime) {
+    function createLightChorus(prime) {
+      if (audioContext.state === 'suspended') {
+        audioContext.resume().then(() => log(`Audio context resumed for light chorus, state: ${audioContext.state}`));
+      }
       const baseFreq = 42.7 * (prime / 97);
-      const freqs = [baseFreq, baseFreq * 2, baseFreq * 4];
-      freqs.forEach((freq, i) => {
-        const oscillator = audioContext.createOscillator();
+      const freqs = [baseFreq / 2, baseFreq, baseFreq * 2];
+      freqs.forEach(freq => {
+        const oscs = [
+          { osc: audioContext.createOscillator(), detune: 0 },
+          { osc: audioContext.createOscillator(), detune: 6 },
+          { osc: audioContext.createOscillator(), detune: -6 },
+          { osc: audioContext.createOscillator(), detune: 4 },
+          { osc: audioContext.createOscillator(), detune: -4 },
+          { osc: audioContext.createOscillator(), detune: 2 }
+        ];
         const noteGain = audioContext.createGain();
-        const filter = audioContext.createBiquadFilter();
-        oscillator.type = i === 1 ? 'triangle' : 'sawtooth';
-        oscillator.frequency.setValueAtTime(freq, audioContext.currentTime);
-        if (i === 1) {
+        const lowPass = audioContext.createBiquadFilter();
+        const highPass = audioContext.createBiquadFilter();
+        lowPass.type = 'lowpass';
+        lowPass.frequency.setValueAtTime(2500, audioContext.currentTime);
+        highPass.type = 'highpass';
+        highPass.frequency.setValueAtTime(200, audioContext.currentTime);
+        oscs.forEach(({ osc, detune }) => {
+          osc.setPeriodicWave(createCustomWave());
+          osc.frequency.setValueAtTime(freq, audioContext.currentTime);
+          osc.detune.setValueAtTime(detune, audioContext.currentTime);
           const lfo = audioContext.createOscillator();
           const lfoGain = audioContext.createGain();
           lfo.type = 'sine';
-          lfo.frequency.setValueAtTime(5, audioContext.currentTime);
-          lfoGain.gain.setValueAtTime(freq * 0.01, audioContext.currentTime);
+          lfo.frequency.setValueAtTime(7.5, audioContext.currentTime);
+          lfoGain.gain.setValueAtTime(freq * 0.012, audioContext.currentTime);
           lfo.connect(lfoGain);
-          lfoGain.connect(oscillator.frequency);
+          lfoGain.connect(osc.frequency);
           lfo.start();
-          lfo.stop(audioContext.currentTime + 2);
-        }
-        if (i === 2) {
-          filter.type = 'lowpass';
-          filter.frequency.setValueAtTime(2000, audioContext.currentTime);
-          oscillator.connect(filter);
-          filter.connect(noteGain);
-        } else {
-          oscillator.connect(noteGain);
-        }
-        noteGain.gain.setValueAtTime(0.1, audioContext.currentTime);
-        noteGain.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + 2);
+          lfo.stop(audioContext.currentTime + 4);
+          osc.connect(lowPass);
+        });
+        lowPass.connect(highPass);
+        highPass.connect(noteGain);
+        noteGain.gain.setValueAtTime(0.25, audioContext.currentTime);
+        noteGain.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + 4);
         noteGain.connect(gainNode);
-        oscillator.start();
-        oscillator.stop(audioContext.currentTime + 2);
+        oscs.forEach(({ osc }) => {
+          osc.start();
+          osc.stop(audioContext.currentTime + 4);
+        });
       });
-      log(`Light chord played for ${prime}: ${freqs.join(', ')} Hz`);
+      log(`Choral light chorus for ${prime}: ${freqs.join(', ')} Hz, sustain 4s, context state: ${audioContext.state}`);
+      createWindEffect();
+    }
+
+    function createWindEffect() {
+      const noise = audioContext.createBufferSource();
+      const buffer = audioContext.createBuffer(1, audioContext.sampleRate * 2, audioContext.sampleRate);
+      const data = buffer.getChannelData(0);
+      for (let i = 0; i < data.length; i++) {
+        data[i] = Math.random() * 2 - 1;
+      }
+      noise.buffer = buffer;
+      const filter = audioContext.createBiquadFilter();
+      filter.type = 'bandpass';
+      filter.frequency.setValueAtTime(3000, audioContext.currentTime);
+      filter.Q.setValueAtTime(1, audioContext.currentTime);
+      const noteGain = audioContext.createGain();
+      noteGain.gain.setValueAtTime(0.05, audioContext.currentTime);
+      noteGain.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + 2);
+      noise.connect(filter);
+      filter.connect(noteGain);
+      noteGain.connect(gainNode);
+      noise.start();
+      noise.stop(audioContext.currentTime + 2);
+      log('Wind effect triggered');
     }
 
     function createHeartbeat() {
-      const oscillator = audioContext.createOscillator();
-      const noteGain = audioContext.createGain();
-      oscillator.type = 'triangle';
-      oscillator.frequency.setValueAtTime(60, audioContext.currentTime);
-      noteGain.gain.setValueAtTime(0.1, audioContext.currentTime);
-      noteGain.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + 0.5);
-      oscillator.connect(noteGain);
-      noteGain.connect(gainNode);
-      oscillator.start();
-      oscillator.stop(audioContext.currentTime + 0.5);
-      log('Heartbeat played at 12°');
+      if (audioContext.state === 'suspended') {
+        audioContext.resume().then(() => log(`Audio context resumed for heartbeat, state: ${audioContext.state}`));
+      }
+      // Sine wave 1 for "lub"
+      const sineOsc1 = audioContext.createOscillator();
+      const sineGain1 = audioContext.createGain();
+      sineOsc1.type = 'sine';
+      sineOsc1.frequency.setValueAtTime(80, audioContext.currentTime);
+      sineGain1.gain.setValueAtTime(0, audioContext.currentTime);
+      sineGain1.gain.linearRampToValueAtTime(1.0, audioContext.currentTime + 0.1);
+      sineGain1.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + 0.8);
+      sineOsc1.connect(sineGain1);
+      sineGain1.connect(gainNode);
+      sineOsc1.start();
+      sineOsc1.stop(audioContext.currentTime + 0.8);
+      // Sine wave 2 for harmonic reinforcement
+      const sineOsc2 = audioContext.createOscillator();
+      const sineGain2 = audioContext.createGain();
+      sineOsc2.type = 'sine';
+      sineOsc2.frequency.setValueAtTime(120, audioContext.currentTime);
+      sineGain2.gain.setValueAtTime(0, audioContext.currentTime);
+      sineGain2.gain.linearRampToValueAtTime(0.4, audioContext.currentTime + 0.1);
+      sineGain2.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + 0.8);
+      sineOsc2.connect(sineGain2);
+      sineGain2.connect(gainNode);
+      sineOsc2.start();
+      sineOsc2.stop(audioContext.currentTime + 0.8);
+      // Noise burst for "dub"
+      let noise, buffer;
+      try {
+        noise = audioContext.createBufferSource();
+        buffer = audioContext.createBuffer(1, audioContext.sampleRate * 0.06, audioContext.sampleRate);
+        const data = buffer.getChannelData(0);
+        for (let i = 0; i < data.length; i++) {
+          data[i] = Math.random() * 2 - 1;
+        }
+        noise.buffer = buffer;
+      } catch (e) {
+        log(`Noise buffer failed: ${e}, using fallback oscillator`);
+        noise = audioContext.createOscillator();
+        noise.type = 'triangle';
+        noise.frequency.setValueAtTime(80, audioContext.currentTime);
+      }
+      const filter = audioContext.createBiquadFilter();
+      filter.type = 'bandpass';
+      filter.frequency.setValueAtTime(200, audioContext.currentTime);
+      filter.Q.setValueAtTime(1, audioContext.currentTime);
+      const noiseGain = audioContext.createGain();
+      noiseGain.gain.setValueAtTime(0.8, audioContext.currentTime);
+      noiseGain.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + 0.06);
+      noise.connect(filter);
+      filter.connect(noiseGain);
+      noiseGain.connect(gainNode);
+      noise.start(audioContext.currentTime + 0.12);
+      noise.stop(audioContext.currentTime + 0.18);
+      log(`Heartbeat triggered at ${audioContext.currentTime}: 80 Hz sine, 200 Hz noise, context state: ${audioContext.state}`);
     }
 
     welcomeButton.addEventListener('click', () => {
       if (!audioContext) {
         initAudio();
       } else {
-        audioContext.resume().then(() => {
+        if (audioContext.state === 'suspended') {
+          audioContext.resume().then(() => {
+            isPlaying = true;
+            isAnimating = true;
+            audioStatus.textContent = 'Celestial harmonics active';
+            welcomeButton.textContent = 'Pause Celestial Harmonics';
+            log(`Audio context resumed, state: ${audioContext.state}`);
+          }).catch(err => {
+            log(`Audio context resume failed: ${err}`);
+            audioStatus.textContent = 'Click again to activate harmonics';
+          });
+        } else {
           isPlaying = !isPlaying;
-          audioStatus.textContent = isPlaying ? 'Celestial harmonics active' : 'Harmonics paused';
+          isAnimating = !isAnimating;
+          audioStatus.textContent = isPlaying ? 'Celestial harmonics active' : 'Harmonics and orbits paused';
+          welcomeButton.textContent = isPlaying ? 'Pause Celestial Harmonics' : 'Key of the Milky Way';
           gainNode.gain.setValueAtTime(isPlaying ? 0.1 : 0, audioContext.currentTime);
           log(`Audio toggled: ${isPlaying ? 'On' : 'Off'}`);
-        });
+          log(`Animation toggled: ${isAnimating ? 'On' : 'Off'}`);
+        }
       }
     });
 
@@ -768,19 +953,20 @@
     }
 
     function updateNodePositions(timestamp) {
+      if (!isAnimating) return requestAnimationFrame(updateNodePositions);
       const nodes = document.querySelectorAll('.chakra-node');
       nodes.forEach((node, index) => {
         const prime = parseInt(node.dataset.prime);
         const radius = 120 + index * 8;
         const angle = (timestamp / 1000) * (360 / (288 / (index + 1))) % 360;
-        const x = 50 + (radius / 400) * 100 * Math.cos(angle * Math.PI / 180) * 1.5;
-        const y = 50 + (radius / 400) * 100 * Math.sin(angle * Math.PI / 180);
+        const x = 35 + (radius / 400) * 100 * Math.cos(angle * Math.PI / 180) * 1.5;
+        const y = 35 + (radius / 400) * 100 * Math.sin(angle * Math.PI / 180);
         node.style.left = `${x}%`;
         node.style.top = `${y}%`;
       });
       drawPrimeConnections();
       requestAnimationFrame(updateNodePositions);
-      log('Chakra nodes updated with 288s elliptical orbits');
+      log('Chakra nodes orbiting singularity');
     }
 
     function drawPrimeConnections() {
@@ -793,12 +979,12 @@
           if (i < j) {
             const prime2 = parseInt(node2.dataset.prime);
             if (isPrimeHarmonicPair(prime1, prime2)) {
-              const line = document.createElement('div');
-              line.className = 'path-line';
               const x1 = parseFloat(node1.style.left);
               const y1 = parseFloat(node1.style.top);
               const x2 = parseFloat(node2.style.left);
               const y2 = parseFloat(node2.style.top);
+              const line = document.createElement('div');
+              line.className = 'path-line';
               const length = Math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2);
               const angle = Math.atan2(y2 - y1, x2 - x1) * 180 / Math.PI;
               line.style.width = `${length}%`;
@@ -810,6 +996,7 @@
           }
         });
       });
+      log('Prime path connections drawn');
     }
 
     function isPrimeHarmonicPair(p1, p2) {
@@ -836,10 +1023,11 @@
     const cycleTime = 36;
     const phaseShiftInterval = (12 / 360) * cycleTime; // 1.2s
     const toneInterval = (36 / 360) * cycleTime; // 3.6s
+    const gongInterval = (72 / 360) * cycleTime; // 7.2s
     const ln1836Time = Math.log(1836); // ~7.515s
     const specialAngles = [19.47, 36, 72, 108, 144];
     const specialTimes = specialAngles.map(angle => (angle / 360) * cycleTime);
-    let lastPhaseShift = 0, lastTone = 0, lastLn1836 = 0, currentPrimeIndex = 0;
+    let lastPhaseShift = 0, lastTone = 0, lastGong = 0, lastLn1836 = 0, currentPrimeIndex = 0;
 
     function harmonicClock(timestamp) {
       const elapsed = timestamp / 1000;
@@ -847,7 +1035,13 @@
 
       // 12° Phase Shifts and Heartbeat
       if (elapsed - lastPhaseShift >= phaseShiftInterval) {
-        if (isPlaying) createHeartbeat();
+        if (isPlaying && audioContext && audioContext.state === 'running') {
+          gainNode.gain.setValueAtTime(0.15, audioContext.currentTime);
+          createHeartbeat();
+          setTimeout(() => gainNode.gain.setValueAtTime(0.1, audioContext.currentTime), 800);
+        } else if (audioContext) {
+          log(`Heartbeat skipped, context state: ${audioContext.state}`);
+        }
         ouroboros.style.transform = `rotate(-${((elapsed % cycleTime) / cycleTime) * 360}deg) scale(1.05)`;
         setTimeout(() => {
           ouroboros.style.transform = `rotate(-${((elapsed % cycleTime) / cycleTime) * 360}deg) scale(1)`;
@@ -856,24 +1050,35 @@
         log('Phase shift at 12°');
       }
 
-      // 36° Tone Triggers and New Ideas
+      // 36° Tone Triggers
       if (elapsed - lastTone >= toneInterval) {
         const prime = allPrimes[currentPrimeIndex % allPrimes.length];
         const interpretation = primeInterpretations[prime];
         if (interpretation) {
-          if (interpretation.freq && isPlaying) {
-            createPrimeChord(prime);
+          if (interpretation.freq && isPlaying && audioContext && audioContext.state === 'running') {
+            createPrimeChorus(prime);
             cymaticField.style.animationDuration = `${1 / (interpretation.freq / 1000)}s`;
-          } else if (interpretation.lightFreq && isPlaying) {
-            createLightChord(prime);
+          } else if (interpretation.lightFreq && isPlaying && audioContext && audioContext.state === 'running') {
+            createLightChorus(prime);
             createShimmer();
             cymaticField.style.animationDuration = `${1 / (interpretation.lightFreq / 1000)}s`;
+          } else if (audioContext) {
+            log(`Chorus skipped for prime ${prime}, context state: ${audioContext.state}`);
           }
           displayPrime(interpretation);
         }
         currentPrimeIndex++;
         lastTone = elapsed;
-        log('New idea at 36°');
+        log('Choral chorus at 36°');
+      }
+
+      // 72° Gong Triggers
+      if (elapsed - lastGong >= gongInterval) {
+        if (isPlaying && audioContext && audioContext.state === 'running') {
+          createGongDrone();
+        }
+        lastGong = elapsed;
+        log('Javanese gong at 72°');
       }
 
       // ln(1836) Resonance (~7.515s)
@@ -890,13 +1095,17 @@
       // Special Angles
       const currentAngle = ((elapsed % cycleTime) / cycleTime) * 360;
       if (Math.abs(currentAngle - 19.47) < 0.1) {
-        if (isPlaying) createLightChord(allPrimes[currentPrimeIndex % allPrimes.length]);
+        if (isPlaying && audioContext && audioContext.state === 'running') {
+          createLightChorus(allPrimes[currentPrimeIndex % allPrimes.length]);
+        }
         cymaticField.style.boxShadow = `0 0 30px gold`;
         setTimeout(() => cymaticField.style.boxShadow = `0 0 30px rgba(0,183,235,0.6)`, 500);
         createRipple('gold');
         log('Special effect at 19.47°');
       } else if (specialAngles.slice(2).some(angle => Math.abs(currentAngle - angle) < 0.1)) {
-        if (isPlaying) createLightChord(allPrimes[currentPrimeIndex % allPrimes.length]);
+        if (isPlaying && audioContext && audioContext.state === 'running') {
+          createLightChorus(allPrimes[currentPrimeIndex % allPrimes.length]);
+        }
         createShimmer();
         const nodes = document.querySelectorAll('.chakra-node');
         nodes.forEach(node => {
@@ -912,6 +1121,7 @@
 
       if (elapsed - lastPhaseShift >= cycleTime) lastPhaseShift = elapsed - cycleTime;
       if (elapsed - lastTone >= cycleTime) lastTone = elapsed - cycleTime;
+      if (elapsed - lastGong >= cycleTime) lastGong = elapsed - cycleTime;
       requestAnimationFrame(harmonicClock);
     }
 
@@ -982,7 +1192,7 @@
     requestAnimationFrame(updateNodePositions);
     requestAnimationFrame(harmonicClock);
     requestAnimationFrame(updateSnakeTrail);
-    log('Page initialized with prime number chords');
+    log('Page initialized with removed Schwarzschild edit and enhanced heartbeat');
   </script>
 </body>
 </html>
