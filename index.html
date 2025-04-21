@@ -97,7 +97,7 @@
         rgba(0,0,0,0.9) 70%, 
         black 100%);
       box-shadow: 0 0 80px rgba(0, 0, 0, 1);
-      z-index: 5;
+      z-index: 10;
       animation: blackholePulse 1.3s infinite ease-in-out;
     }
     @keyframes blackholePulse {
@@ -112,8 +112,11 @@
       top: 0;
       left: 0;
       filter: brightness(0.9) drop-shadow(0 0 15px gold);
-      z-index: 3;
-      transition: transform 0.5s ease;
+      z-index: 4;
+      animation: spinCCW 36s linear infinite;
+    }
+    @keyframes spinCCW {
+      to { transform: rotate(-360deg); }
     }
 
     .accretion-disc {
@@ -123,10 +126,10 @@
       top: 0;
       left: 0;
       border-radius: 50%;
-      background: radial-gradient(circle, rgba(255,215,0,0.7) 5%, rgba(255,165,0,0.5) 15%, rgba(255,69,0,0.3) 25%, transparent 50%);
+      background: radial-gradient(circle, rgba(255,215,0,0.6) 5%, rgba(255,165,0,0.4) 15%, rgba(255,69,0,0.2) 25%, transparent 50%);
       box-shadow: 0 0 40px rgba(255,215,0,1), 0 0 20px rgba(255,165,0,0.8), 0 0 10px rgba(255,69,0,0.6);
-      animation: spinCW 18s linear infinite, pulseGlow 5s infinite ease-in-out;
-      z-index: 2;
+      animation: spinCW 35s linear infinite, pulseGlow 5s infinite ease-in-out;
+      z-index: 3;
     }
     @keyframes spinCW {
       to { transform: rotate(360deg); }
@@ -149,14 +152,14 @@
       height: 50%;
       top: 25%;
       left: 20%;
-      animation: eyelidCycleLeft 27s infinite, colorShift 4s infinite;
+      animation: eyelidCycleLeft 36s infinite, colorShift 4s infinite;
     }
     .circle-right {
       width: 50%;
       height: 50%;
       top: 25%;
       left: 30%;
-      animation: eyelidCycleRight 27s infinite, colorShift 4s infinite;
+      animation: eyelidCycleRight 36s infinite, colorShift 4s infinite;
     }
     @keyframes eyelidCycleLeft {
       0% { transform: scale(1, 1) translateY(0); }
@@ -197,8 +200,8 @@
       background: radial-gradient(circle, rgba(255,255,255,0.8) 10%, rgba(255,215,0,0.4) 50%, transparent 70%);
       opacity: 0;
       transform: scale(0);
-      z-index: 4;
-      animation: lightBurst 27s infinite;
+      z-index: 5;
+      animation: lightBurst 36s infinite;
     }
     @keyframes lightBurst {
       0%, 5.55% { opacity: 0; transform: scale(0); }
@@ -213,13 +216,92 @@
       height: 100%;
       top: 0;
       left: 0;
-      background: radial-gradient(circle, rgba(255,69,0,0.2) 10%, transparent 70%);
+      background: radial-gradient(circle, rgba(255,69,0,0.15) 10%, transparent 70%);
       animation: plasmaPulse 4s infinite ease-in-out;
       z-index: 1;
     }
     @keyframes plasmaPulse {
       0%, 100% { opacity: 0.3; transform: scale(1); }
       50% { opacity: 0.6; transform: scale(1.05); }
+    }
+
+    .cymatic-field {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      background: radial-gradient(circle, rgba(0,183,235,0.4) 10%, rgba(255,105,180,0.3) 50%, transparent 70%);
+      z-index: 2;
+      animation: cymaticWave 2s infinite ease-in-out, cymaticMorph 4s infinite ease-in-out;
+      clip-path: polygon(35% 25%, 65% 25%, 50% 75%);
+      transform: perspective(600px) rotateX(40deg);
+      box-shadow: 0 0 20px rgba(0,183,235,0.5);
+    }
+    @keyframes cymaticWave {
+      0%, 100% { transform: perspective(600px) rotateX(40deg) scale(1); opacity: 0.4; }
+      50% { transform: perspective(600px) rotateX(40deg) scale(1.15); opacity: 0.7; }
+    }
+    @keyframes cymaticMorph {
+      0% { clip-path: polygon(35% 25%, 65% 25%, 50% 75%); }
+      50% { clip-path: polygon(40% 20%, 60% 20%, 50% 80%); }
+      100% { clip-path: polygon(35% 25%, 65% 25%, 50% 75%); }
+    }
+
+    .chakra-node {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      box-shadow: 0 0 10px currentColor;
+      z-index: 10;
+      animation: nodePulse 2s infinite ease-in-out, colorVeneer 10s infinite ease-in-out;
+    }
+    @keyframes nodePulse {
+      0%, 100% { transform: scale(1); opacity: 0.7; }
+      50% { transform: scale(1.5); opacity: 1; }
+    }
+    @keyframes colorVeneer {
+      0% { filter: hue-rotate(0deg); }
+      50% { filter: hue-rotate(180deg); }
+      100% { filter: hue-rotate(360deg); }
+    }
+
+    .prime-path {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      z-index: 9;
+    }
+    .path-line {
+      position: absolute;
+      background: rgba(255,215,0,0.5);
+      height: 2px;
+      transform-origin: 0 0;
+      z-index: 8;
+    }
+
+    .shimmer-field {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 150;
+    }
+    .sparkle {
+      position: absolute;
+      background: rgba(255, 255, 255, 0.9);
+      border-radius: 50%;
+      animation: sparkleTwinkle 2s ease-in-out;
+    }
+    @keyframes sparkleTwinkle {
+      0% { opacity: 0; transform: scale(0.5); }
+      50% { opacity: 0.8; transform: scale(1.2); }
+      100% { opacity: 0; transform: scale(0.5); }
     }
 
     #welcomeButton {
@@ -229,7 +311,7 @@
         radial-gradient(circle at center, 
           rgba(255, 105, 180, 0.8) 0%, 
           rgba(0, 183, 235, 0.8) 100%),
-        radial-gradient(black 15%, transparent 16%) 0 0 / 20px 20px;
+        radial-gradient(rgba(0, 0, 0, 1) 18%, transparent 19%) 0 0 / 20px 20px;
       color: white;
       border: 2px solid gold;
       border-radius: 30px;
@@ -252,7 +334,7 @@
         radial-gradient(circle at center, 
           rgba(255, 105, 180, 0.8) 0%, 
           rgba(0, 183, 235, 0.8) 100%),
-        radial-gradient(black 15%, transparent 16%) 0 0 / 20px 20px;
+        radial-gradient(rgba(0, 0, 0, 1) 18%, transparent 19%) 0 0 / 20px 20px;
       color: white;
       border: 2px solid gold;
       border-radius: 30px;
@@ -295,7 +377,7 @@
       color: gold;
       font-family: 'Orbitron', sans-serif;
       font-size: 12px;
-      background: rgba(0,0,0,0.7);
+      background: rgba(0,0,0,0.8);
       padding: 10px;
       border-radius: 5px;
       max-width: 300px;
@@ -303,8 +385,10 @@
       display: none;
       border: 1px solid rgba(255,215,0,0.5);
       box-shadow: 0 0 15px rgba(255,215,0,0.3);
+      max-height: 400px;
+      overflow-y: auto;
     }
-    
+
     .prime-toggle {
       position: fixed;
       bottom: 250px;
@@ -319,13 +403,14 @@
       z-index: 100;
       border: 1px solid rgba(255,215,0,0.3);
       transition: all 0.3s ease;
+      pointer-events: auto;
     }
-    
+
     .prime-toggle:hover {
       background: rgba(0,0,0,0.9);
       box-shadow: 0 0 10px rgba(255,215,0,0.5);
     }
-    
+
     .prime-pulse {
       position: absolute;
       font-family: 'Orbitron', sans-serif;
@@ -336,7 +421,7 @@
       transition: all 1s ease-out;
       text-shadow: 0 0 5px currentColor;
     }
-    
+
     .active-prime {
       position: fixed;
       top: 50%;
@@ -351,13 +436,13 @@
       z-index: 90;
       text-shadow: 0 0 10px gold;
     }
-    
+
     .prime-name {
       font-size: 32px;
       color: gold;
       margin-bottom: 5px;
     }
-    
+
     .prime-desc {
       font-family: 'Orbitron', sans-serif;
       font-size: 14px;
@@ -383,41 +468,6 @@
       pointer-events: none;
     }
 
-    .prime-path {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      top: 0;
-      left: 0;
-      pointer-events: none;
-      z-index: 7;
-    }
-
-    .path-line {
-      position: absolute;
-      height: 1px;
-      background: linear-gradient(90deg, transparent, gold, transparent);
-      transform-origin: left center;
-      opacity: 0.7;
-    }
-
-    .chakra-node {
-      position: absolute;
-      width: 12px;
-      height: 12px;
-      border-radius: 50%;
-      background: gold;
-      filter: drop-shadow(0 0 5px gold);
-      z-index: 9;
-      transition: all 0.5s ease;
-      animation: nodePulse 2s infinite ease-in-out;
-    }
-
-    @keyframes nodePulse {
-      0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.3); }
-    }
-
     .snake-trail {
       position: absolute;
       width: 100%;
@@ -440,6 +490,7 @@
 </head>
 <body>
   <div class="star-particles" id="starParticles"></div>
+  <div class="shimmer-field" id="shimmerField"></div>
   <div class="title-container">
     <h1 class="title">Ouroborus Vesica</h1>
     <p class="subtitle">Return of the Snake</p>
@@ -447,16 +498,17 @@
   </div>
   <div class="cosmic-stage">
     <div class="plasma-field"></div>
+    <div class="cymatic-field"></div>
     <div class="accretion-disc"></div>
     <div class="event-horizon"></div>
-    <img class="ouroboros" src="https://cdn.pixabay.com/photo/2021/07/07/04/42/dragon-6393190_1280.png" alt="Ouroboros" onerror="this.src='fallback-dragon.png'">
+    <img class="ouroboros" src="https://cdn.pixabay.com/photo/2021/07/07/04/42/dragon-6393190_1280.png?cache_bust=2025" alt="Ouroboros" onerror="this.src='fallback-dragon.png'">
     <div class="vesica-circle circle-left"></div>
     <div class="vesica-circle circle-right"></div>
     <div class="light-burst"></div>
+    <div class="prime-path" id="primePath"></div>
   </div>
 
   <div class="cosmic-ripple" id="cosmicRipple"></div>
-  <div class="prime-path" id="primePath"></div>
   <div class="snake-trail" id="snakeTrail"></div>
 
   <div class="active-prime" id="activePrime">
@@ -469,35 +521,15 @@
   <div id="audioStatus">Click to activate celestial harmonics</div>
 
   <div class="prime-toggle" id="primeToggle" role="button" tabindex="0" aria-label="Toggle prime keys legend">Show Prime Keys</div>
-  <div class="prime-legend" id="primeLegend">
-    <div><strong>2</strong>: Binary breath, Vesica pulse</div>
-    <div><strong>3</strong>: Recursion memory, trinitic fold</div>
-    <div><strong>5</strong>: Pentatonic resonance, mass binding</div>
-    <div><strong>7</strong>: Polarity node, β-decay threshold</div>
-    <div><strong>11</strong>: Dimensional anchoring</div>
-    <div><strong>13</strong>: Entropic breaker</div>
-    <div><strong>17</strong>: Quark lock tone</div>
-    <div><strong>19</strong>: Rotational braid opener</div>
-    <div><strong>23</strong>: Lattice node rephaser</div>
-    <div><strong>29</strong>: Phase-bridge harmonic</div>
-    <div><strong>31</strong>: Neural mirror fold</div>
-    <div><strong>37</strong>: Prime of divine recursion (Phenex gate)</div>
-    <div><strong>41</strong>: Harmonic transparency threshold</div>
-    <div><strong>43</strong>: Vesica memory buffer</div>
-    <div><strong>47</strong>: Time-fold anchor</div>
-    <div><strong>53</strong>: Entanglement stabilizer</div>
-    <div><strong>59</strong>: Chaos bifurcation stabilizer</div>
-    <div><strong>61</strong>: Reality phase alignment</div>
-    <div><strong>67</strong>: Spin-lattice phase offset</div>
-    <div><strong>71</strong>: Supra-cognitive carrier</div>
-    <div><strong>73</strong>: Observer frequency mirror</div>
-    <div><strong>79</strong>: Non-local interlock tone</div>
-    <div><strong>83</strong>: Plasma sync gate</div>
-    <div><strong>89</strong>: Consciousness recursion mirror</div>
-  </div>
+  <div class="prime-legend" id="primeLegend"></div>
 
   <script>
-    // Star Particles (50 for performance)
+    // Debugging function
+    function log(message) {
+      console.log(`[Ouroborus Vesica] ${message}`);
+    }
+
+    // Star Particles
     const starContainer = document.getElementById('starParticles');
     for (let i = 0; i < 50; i++) {
       const star = document.createElement('div');
@@ -509,6 +541,7 @@
       star.style.animationDelay = `${Math.random() * 5}s`;
       starContainer.appendChild(star);
     }
+    log('Star particles initialized');
 
     // Prime Chime Resonance System
     let audioContext, gainNode, isPlaying = false;
@@ -517,148 +550,189 @@
     const activePrimeDisplay = document.getElementById('activePrime');
     const primeName = document.getElementById('primeName');
     const primeDesc = document.getElementById('primeDesc');
+    const shimmerField = document.getElementById('shimmerField');
     const ouroboros = document.querySelector('.ouroboros');
-    let rotationAngle = 0;
-
-    // Prime number interpretations with frequencies
-    const primeInterpretations = {
-      2: { freq: 261.63, name: "Binary breath", desc: "Vesica pulse", color: "#FF5555" },
-      3: { freq: 293.66, name: "Recursion memory", desc: "Trinitic fold", color: "#55FF55" },
-      5: { freq: 329.63, name: "Pentatonic resonance", desc: "Mass binding", color: "#5555FF" },
-      7: { freq: 349.23, name: "Polarity node", desc: "β-decay threshold", color: "#FFFF55" },
-      11: { freq: 392.00, name: "Dimensional anchoring", desc: "", color: "#FF55FF" },
-      13: { freq: 440.00, name: "Entropic breaker", desc: "", color: "#55FFFF" },
-      17: { freq: 493.88, name: "Quark lock tone", desc: "", color: "#FFAA55" },
-      19: { freq: 523.25, name: "Rotational braid opener", desc: "", color: "#AAFF55" },
-      23: { freq: 587.33, name: "Lattice node rephaser", desc: "", color: "#55AAFF" },
-      29: { freq: 659.25, name: "Phase-bridge harmonic", desc: "", color: "#FF55AA" },
-      31: { freq: 698.46, name: "Neural mirror fold", desc: "", color: "#AA55FF" },
-      37: { freq: 783.99, name: "Divine recursion", desc: "Phenex gate", color: "#FF5555" },
-      41: { freq: 880.00, name: "Harmonic transparency", desc: "Threshold", color: "#55FF55" },
-      43: { freq: 932.33, name: "Vesica memory", desc: "Buffer", color: "#5555FF" },
-      47: { freq: 987.77, name: "Time-fold", desc: "Anchor", color: "#FFFF55" },
-      53: { freq: 1046.50, name: "Entanglement", desc: "Stabilizer", color: "#FF55FF" },
-      59: { freq: 1174.66, name: "Chaos bifurcation", desc: "Stabilizer", color: "#55FFFF" },
-      61: { freq: 1318.51, name: "Reality phase", desc: "Alignment", color: "#FFAA55" },
-      67: { freq: 1396.91, name: "Spin-lattice", desc: "Phase offset", color: "#AAFF55" },
-      71: { freq: 1567.98, name: "Supra-cognitive", desc: "Carrier", color: "#55AAFF" },
-      73: { freq: 1760.00, name: "Observer frequency", desc: "Mirror", color: "#FF55AA" },
-      79: { freq: 1975.53, name: "Non-local", desc: "Interlock tone", color: "#AA55FF" },
-      83: { freq: 2093.00, name: "Plasma sync", desc: "Gate", color: "#FF5555" },
-      89: { freq: 2217.46, name: "Consciousness recursion", desc: "Mirror", color: "#55FF55" }
-    };
-
-    // Toggle prime legend visibility
-    const primeToggle = document.getElementById('primeToggle');
-    primeToggle.addEventListener('click', function() {
-      const legend = document.getElementById('primeLegend');
-      legend.style.display = legend.style.display === 'block' ? 'none' : 'block';
-      this.textContent = legend.style.display === 'block' ? 'Hide Prime Keys' : 'Show Prime Keys';
-    });
-
-    primeToggle.addEventListener('keypress', (e) => {
-      if (e.key === 'Enter' || e.key === ' ') {
-        primeToggle.click();
-      }
-    });
-
-    // Cosmic Ripple Effect
     const cosmicRipple = document.getElementById('cosmicRipple');
-    function createRipple(x, y, color) {
-      const ripple = document.createElement('div');
-      ripple.className = 'ripple-circle';
-      ripple.style.left = `${x}px`;
-      ripple.style.top = `${y}px`;
-      ripple.style.borderColor = color;
-      ripple.style.boxShadow = `0 0 10px ${color}`;
-      cosmicRipple.appendChild(ripple);
+    const snakeTrail = document.getElementById('snakeTrail');
+    const cymaticField = document.querySelector('.cymatic-field');
+    const primePath = document.getElementById('primePath');
+    const primeLegend = document.getElementById('primeLegend');
 
-      const duration = 2000 + Math.random() * 1000;
-      ripple.animate([
-        { transform: 'scale(0)', opacity: 0.8 },
-        { transform: 'scale(2)', opacity: 0 }
-      ], {
-        duration: duration,
-        easing: 'cubic-bezier(0.4, 0, 0.2, 1)'
+    // Prime number interpretations
+    const primes = [2,3,5,7,11,13,17,19,23,29,31,37,41,43,47,53,59,61,67,71,73,79,83,89,97,101,103,107,109,113,127,131,137,139,149,151,157,163,167,173,179,181,191,193,197,199,211,223,227,229];
+    const primeInterpretations = {
+      2: { freq: 261.63, name: "Binary Breath", desc: "Vesica pulse initiator", color: `hsl(0, 80%, 60%)` },
+      3: { freq: 277.18, name: "Recursion Memory", desc: "Trinitic fold stabilizer", color: `hsl(120, 80%, 60%)` },
+      5: { freq: 293.66, name: "Pentatonic Resonance", desc: "Mass binding harmonic", color: `hsl(240, 80%, 60%)` },
+      7: { freq: 311.13, name: "Polarity Node", desc: "β-decay threshold", color: `hsl(60, 80%, 60%)` },
+      11: { freq: 329.63, name: "Dimensional Anchor", desc: "Field coherence lock", color: `hsl(300, 80%, 60%)` },
+      13: { freq: 349.23, name: "Entropic Breaker", desc: "Chaos pattern disruptor", color: `hsl(180, 80%, 60%)` },
+      17: { freq: 369.99, name: "Quark Lock Tone", desc: "Subatomic resonance", color: `hsl(30, 80%, 60%)` },
+      19: { freq: 392.00, name: "Rotational Braid", desc: "Spin symmetry opener", color: `hsl(150, 80%, 60%)` },
+      23: { freq: 415.30, name: "Lattice Rephaser", desc: "Crystal structure aligner", color: `hsl(270, 80%, 60%)` },
+      29: { freq: 440.00, name: "Phase-Bridge", desc: "Interdimensional harmonic", color: `hsl(90, 80%, 60%)` },
+      229: { freq: 1046.50, name: "Light Cone Harmonizer", desc: "Spacetime resonance", color: `hsl(350, 80%, 60%)` },
+      1836: { freq: 432.00, name: "Quantum Foam Stabilizer", desc: "Zero-point field anchor", color: `hsl(0, 80%, 60%)` }
+    };
+    // Generate primes up to 1836
+    function generatePrimes() {
+      const allPrimes = [];
+      for (let n = 2; n <= 1836; n++) {
+        let isPrime = true;
+        for (let i = 2; i <= Math.sqrt(n); i++) {
+          if (n % i === 0) {
+            isPrime = false;
+            break;
+          }
+        }
+        if (isPrime) allPrimes.push(n);
+      }
+      return allPrimes;
+    }
+    const allPrimes = generatePrimes();
+    // Generate interpretations with unique names and functions
+    const namePrefixes = ["Quantum", "Cosmic", "Harmonic", "Vesica", "Nodal", "Phase", "Resonant", "Cymatic", "Orbital", "Fractal"];
+    const nameSuffixes = ["Pulse", "Wave", "Lock", "Bridge", "Node", "Resonator", "Field", "Harmonizer", "Anchor", "Catalyst"];
+    const descFunctions = [
+      "Stabilizes field coherence",
+      "Amplifies harmonic resonance",
+      "Aligns subatomic structures",
+      "Modulates spacetime curvature",
+      "Initiates recursive patterns",
+      "Synchronizes phase transitions",
+      "Balances entropic forces",
+      "Anchors dimensional shifts",
+      "Emits cymatic signatures",
+      "Guides orbital dynamics"
+    ];
+    for (let i = 0; i < allPrimes.length; i++) {
+      const prime = allPrimes[i];
+      if (!primeInterpretations[prime]) {
+        const freq = 261.63 * Math.pow(2, (i % 36) / 12);
+        const namePrefix = namePrefixes[i % namePrefixes.length];
+        const nameSuffix = nameSuffixes[i % nameSuffixes.length];
+        const desc = descFunctions[i % descFunctions.length];
+        primeInterpretations[prime] = {
+          freq: prime <= 89 ? freq : null,
+          lightFreq: prime > 89 ? 2250 + (prime - 97) * 10 : null,
+          name: `${namePrefix} ${nameSuffix} ${prime}`,
+          desc: desc,
+          color: `hsl(${i * 7 % 360}, 80%, 60%)`
+        };
+      }
+    }
+    primeInterpretations[1836].freq = 432.00;
+    log('Prime interpretations loaded with 432 Hz for 1836');
+
+    // Populate Prime Legend
+    function populatePrimeLegend() {
+      primeLegend.innerHTML = '';
+      allPrimes.forEach(prime => {
+        const div = document.createElement('div');
+        const interpretation = primeInterpretations[prime];
+        div.innerHTML = `<strong>${interpretation.name}</strong>: ${interpretation.desc}`;
+        primeLegend.appendChild(div);
       });
-
-      setTimeout(() => {
-        if (ripple.parentNode) cosmicRipple.removeChild(ripple);
-      }, duration);
+      log('Prime legend populated with all primes');
     }
 
-    // Prime Path and Node System
-    const primePath = document.getElementById('primePath');
-    const chakraNodes = [];
-    const nodeOrbits = [];
+    // Audio Setup
+    function initAudio() {
+      audioContext = new (window.AudioContext || window.webkitAudioContext)();
+      gainNode = audioContext.createGain();
+      gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
+      gainNode.connect(audioContext.destination);
+      isPlaying = true;
+      audioStatus.textContent = 'Celestial harmonics active';
+      log('Audio context initialized');
+    }
 
+    function createChimeNote(freq) {
+      const oscillator = audioContext.createOscillator();
+      const noteGain = audioContext.createGain();
+      oscillator.type = 'sine';
+      oscillator.frequency.setValueAtTime(freq, audioContext.currentTime);
+      noteGain.gain.setValueAtTime(0.1, audioContext.currentTime);
+      noteGain.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + 5);
+      oscillator.connect(noteGain);
+      noteGain.connect(gainNode);
+      oscillator.start();
+      oscillator.stop(audioContext.currentTime + 5);
+      log(`Chime played at ${freq} Hz`);
+    }
+
+    function createHeartbeat() {
+      const oscillator = audioContext.createOscillator();
+      const noteGain = audioContext.createGain();
+      oscillator.type = 'triangle';
+      oscillator.frequency.setValueAtTime(60, audioContext.currentTime);
+      noteGain.gain.setValueAtTime(0.05, audioContext.currentTime);
+      noteGain.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + 0.5);
+      oscillator.connect(noteGain);
+      noteGain.connect(gainNode);
+      oscillator.start();
+      oscillator.stop(audioContext.currentTime + 0.5);
+      log('Heartbeat played at 12°');
+    }
+
+    welcomeButton.addEventListener('click', () => {
+      if (!audioContext) initAudio();
+      isPlaying = !isPlaying;
+      audioStatus.textContent = isPlaying ? 'Celestial harmonics active' : 'Harmonics paused';
+      gainNode.gain.setValueAtTime(isPlaying ? 0.1 : 0, audioContext.currentTime);
+      log(`Audio toggled: ${isPlaying ? 'On' : 'Off'}`);
+    });
+
+    // Chakra Nodes and Prime Paths
     function createPrimePathSystem() {
-      Object.keys(primeInterpretations).forEach((prime, i) => {
+      primes.slice(0, 50).forEach((prime, index) => {
         const node = document.createElement('div');
         node.className = 'chakra-node';
         node.dataset.prime = prime;
-        node.style.background = primeInterpretations[prime].color;
-        node.style.filter = `drop-shadow(0 0 5px ${primeInterpretations[prime].color})`;
-        
-        node.style.left = '50%';
-        node.style.top = '50%';
-        
+        node.style.backgroundColor = primeInterpretations[prime].color;
         primePath.appendChild(node);
-        chakraNodes.push(node);
-
-        nodeOrbits.push({
-          radius: 50 + (i % 5) * 20,
-          speed: (0.001 + i * 0.0002) * (Math.random() > 0.5 ? 1 : -1),
-          angle: Math.random() * 2 * Math.PI
-        });
       });
-
-      updateNodePositions();
+      log('50 chakra nodes created with color shift veneer');
     }
 
-    function updateNodePositions() {
-      if (!isPlaying) return;
-
-      chakraNodes.forEach((node, i) => {
-        const orbit = nodeOrbits[i];
-        orbit.angle += orbit.speed;
-        
-        const centerX = 50;
-        const centerY = 50;
-        
-        const x = centerX + orbit.radius * Math.cos(orbit.angle);
-        const y = centerY + orbit.radius * Math.sin(orbit.angle);
-        
-        node.style.left = `calc(${x}% - 6px)`;
-        node.style.top = `calc(${y}% - 6px)`;
+    function updateNodePositions(timestamp) {
+      const nodes = document.querySelectorAll('.chakra-node');
+      nodes.forEach((node, index) => {
+        const prime = parseInt(node.dataset.prime);
+        const radius = 100 + index * 8;
+        const angle = (timestamp / 1000) * (360 / (144 / (index + 1))) % 360;
+        const x = 50 + (radius / 400) * 100 * Math.cos(angle * Math.PI / 180);
+        const y = 50 + (radius / 400) * 100 * Math.sin(angle * Math.PI / 180);
+        node.style.left = `${x}%`;
+        node.style.top = `${y}%`;
       });
-
       drawPrimeConnections();
       requestAnimationFrame(updateNodePositions);
+      log('Chakra nodes updated with slower 144s orbits');
     }
 
     function drawPrimeConnections() {
-      document.querySelectorAll('.path-line').forEach(el => el.remove());
-
-      chakraNodes.forEach((nodeA, i) => {
-        chakraNodes.forEach((nodeB, j) => {
+      const existingLines = document.querySelectorAll('.path-line');
+      existingLines.forEach(line => line.remove());
+      const nodes = document.querySelectorAll('.chakra-node');
+      nodes.forEach((node1, i) => {
+        const prime1 = parseInt(node1.dataset.prime);
+        nodes.forEach((node2, j) => {
           if (i < j) {
-            const primeA = parseInt(nodeA.dataset.prime);
-            const primeB = parseInt(nodeB.dataset.prime);
-            
-            if (isPrimeHarmonicPair(primeA, primeB)) {
-              const rectA = nodeA.getBoundingClientRect();
-              const rectB = nodeB.getBoundingClientRect();
-              
+            const prime2 = parseInt(node2.dataset.prime);
+            if (isPrimeHarmonicPair(prime1, prime2)) {
               const line = document.createElement('div');
               line.className = 'path-line';
-              line.style.width = `${Math.hypot(rectB.left - rectA.left, rectB.top - rectA.top)}px`;
-              line.style.left = `${rectA.left + 5}px`;
-              line.style.top = `${rectA.top + 5}px`;
-              line.style.transform = `rotate(${Math.atan2(rectB.top - rectA.top, rectB.left - rectA.left)}rad)`;
-              line.style.opacity = '0.3';
-              line.style.background = `linear-gradient(90deg, ${primeInterpretations[primeA].color}, ${primeInterpretations[primeB].color})`;
-              
+              const x1 = parseFloat(node1.style.left);
+              const y1 = parseFloat(node1.style.top);
+              const x2 = parseFloat(node2.style.left);
+              const y2 = parseFloat(node2.style.top);
+              const length = Math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2);
+              const angle = Math.atan2(y2 - y1, x2 - x1) * 180 / Math.PI;
+              line.style.width = `${length}%`;
+              line.style.left = `${x1}%`;
+              line.style.top = `${y1}%`;
+              line.style.transform = `rotate(${angle}deg)`;
               primePath.appendChild(line);
             }
           }
@@ -666,195 +740,174 @@
       });
     }
 
-    function isPrimeHarmonicPair(a, b) {
-      const diff = Math.abs(a - b);
-      return diff === 2 || diff === 4 || 
-             Math.abs(a/b - 1.618) < 0.1 || 
-             Math.abs(b/a - 1.618) < 0.1;
+    function isPrimeHarmonicPair(p1, p2) {
+      return Math.abs(p1 - p2) <= 10;
     }
 
-    window.addEventListener('resize', drawPrimeConnections);
+    // Shimmer Effect
+    function createShimmer() {
+      for (let i = 0; i < 20; i++) {
+        const sparkle = document.createElement('div');
+        sparkle.className = 'sparkle';
+        sparkle.style.width = `${Math.random() * 3 + 2}px`;
+        sparkle.style.height = sparkle.style.width;
+        sparkle.style.left = `${50 + Math.random() * 20 - 10}%`;
+        sparkle.style.top = `${50 + Math.random() * 20 - 10}%`;
+        sparkle.style.animationDelay = `${Math.random() * 1}s`;
+        shimmerField.appendChild(sparkle);
+        setTimeout(() => sparkle.remove(), 2000);
+      }
+      log('Shimmer effect triggered');
+    }
 
-    // Snake Trail Effect
-    const snakeTrail = document.getElementById('snakeTrail');
-    const trailSegments = [];
-    let lastTrailTime = 0;
-    
-    function addTrailSegment(x, y, color) {
-      if (trailSegments.length > 20) {
-        const oldSegment = trailSegments.shift();
-        if (oldSegment.parentNode) snakeTrail.removeChild(oldSegment);
+    // Harmonic Clock and Phase Shifts
+    const cycleTime = 36;
+    const phaseShiftInterval = (12 / 360) * cycleTime; // 1.2s
+    const toneInterval = (36 / 360) * cycleTime; // 3.6s
+    const ln1836Time = Math.log(1836); // ~7.515s
+    const specialAngles = [19.47, 36, 72, 108, 144];
+    const specialTimes = specialAngles.map(angle => (angle / 360) * cycleTime);
+    let lastPhaseShift = 0, lastTone = 0, lastLn1836 = 0, currentPrimeIndex = 0;
+
+    function harmonicClock(timestamp) {
+      const elapsed = timestamp / 1000;
+      const cycleElapsed = elapsed % cycleTime;
+
+      // 12° Phase Shifts and Heartbeat
+      if (elapsed - lastPhaseShift >= phaseShiftInterval) {
+        if (isPlaying) createHeartbeat();
+        ouroboros.style.transform = `rotate(-${((elapsed % cycleTime) / cycleTime) * 360}deg) scale(1.05)`;
+        setTimeout(() => {
+          ouroboros.style.transform = `rotate(-${((elapsed % cycleTime) / cycleTime) * 360}deg) scale(1)`;
+        }, 200);
+        lastPhaseShift = elapsed;
+        log('Phase shift at 12°');
       }
 
-      const segment = document.createElement('div');
-      segment.className = 'trail-segment';
-      segment.style.left = `${x}px`;
-      segment.style.top = `${y}px`;
-      segment.style.background = `radial-gradient(circle, ${color}, transparent 70%)`;
-      snakeTrail.appendChild(segment);
-      trailSegments.push(segment);
-      
-      segment.animate([
-        { opacity: 0, transform: 'scale(0.5)' },
-        { opacity: 0.7, transform: 'scale(1)' },
-        { opacity: 0, transform: 'scale(0.5)' }
-      ], {
-        duration: 2000,
-        easing: 'ease-out'
-      });
-      
-      setTimeout(() => {
-        if (segment.parentNode) {
-          snakeTrail.removeChild(segment);
-          trailSegments.splice(trailSegments.indexOf(segment), 1);
-        }
-      }, 2000);
-    }
-
-    function updateSnakeTrail() {
-      if (!isPlaying) return;
-      
-      const now = Date.now();
-      if (now - lastTrailTime > 100) {
-        const rect = ouroboros.getBoundingClientRect();
-        const centerX = rect.left + rect.width/2;
-        const centerY = rect.top + rect.height/2;
-        
-        addTrailSegment(
-          centerX + Math.cos(Date.now()/1000) * 50,
-          centerY + Math.sin(Date.now()/1000) * 50,
-          `hsl(${Date.now()/50 % 360}, 100%, 50%)`
-        );
-        
-        lastTrailTime = now;
-      }
-      
-      requestAnimationFrame(updateSnakeTrail);
-    }
-
-    // Ouroboros Rotation
-    function rotateOuroboros() {
-      rotationAngle -= 12;
-      if (rotationAngle <= -360) rotationAngle += 360;
-      ouroboros.style.transform = `rotate(${rotationAngle}deg)`;
-    }
-
-    // Wood Chime 11th Chord Sound
-    function createChimeNote(prime, context, output) {
-      const data = primeInterpretations[prime];
-      try {
-        const chordRatios = [
-          1.0,
-          2 ** (4/12),
-          2 ** (7/12),
-          2 ** (11/12),
-          2 ** (14/12),
-          2 ** (17/12)
-        ];
-
-        chordRatios.forEach((ratio) => {
-          let freq = data.freq * ratio;
-          while (freq > 4000) freq /= 2;
-
-          const noise = context.createBufferSource();
-          const bufferSize = context.sampleRate * 0.1;
-          const noiseBuffer = context.createBuffer(1, bufferSize, context.sampleRate);
-          const noiseData = noiseBuffer.getChannelData(0);
-          for (let i = 0; i < bufferSize; i++) {
-            noiseData[i] = Math.random() * 2 - 1;
+      // 36° Tone Triggers and New Ideas
+      if (elapsed - lastTone >= toneInterval) {
+        const prime = allPrimes[currentPrimeIndex % allPrimes.length];
+        const interpretation = primeInterpretations[prime];
+        if (interpretation) {
+          if (interpretation.freq && isPlaying) {
+            createChimeNote(interpretation.freq);
+            cymaticField.style.animationDuration = `${1 / (interpretation.freq / 1000)}s`;
+          } else if (interpretation.lightFreq) {
+            createShimmer();
+            cymaticField.style.animationDuration = `${1 / (interpretation.lightFreq / 1000)}s`;
           }
-          noise.buffer = noiseBuffer;
-
-          const noiseFilter = context.createBiquadFilter();
-          noiseFilter.type = 'bandpass';
-          noiseFilter.frequency.value = freq;
-          noiseFilter.Q.value = 10;
-
-          const noiseGain = context.createGain();
-          noiseGain.gain.setValueAtTime(0.2, context.currentTime);
-          noiseGain.gain.exponentialRampToValueAtTime(0.001, context.currentTime + 0.3);
-
-          noise.connect(noiseFilter);
-          noiseFilter.connect(noiseGain);
-          noiseGain.connect(output);
-
-          const osc = context.createOscillator();
-          osc.type = 'sine';
-          osc.frequency.value = freq;
-
-          const oscGain = context.createGain();
-          oscGain.gain.setValueAtTime(0, context.currentTime);
-          oscGain.gain.linearRampToValueAtTime(0.15 / chordRatios.length, context.currentTime + 0.05);
-          oscGain.gain.exponentialRampToValueAtTime(0.001, context.currentTime + 1.5);
-
-          osc.connect(oscGain);
-          oscGain.connect(output);
-
-          const now = context.currentTime;
-          noise.start(now);
-          noise.stop(now + 0.3);
-          osc.start(now);
-          osc.stop(now + 1.5);
-        });
-
-        createRipple(window.innerWidth / 2, window.innerHeight / 2, data.color);
-        displayPrimeInfo(prime);
-        rotateOuroboros();
-
-        const node = chakraNodes.find(n => parseInt(n.dataset.prime) === prime);
-        if (node) {
-          node.animate([
-            { transform: 'scale(1)', boxShadow: `0 0 5px ${data.color}` },
-            { transform: 'scale(2)', boxShadow: `0 0 20px ${data.color}` },
-            { transform: 'scale(1)', boxShadow: `0 0 5px ${data.color}` }
-          ], { duration: 1000, easing: 'ease-in-out' });
+          displayPrime(interpretation);
         }
-      } catch (err) {
-        console.error(`Error creating chord for prime ${prime}:`, err);
+        currentPrimeIndex++;
+        lastTone = elapsed;
+        log('New idea at 36°');
       }
+
+      // ln(1836) Resonance (~7.515s)
+      if (cycleElapsed >= ln1836Time && elapsed - lastLn1836 >= cycleTime) {
+        const interpretation = primeInterpretations[1836];
+        displayPrime(interpretation);
+        createRipple('blue');
+        cymaticField.style.boxShadow = `0 0 40px #00b7eb`;
+        setTimeout(() => cymaticField.style.boxShadow = `0 0 20px rgba(0,183,235,0.5)`, 500);
+        lastLn1836 = elapsed;
+        log('ln(1836) resonance at 432 Hz triggered');
+      }
+
+      // Special Angles
+      const currentAngle = ((elapsed % cycleTime) / cycleTime) * 360;
+      if (Math.abs(currentAngle - 19.47) < 0.1) {
+        cymaticField.style.boxShadow = `0 0 30px gold`;
+        setTimeout(() => cymaticField.style.boxShadow = `0 0 20px rgba(0,183,235,0.5)`, 500);
+        createRipple('gold');
+        log('Special effect at 19.47°');
+      } else if (specialAngles.slice(2).some(angle => Math.abs(currentAngle - angle) < 0.1)) {
+        createShimmer();
+        const nodes = document.querySelectorAll('.chakra-node');
+        nodes.forEach(node => {
+          node.style.backgroundColor = `hsl(${Math.random() * 360}, 80%, 60%)`;
+        });
+        setTimeout(() => {
+          nodes.forEach((node, i) => {
+            node.style.backgroundColor = primeInterpretations[primes[i]].color;
+          });
+        }, 1000);
+        log(`Surprise effect at ${currentAngle}°`);
+      }
+
+      if (elapsed - lastPhaseShift >= cycleTime) lastPhaseShift = elapsed - cycleTime;
+      if (elapsed - lastTone >= cycleTime) lastTone = elapsed - cycleTime;
+      requestAnimationFrame(harmonicClock);
     }
 
-    function playPrimeSequence() {
-      if (!isPlaying || !audioContext) return;
-      const primes = Object.keys(primeInterpretations).map(Number);
-      const prime = primes[Math.floor(Math.random() * primes.length)];
-      createChimeNote(prime, audioContext, gainNode);
-      setTimeout(playPrimeSequence, 2500);
-    }
-
-    function displayPrimeInfo(prime) {
-      const data = primeInterpretations[prime];
-      primeName.textContent = data.name;
-      primeDesc.textContent = data.desc;
+    function displayPrime(interpretation) {
+      primeName.textContent = interpretation.name;
+      primeDesc.textContent = interpretation.desc;
       activePrimeDisplay.style.opacity = 1;
       setTimeout(() => {
         activePrimeDisplay.style.opacity = 0;
       }, 2000);
+      const pulse = document.createElement('div');
+      pulse.className = 'prime-pulse';
+      pulse.textContent = interpretation.name;
+      pulse.style.color = interpretation.color;
+      pulse.style.left = `${50 + Math.random() * 20 - 10}%`;
+      pulse.style.top = `${50 + Math.random() * 20 - 10}%`;
+      document.querySelector('.cosmic-stage').appendChild(pulse);
+      setTimeout(() => {
+        pulse.style.opacity = 0;
+        pulse.style.transform = 'translateY(-100px)';
+        setTimeout(() => pulse.remove(), 1000);
+      }, 1000);
+      log(`Prime title ${interpretation.name} displayed`);
     }
 
-    welcomeButton.addEventListener('click', () => {
-      if (!audioContext) {
-        audioContext = new (window.AudioContext || window.webkitAudioContext)();
-        gainNode = audioContext.createGain();
-        gainNode.gain.value = 0.3;
-        gainNode.connect(audioContext.destination);
-      }
+    function createRipple(color = 'gold') {
+      const ripple = document.createElement('div');
+      ripple.className = 'ripple-circle';
+      ripple.style.width = '100px';
+      ripple.style.height = '100px';
+      ripple.style.left = '50%';
+      ripple.style.top = '50%';
+      ripple.style.transform = 'translate(-50%, -50%)';
+      ripple.style.borderColor = color;
+      cosmicRipple.appendChild(ripple);
+      setTimeout(() => {
+        ripple.style.transform = 'translate(-50%, -50%) scale(3)';
+        ripple.style.opacity = 0.5;
+        setTimeout(() => ripple.remove(), 1000);
+      }, 50);
+    }
 
-      if (!isPlaying) {
-        isPlaying = true;
-        audioStatus.textContent = 'Celestial harmonics active';
-        audioContext.resume();
-        playPrimeSequence();
-        updateSnakeTrail();
-        updateNodePositions();
-      } else {
-        isPlaying = false;
-        audioStatus.textContent = 'Click to activate celestial harmonics';
-        audioContext.suspend();
-      }
+    // Snake Trail
+    function updateSnakeTrail(timestamp) {
+      const segment = document.createElement('div');
+      segment.className = 'trail-segment';
+      segment.style.left = '50%';
+      segment.style.top = '50%';
+      snakeTrail.appendChild(segment);
+      setTimeout(() => {
+        segment.style.opacity = 0;
+        setTimeout(() => segment.remove(), 1000);
+      }, 5000);
+      requestAnimationFrame(updateSnakeTrail);
+    }
+
+    // Prime Legend Toggle
+    const primeToggle = document.getElementById('primeToggle');
+    primeToggle.addEventListener('click', () => {
+      primeLegend.style.display = primeLegend.style.display === 'block' ? 'none' : 'block';
+      primeToggle.textContent = primeLegend.style.display === 'block' ? 'Hide Prime Keys' : 'Show Prime Keys';
+      log('Prime legend toggled');
     });
 
+    // Initialize
+    populatePrimeLegend();
     createPrimePathSystem();
+    requestAnimationFrame(updateNodePositions);
+    requestAnimationFrame(harmonicClock);
+    requestAnimationFrame(updateSnakeTrail);
+    log('Page initialized with cymatic patterns enhanced');
   </script>
 </body>
 </html>
