@@ -118,6 +118,14 @@
     @keyframes spinCCW {
       to { transform: rotate(-360deg); }
     }
+    .ouroboros.electrified {
+      filter: brightness(0.9) drop-shadow(0 0 15px gold) invert(100%) hue-rotate(180deg);
+      animation: electrifiedFade 5s ease-out forwards;
+    }
+    @keyframes electrifiedFade {
+      0% { filter: brightness(0.9) drop-shadow(0 0 15px gold) invert(100%) hue-rotate(180deg); }
+      100% { filter: brightness(0.9) drop-shadow(0 0 15px gold); }
+    }
 
     .accretion-disc {
       position: absolute;
@@ -552,8 +560,8 @@
 
   <button id="welcomeButton" aria-label="Toggle celestial harmonics">Key of the Milky Way</button>
   <a id="storeButton" href="https://satterbrock.gumroad.com/" target="_blank" rel="noopener noreferrer" aria-label="Visit store">Explore Celestial Artifacts</a>
-  <div id="audioStatus">Click to activate celestial harmonics</div>
-  <div id="audioDebug">Audio initializing...</div>
+  <div id="audioStatus"></div>
+  <div id="audioDebug"></div>
 
   <div class="prime-toggle" id="primeToggle" role="button" tabindex="0" aria-label="Toggle prime keys legend">Show Prime Keys</div>
   <div class="prime-legend" id="primeLegend"></div>
@@ -966,15 +974,33 @@
         log('No chakra nodes found');
         return requestAnimationFrame(updateNodePositions);
       }
+      const phi = (1 + Math.sqrt(5)) / 2; // Golden ratio
       nodes.forEach((node, index) => {
         const prime = parseInt(node.dataset.prime);
-        const radius = 120 + index * 8;
+        const orbitType = index % 3; // Cycle through 3 orbit types
+        let x, y;
+        const baseRadius = 120 + index * 8;
         const angle = (timestamp / 1000) * (360 / (288 / (index + 1))) % 360;
-        const x = 50 + (radius / 400) * 100 * Math.cos(angle * Math.PI / 180) * 1.5;
-        const y = 50 + (radius / 400) * 100 * Math.sin(angle * Math.PI / 180);
+        if (orbitType === 0) {
+          // Elliptical orbit
+          const a = baseRadius * 1.5;
+          const b = baseRadius;
+          x = 50 + (a / 400) * 100 * Math.cos(angle * Math.PI / 180);
+          y = 50 + (b / 400) * 100 * Math.sin(angle * Math.PI / 180);
+        } else if (orbitType === 1) {
+          // Phi-based spiral
+          const radius = baseRadius * Math.pow(phi, angle / 360);
+          x = 50 + (radius / 400) * 100 * Math.cos(angle * Math.PI / 180);
+          y = 50 + (radius / 400) * 100 * Math.sin(angle * Math.PI / 180);
+        } else {
+          // ln(n) pattern
+          const radius = baseRadius * (1 + Math.log(1 + index + angle / 360));
+          x = 50 + (radius / 400) * 100 * Math.cos(angle * Math.PI / 180);
+          y = 50 + (radius / 400) * 100 * Math.sin(angle * Math.PI / 180);
+        }
         node.style.left = `${x}%`;
         node.style.top = `${y}%`;
-        node.style.display = 'block'; // Ensure nodes are visible
+        node.style.display = 'block';
       });
       drawPrimeConnections();
       requestAnimationFrame(updateNodePositions);
@@ -1113,7 +1139,9 @@
         cymaticField.style.boxShadow = `0 0 30px gold`;
         setTimeout(() => cymaticField.style.boxShadow = `0 0 30px rgba(0,183,235,0.6)`, 500);
         createRipple('gold');
-        log('Special effect at 19.47°');
+        ouroboros.classList.add('electrified');
+        setTimeout(() => ouroboros.classList.remove('electrified'), 5000);
+        log('Special effect at 19.47° with electrified Ouroboros');
       } else if (specialAngles.slice(2).some(angle => Math.abs(currentAngle - angle) < 0.1)) {
         if (isPlaying && audioContext && audioContext.state === 'running') {
           createLightChorus(allPrimes[currentPrimeIndex % allPrimes.length]);
