@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+
+  <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Vesica Prime Breath: ln(1) to ln(1836)</title>
@@ -43,6 +44,14 @@
 
 <script>
 // (rest of your existing JavaScript code remains unchanged)
+  
+  function getBackgroundColor(t) {
+  const phase = (t % 3600) / 3600; // 60 seconds full cycle
+  const r = Math.floor(0 + 255 * Math.sin(Math.PI * phase));
+  const g = Math.floor(183 + (43 * Math.sin(Math.PI * phase + Math.PI/2)));
+  const b = Math.floor(235 + (20 * Math.sin(Math.PI * phase + Math.PI)));
+  return `rgb(${r},${g},${b})`;
+}
 
 const canvas = document.getElementById('primeCanvas');
 const ctx = canvas.getContext('2d');
@@ -75,8 +84,10 @@ function animate() {
 
   ctx.beginPath();
   ctx.arc(cx, cy, 10 + Math.sin(t/50) * 2, 0, 2 * Math.PI);
-  ctx.fillStyle = '#ffffffaa';
+  ctx.fillStyle = getBackgroundColor(t);
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
   ctx.fill();
+
 
   drawMetatronCube(cx, cy, 100 * breathing);
   drawPrimeSpiral(cx, cy, breathing);
@@ -103,22 +114,24 @@ function drawMetatronCube(cx, cy, scale) {
     points.push({x: cx + r * 2 * Math.cos(rad), y: cy + r * 2 * Math.sin(rad)});
   }
 
-  ctx.strokeStyle = 'rgba(200, 200, 255, 0.5)';
-  ctx.lineWidth = 1.5;
+  // Calculate a pulsing alpha based on time
+  const pulse = 0.5 + 0.5 * Math.sin(t / 100); // slow breathing pulse
+  ctx.strokeStyle = `rgba(${Math.floor(100 + 155 * pulse)}, ${Math.floor(200)}, ${Math.floor(255)}, ${0.5 + 0.3 * pulse})`; // plasma blue
+  ctx.lineWidth = 1.5 + pulse * 1.5; // line width pulses
 
+  ctx.beginPath();
   for (let i = 0; i < points.length; i++) {
     for (let j = i + 1; j < points.length; j++) {
-      ctx.beginPath();
       ctx.moveTo(points[i].x, points[i].y);
       ctx.lineTo(points[j].x, points[j].y);
-      ctx.stroke();
     }
   }
+  ctx.stroke();
 
   points.forEach(p => {
     ctx.beginPath();
     ctx.arc(p.x, p.y, 15, 0, 2 * Math.PI);
-    ctx.strokeStyle = 'rgba(100, 200, 255, 0.8)';
+    ctx.strokeStyle = 'rgba(180, 150, 255, 0.7)';
     ctx.lineWidth = 1;
     ctx.stroke();
   });
@@ -127,6 +140,7 @@ function drawMetatronCube(cx, cy, scale) {
 function drawPrimeSpiral(cx, cy, breathing) {
   let primeCoords = [];
 
+  // First, store all prime node coordinates
   primes.forEach((p, index) => {
     const r = ln(p) * 50 * phiCubed * breathing;
     const theta = p * goldenAngle;
@@ -134,31 +148,36 @@ function drawPrimeSpiral(cx, cy, breathing) {
     const x = cx + r * Math.cos(theta);
     const y = cy + r * Math.sin(theta);
 
-    primeCoords.push({x, y, p});
+    primeCoords.push({ x, y, p });
 
+    // Draw the prime node
+    const baseSize = 4 + Math.sin((t + index * 10) * 0.01) * 1.5;
     ctx.beginPath();
-    ctx.arc(x, y, 5, 0, 2 * Math.PI);
-    if (p <= 53) ctx.fillStyle = '#c0c0c0';
-    else if (p <= 149) ctx.fillStyle = '#ffd700';
-    else ctx.fillStyle = '#8a2be2';
+    ctx.arc(x, y, baseSize, 0, 2 * Math.PI);
+    ctx.fillStyle = "black";
+    ctx.shadowColor = (p <= 13) ? "gold" : "cyan";
+    ctx.shadowBlur = (p <= 13) ? 25 : 15;
     ctx.fill();
-
-    ctx.fillStyle = 'white';
-    ctx.font = '12px Arial';
-    ctx.fillText(p, x + 6, y);
   });
 
-  ctx.strokeStyle = 'rgba(255, 215, 0, 0.3)';
-  ctx.lineWidth = 1;
-  primeCoords.forEach((coord, index) => {
-    for (let j = index + 1; j < primeCoords.length; j++) {
-      ctx.beginPath();
-      ctx.moveTo(coord.x, coord.y);
-      ctx.lineTo(primeCoords[j].x, primeCoords[j].y);
-      ctx.stroke();
+  // Now draw lines connecting every prime to every other prime
+  ctx.strokeStyle = 'rgba(255, 255, 150, 0.7)'; // Bright luminous gold-white
+  ctx.lineWidth = 1.2; // Slightly thicker for full network
+  ctx.shadowColor = 'rgba(255, 215, 0, 0.7)';
+  ctx.shadowBlur = 15;
+  ctx.beginPath();
+
+  for (let i = 0; i < primeCoords.length; i++) {
+    const p1 = primeCoords[i];
+    for (let j = i + 1; j < primeCoords.length; j++) {
+      const p2 = primeCoords[j];
+      ctx.moveTo(p1.x, p1.y);
+      ctx.lineTo(p2.x, p2.y);
     }
-  });
+  }
+  ctx.stroke();
 
+  // Then plot constants
   Object.entries(constants).forEach(([name, value]) => {
     const r = value * 50 * phiCubed * breathing;
     const theta = value * goldenAngle;
@@ -175,6 +194,7 @@ function drawPrimeSpiral(cx, cy, breathing) {
     ctx.fillText(name, x + 8, y);
   });
 }
+
 
 function drawDNAHelix(cx, cy, t) {
   ctx.strokeStyle = 'rgba(173, 216, 230, 0.7)';
