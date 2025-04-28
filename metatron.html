@@ -84,8 +84,8 @@ function animate() {
 
   ctx.beginPath();
   ctx.arc(cx, cy, 10 + Math.sin(t/50) * 2, 0, 2 * Math.PI);
-  ctx.fillStyle = getBackgroundColor(t);
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  ctx.fillStyle = 'black';
+ctx.fillRect(0, 0, canvas.width, canvas.height);
   ctx.fill();
 
 
