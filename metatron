@@ -15,12 +15,33 @@
     canvas {
       display: block;
     }
+    #metatronButton {
+      position: fixed;
+      top: 30px;
+      left: 20px;
+      padding: 15px 30px;
+      background: radial-gradient(circle, rgba(0,183,235,0.8) 0%, rgba(255,105,180,0.8) 100%);
+      color: white;
+      border: 2px solid gold;
+      border-radius: 25px;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 20px;
+      text-decoration: none;
+      text-align: center;
+      z-index: 100;
+      box-shadow: 0 0 20px rgba(255,215,0,0.8);
+      pointer-events: auto;
+      -webkit-text-stroke: 1px black;
+    }
   </style>
 </head>
 <body>
+<a id="metatronButton" href="metatron/">✨ Enter the Metatron Engine ✨</a>
 <canvas id="primeCanvas"></canvas>
 
 <script>
+// (rest of your existing JavaScript code remains unchanged)
+
 const canvas = document.getElementById('primeCanvas');
 const ctx = canvas.getContext('2d');
 resizeCanvas();
@@ -183,7 +204,6 @@ function drawFlowerOfLife(cx, cy, radius) {
 
   const directions = [0, 60, 120, 180, 240, 300];
 
-  // First layer
   directions.forEach(angle => {
     const rad = angle * Math.PI / 180;
     points.push({
