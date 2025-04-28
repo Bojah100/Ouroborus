@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vesica Prime Breath: ln(1) to ln(1836)</title>
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+      background: radial-gradient(circle at center, #0a0a0a 0%, #000000 100%);
+      font-family: Arial, sans-serif;
+      color: white;
+    }
+    canvas {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+<canvas id="primeCanvas"></canvas>
+
+<script>
+const canvas = document.getElementById('primeCanvas');
+const ctx = canvas.getContext('2d');
+resizeCanvas();
+window.addEventListener('resize', resizeCanvas);
+
+function resizeCanvas() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+
+const goldenAngle = 137.5 * (Math.PI / 180);
+const phiCubed = Math.pow((1 + Math.sqrt(5)) / 2, 3);
+const primes = [2,3,5,7,11,13,17,19,23,29,31,37,41,43,47,53,59,61,67,71,73,79,83,89,97,101,103,107,109,113,127,131,137,139,149,151,157,163,167,173,179,181,191,193,197,199,211,223,227,229];
+const primePairs = [[2,3],[5,7],[11,13],[17,19],[29,31],[41,43]];
+const constants = { 'π': Math.PI, 'φ': (1 + Math.sqrt(5)) / 2, 'e': Math.E, 'ln2': Math.log(2), 'ln3': Math.log(3), 'ln5': Math.log(5), 'ln1836': Math.log(1836) };
+
+function ln(p) {
+  return Math.log(p);
+}
+
+let t = 0;
+function animate() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  const cx = canvas.width / 2;
+  const cy = canvas.height / 2;
+
+  const breathing = 1 + Math.sin(t/60) * 0.05;
+
+  ctx.beginPath();
+  ctx.arc(cx, cy, 10 + Math.sin(t/50) * 2, 0, 2 * Math.PI);
+  ctx.fillStyle = '#ffffffaa';
+  ctx.fill();
+
+  drawMetatronCube(cx, cy, 100 * breathing);
+  drawPrimeSpiral(cx, cy, breathing);
+  drawDNAHelix(cx, cy, t);
+  drawFlowerOfLife(cx, cy, 50 * breathing);
+
+  t += 1;
+  requestAnimationFrame(animate);
+}
+
+function drawMetatronCube(cx, cy, scale) {
+  const points = [];
+  const r = scale * Math.sin(Math.PI / 3);
+
+  points.push({x: cx, y: cy});
+
+  for (let angle = 0; angle < 360; angle += 60) {
+    const rad = angle * Math.PI / 180;
+    points.push({x: cx + r * Math.cos(rad), y: cy + r * Math.sin(rad)});
+  }
+
+  for (let angle = 30; angle < 360; angle += 60) {
+    const rad = angle * Math.PI / 180;
+    points.push({x: cx + r * 2 * Math.cos(rad), y: cy + r * 2 * Math.sin(rad)});
+  }
+
+  ctx.strokeStyle = 'rgba(200, 200, 255, 0.5)';
+  ctx.lineWidth = 1.5;
+
+  for (let i = 0; i < points.length; i++) {
+    for (let j = i + 1; j < points.length; j++) {
+      ctx.beginPath();
+      ctx.moveTo(points[i].x, points[i].y);
+      ctx.lineTo(points[j].x, points[j].y);
+      ctx.stroke();
+    }
+  }
+
+  points.forEach(p => {
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, 15, 0, 2 * Math.PI);
+    ctx.strokeStyle = 'rgba(100, 200, 255, 0.8)';
+    ctx.lineWidth = 1;
+    ctx.stroke();
+  });
+}
+
+function drawPrimeSpiral(cx, cy, breathing) {
+  let primeCoords = [];
+
+  primes.forEach((p, index) => {
+    const r = ln(p) * 50 * phiCubed * breathing;
+    const theta = p * goldenAngle;
+
+    const x = cx + r * Math.cos(theta);
+    const y = cy + r * Math.sin(theta);
+
+    primeCoords.push({x, y, p});
+
+    ctx.beginPath();
+    ctx.arc(x, y, 5, 0, 2 * Math.PI);
+    if (p <= 53) ctx.fillStyle = '#c0c0c0';
+    else if (p <= 149) ctx.fillStyle = '#ffd700';
+    else ctx.fillStyle = '#8a2be2';
+    ctx.fill();
+
+    ctx.fillStyle = 'white';
+    ctx.font = '12px Arial';
+    ctx.fillText(p, x + 6, y);
+  });
+
+  ctx.strokeStyle = 'rgba(255, 215, 0, 0.3)';
+  ctx.lineWidth = 1;
+  primeCoords.forEach((coord, index) => {
+    for (let j = index + 1; j < primeCoords.length; j++) {
+      ctx.beginPath();
+      ctx.moveTo(coord.x, coord.y);
+      ctx.lineTo(primeCoords[j].x, primeCoords[j].y);
+      ctx.stroke();
+    }
+  });
+
+  Object.entries(constants).forEach(([name, value]) => {
+    const r = value * 50 * phiCubed * breathing;
+    const theta = value * goldenAngle;
+    const x = cx + r * Math.cos(theta);
+    const y = cy + r * Math.sin(theta);
+
+    ctx.beginPath();
+    ctx.arc(x, y, 6, 0, 2 * Math.PI);
+    ctx.fillStyle = '#ff69b4';
+    ctx.fill();
+
+    ctx.fillStyle = 'pink';
+    ctx.font = 'bold 12px Arial';
+    ctx.fillText(name, x + 8, y);
+  });
+}
+
+function drawDNAHelix(cx, cy, t) {
+  ctx.strokeStyle = 'rgba(173, 216, 230, 0.7)';
+  ctx.lineWidth = 1.5;
+
+  const amplitude = 80;
+  const frequency = 0.05;
+
+  ctx.beginPath();
+  for (let y = cy - 300; y <= cy + 300; y += 5) {
+    const offset = Math.sin((y + t) * frequency) * amplitude;
+    ctx.lineTo(cx + offset, y);
+  }
+  ctx.stroke();
+
+  ctx.beginPath();
+  for (let y = cy - 300; y <= cy + 300; y += 5) {
+    const offset = Math.sin((y + t + 180) * frequency) * amplitude;
+    ctx.lineTo(cx - offset, y);
+  }
+  ctx.stroke();
+}
+
+function drawFlowerOfLife(cx, cy, radius) {
+  ctx.strokeStyle = 'rgba(255, 255, 255, 0.1)';
+  ctx.lineWidth = 1;
+
+  const points = [{x: cx, y: cy}];
+
+  const directions = [0, 60, 120, 180, 240, 300];
+
+  // First layer
+  directions.forEach(angle => {
+    const rad = angle * Math.PI / 180;
+    points.push({
+      x: cx + radius * Math.cos(rad),
+      y: cy + radius * Math.sin(rad)
+    });
+  });
+
+  points.forEach(p => {
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, radius, 0, 2 * Math.PI);
+    ctx.stroke();
+  });
+}
+
+animate();
+</script>
+</body>
+</html>
