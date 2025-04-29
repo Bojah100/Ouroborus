@@ -1,31 +1,5 @@
 <!DOCTYPE html>
-
 <html lang="en">
-  <style>
-
-    #returnButton {
-  position: fixed;
-  top: 30px;
-  left: 20px;
-  padding: 12px 28px;
-  background: radial-gradient(circle, rgba(0,183,235,0.8) 0%, rgba(255,105,180,0.8) 100%);
-  color: white;
-  border: 2px solid gold;
-  border-radius: 25px;
-  font-family: 'Orbitron', sans-serif;
-  font-size: 18px;
-  text-decoration: none;
-  box-shadow: 0 0 20px gold;
-  -webkit-text-stroke: 0.5px black;
-  z-index: 100;
-}
-
-html, body {
-  background: black;
-  margin: 0;
-  padding: 0;
-}
-</style>
 
 <head>
   <meta charset="UTF-8" />
@@ -34,21 +8,39 @@ html, body {
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Orbitron:wght@600&display=swap" rel="stylesheet">
 
   <style>
-    body {
+    html, body {
       margin: 0;
+      padding: 0;
       background: black;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      overflow: hidden;
       font-family: 'Orbitron', sans-serif;
+      overflow: hidden;
+      height: 100vh;
+    }
+
+    #returnButton {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      padding: 12px 28px;
+      background: radial-gradient(circle, rgba(0,183,235,0.8) 0%, rgba(255,105,180,0.8) 100%);
+      color: white;
+      border: 2px solid gold;
+      border-radius: 25px;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 18px;
+      text-decoration: none;
+      box-shadow: 0 0 20px gold;
+      -webkit-text-stroke: 0.5px black;
+      z-index: 200;
     }
 
     .circle-container {
-      position: relative;
+      position: absolute;
+      top: 50%;
+      left: 50%;
       width: 800px;
       height: 800px;
+      transform: translate(-50%, -50%);
     }
 
     .glyph-button {
@@ -69,76 +61,69 @@ html, body {
       box-shadow: 0 0 30px gold;
     }
 
-    /* Individual Animations */
+    /* Glyph Animations */
     #glyph1 {
       top: 0;
       left: 50%;
       transform: translateX(-50%);
       animation: rotate 12s linear infinite;
-      background-image: url('ouroborusbutton.png'); /* << your real graphic */
+      background-image: url('ouroborosbutton.png'); /* Make sure this image exists */
     }
     #glyph2 {
       top: 50%;
       right: 0;
       transform: translateY(-50%);
       animation: breathe 6s ease-in-out infinite;
-      background-image: url('vesicabutton.png'); /* << your real graphic */
+      background-image: url('vesicabutton.png');
     }
     #glyph3 {
       bottom: 0;
       left: 50%;
       transform: translateX(-50%);
       animation: pulse 5s ease-in-out infinite;
-      background-image: url('voidbutton.png'); /* << your real graphic */
+      background-image: url('voidbutton.png');
     }
     #glyph4 {
       top: 50%;
       left: 0;
       transform: translateY(-50%);
       animation: slither 8s ease-in-out infinite;
-      background-image: url('snakesbutton.png'); /* << your real graphic */
+      background-image: url('snakesbutton.png');
     }
 
-    /* Animations */
     @keyframes rotate {
       0% { transform: translateX(-50%) rotate(0deg); }
       100% { transform: translateX(-50%) rotate(360deg); }
     }
-
     @keyframes breathe {
       0%, 100% { transform: translateY(-50%) scale(1); }
       50% { transform: translateY(-50%) scale(1.2); }
     }
-
     @keyframes pulse {
       0%, 100% { transform: translateX(-50%) scale(1); }
       50% { transform: translateX(-50%) scale(1.1); }
     }
-
     @keyframes slither {
       0%, 100% { transform: translateY(-50%) translateX(0); }
       25% { transform: translateY(-50%) translateX(-10px); }
       50% { transform: translateY(-50%) translateX(10px); }
       75% { transform: translateY(-50%) translateX(-10px); }
     }
-
-    body.cydonia-feedback {
-      animation: warpGlow 2s ease-in-out infinite alternate;
-    }
-    @keyframes warpGlow {
-      0% { box-shadow: 0 0 10px #00b7eb inset; }
-      100% { box-shadow: 0 0 60px #ff4500 inset; }
-    }
-
   </style>
+
 </head>
 
 <body>
+
+  <!-- Return Button -->
+  <a id="returnButton" href="index.html">✨ Return to Sgr A* ✨</a>
+
+  <!-- Symbol Buttons -->
   <div class="circle-container">
-    <a href="https://ophiuchus2025.gumroad.com//" class="glyph-button" id="glyph1" onclick="unlockTetraCipher()"></a>
-    <a href="https://ophiuchus2025.gumroad.com//" class="glyph-button" id="glyph2" onclick="unlockTetraCipher()"></a>
-    <a href="https://ophiuchus2025.gumroad.com//" class="glyph-button" id="glyph3" onclick="unlockTetraCipher()"></a>
-    <a href="https://ophiuchus2025.gumroad.com//" class="glyph-button" id="glyph4" onclick="unlockTetraCipher()"></a>
+    <a href="https://ophiuchus2025.gumroad.com/" class="glyph-button" id="glyph1" onclick="unlockTetraCipher()"></a>
+    <a href="https://ophiuchus2025.gumroad.com/" class="glyph-button" id="glyph2" onclick="unlockTetraCipher()"></a>
+    <a href="https://ophiuchus2025.gumroad.com/" class="glyph-button" id="glyph3" onclick="unlockTetraCipher()"></a>
+    <a href="https://ophiuchus2025.gumroad.com/" class="glyph-button" id="glyph4" onclick="unlockTetraCipher()"></a>
   </div>
 
   <script>
@@ -173,10 +158,9 @@ html, body {
       }, 12000);
 
       document.body.style.filter = 'hue-rotate(194.7deg)';
-      document.body.classList.add('cydonia-feedback');
-
       console.log("🔊 Tetrahedral resonance initialized.");
     }
   </script>
+
 </body>
 </html>
