@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Prime Renaissance Portal</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Orbitron:wght@600&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      margin: 0;
+      background: black;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      overflow: hidden;
+      font-family: 'Orbitron', sans-serif;
+    }
+
+    .circle-container {
+      position: relative;
+      width: 400px;
+      height: 400px;
+    }
+
+    .glyph-button {
+      position: absolute;
+      width: 120px;
+      height: 120px;
+      background-size: cover;
+      background-position: center;
+      border-radius: 50%;
+      cursor: pointer;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      box-shadow: 0 0 10px gold;
+      background-repeat: no-repeat;
+    }
+
+    .glyph-button:hover {
+      transform: scale(1.2);
+      box-shadow: 0 0 30px gold;
+    }
+
+    /* Individual Animations */
+    #glyph1 {
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      animation: rotate 12s linear infinite;
+      background-image: url('ouroborosbutton.png'); /* << your real graphic */
+    }
+    #glyph2 {
+      top: 50%;
+      right: 0;
+      transform: translateY(-50%);
+      animation: breathe 6s ease-in-out infinite;
+      background-image: url('vesicabutton.png'); /* << your real graphic */
+    }
+    #glyph3 {
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      animation: pulse 5s ease-in-out infinite;
+      background-image: url('voidbutton.png'); /* << your real graphic */
+    }
+    #glyph4 {
+      top: 50%;
+      left: 0;
+      transform: translateY(-50%);
+      animation: slither 8s ease-in-out infinite;
+      background-image: url('snakesbutton.png'); /* << your real graphic */
+    }
+
+    /* Animations */
+    @keyframes rotate {
+      0% { transform: translateX(-50%) rotate(0deg); }
+      100% { transform: translateX(-50%) rotate(360deg); }
+    }
+
+    @keyframes breathe {
+      0%, 100% { transform: translateY(-50%) scale(1); }
+      50% { transform: translateY(-50%) scale(1.2); }
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: translateX(-50%) scale(1); }
+      50% { transform: translateX(-50%) scale(1.1); }
+    }
+
+    @keyframes slither {
+      0%, 100% { transform: translateY(-50%) translateX(0); }
+      25% { transform: translateY(-50%) translateX(-10px); }
+      50% { transform: translateY(-50%) translateX(10px); }
+      75% { transform: translateY(-50%) translateX(-10px); }
+    }
+
+    body.cydonia-feedback {
+      animation: warpGlow 2s ease-in-out infinite alternate;
+    }
+    @keyframes warpGlow {
+      0% { box-shadow: 0 0 10px #00b7eb inset; }
+      100% { box-shadow: 0 0 60px #ff4500 inset; }
+    }
+
+  </style>
+</head>
+
+<body>
+  <div class="circle-container">
+    <a href="ouroboros.html" class="glyph-button" id="glyph1" onclick="unlockTetraCipher()"></a>
+    <a href="vesica.html" class="glyph-button" id="glyph2" onclick="unlockTetraCipher()"></a>
+    <a href="void.html" class="glyph-button" id="glyph3" onclick="unlockTetraCipher()"></a>
+    <a href="snakes.html" class="glyph-button" id="glyph4" onclick="unlockTetraCipher()"></a>
+  </div>
+
+  <script>
+    function unlockTetraCipher() {
+      if (!window.audioContext) {
+        window.audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        window.gainNode = audioContext.createGain();
+        gainNode.gain.value = 0.05;
+        gainNode.connect(audioContext.destination);
+      }
+
+      const baseFreqs = [19.47, 4.33, 432];
+      const modulator = audioContext.createOscillator();
+      const carrier = audioContext.createOscillator();
+      const modGain = audioContext.createGain();
+
+      modulator.frequency.setValueAtTime(baseFreqs[1], audioContext.currentTime);
+      modGain.gain.setValueAtTime(100, audioContext.currentTime);
+      modulator.connect(modGain);
+      modGain.connect(carrier.detune);
+
+      carrier.frequency.setValueAtTime(baseFreqs[0], audioContext.currentTime);
+      carrier.type = 'sine';
+      carrier.connect(gainNode);
+
+      modulator.start();
+      carrier.start();
+
+      setTimeout(() => {
+        modulator.stop();
+        carrier.stop();
+      }, 12000);
+
+      document.body.style.filter = 'hue-rotate(194.7deg)';
+      document.body.classList.add('cydonia-feedback');
+
+      console.log("🔊 Tetrahedral resonance initialized.");
+    }
+  </script>
+</body>
+</html>
