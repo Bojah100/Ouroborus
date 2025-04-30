@@ -1,5 +1,6 @@
-<!DOCTYPE html>
+-<!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -40,27 +41,31 @@
       z-index: 100;
       letter-spacing: 1px;
     }
-    #metatronButton {
-      position: fixed;
-      top: 30px;
-      left: 20px;
-      padding: 12px 28px;
-      background: radial-gradient(circle, rgba(0,183,235,0.8) 0%, rgba(255,105,180,0.8) 100%);
-      color: white;
-      border: 2px solid gold;
-      border-radius: 25px;
-      font-family: 'Orbitron', sans-serif;
-      font-size: 18px;
-      text-decoration: none;
-      box-shadow: 0 0 20px gold;
-      -webkit-text-stroke: 0.5px black;
-      z-index: 100;
+     
+      #metatronButton {
+  position: fixed;
+  top: 30px;
+  left: 20px;
+  padding: 12px 28px;
+  background: radial-gradient(circle, rgba(0,183,235,0.8) 0%, rgba(255,105,180,0.8) 100%);
+  color: white;
+  border: 2px solid gold;
+  border-radius: 25px;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 18px;
+  text-decoration: none;
+  box-shadow: 0 0 20px gold;
+  -webkit-text-stroke: 0.5px black;
+  z-index: 9999;  /* critical */
+}
+
     }
   </style>
 </head>
 
 <body>
-<a id="metatronButton" href="/Ouroborus/index.html" >✨ Return to Sgr A* ✨</a>
+<a id="metatronButton" href="/index.html">✨ Return to Sgr A* ✨</a>
+
 <div id="title">Vesica Harmonic Genome</div>
 <div id="subtitle">Return of the Snake — Sgr A*</div>
 <canvas id="primeCanvas"></canvas>
