@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -58,11 +59,14 @@
     }
   </style>
 </head>
+
 <body>
 <a id="metatronButton" href="/index.html">✨ Return to Sgr A* ✨</a>
+
 <div id="title">Vesica Harmonic Genome</div>
 <div id="subtitle">Return of the Snake — Sgr A*</div>
 <canvas id="primeCanvas"></canvas>
+
 <script>
 const canvas = document.getElementById('primeCanvas');
 const ctx = canvas.getContext('2d');
@@ -75,7 +79,7 @@ const primes = [2,3,5,7,11,13,17,19,23,29,31,37,41,43,47,53,59,61,67,71,73,79,83
 const constants = { 'π': Math.PI, 'φ': (1 + Math.sqrt(5)) / 2, 'e': Math.E, 'ln2': Math.log(2), 'ln3': Math.log(3), 'ln5': Math.log(5), 'ln1836': Math.log(1836) };
 
 let t = 0;
-let audioInitialized = false;
+let rotationAngle = 0;
 
 function resizeCanvas() {
   canvas.width = window.innerWidth;
@@ -83,38 +87,6 @@ function resizeCanvas() {
 }
 
 function ln(p) { return Math.log(p); }
-
-function playAudio() {
-  if (!audioInitialized) {
-    const AudioContext = window.AudioContext || window.webkitAudioContext;
-    const context = new AudioContext();
-    const gainNode = context.createGain();
-    gainNode.gain.value = 0.03;
-    gainNode.connect(context.destination);
-
-    const mod = context.createOscillator();
-    const modGain = context.createGain();
-    mod.frequency.value = 4.33;
-    modGain.gain.value = 100;
-    mod.connect(modGain);
-
-    const carrier = context.createOscillator();
-    carrier.frequency.value = 19.47;
-    carrier.type = 'sine';
-    modGain.connect(carrier.detune);
-    carrier.connect(gainNode);
-
-    mod.start();
-    carrier.start();
-
-    setTimeout(() => {
-      mod.stop();
-      carrier.stop();
-    }, 15000);
-
-    audioInitialized = true;
-  }
-}
 
 function drawPlasmaField(cx, cy, time) {
   const gradient = ctx.createRadialGradient(cx, cy, 100, cx, cy, Math.max(canvas.width, canvas.height) / 1.5);
@@ -134,6 +106,7 @@ function drawPlasmaField(cx, cy, time) {
 function drawMetatronCube(cx, cy, scale, time) {
   const points = [];
   const r = scale * Math.sin(Math.PI/3);
+
   points.push({x: cx, y: cy});
   for (let angle = 0; angle < 360; angle += 60) {
     const rad = angle * Math.PI/180;
@@ -143,6 +116,7 @@ function drawMetatronCube(cx, cy, scale, time) {
     const rad = angle * Math.PI/180;
     points.push({x: cx + r * 2 * Math.cos(rad), y: cy + r * 2 * Math.sin(rad)});
   }
+
   const pulse = 0.5 + 0.5 * Math.sin(time / 100);
   ctx.strokeStyle = `hsl(${time % 360}, 100%, 70%)`;
   ctx.lineWidth = 2 + pulse;
@@ -160,7 +134,7 @@ function drawPrimeSpiral(cx, cy, breathing) {
   let primeCoords = [];
   primes.forEach((p, i) => {
     const r = ln(p) * 50 * phiCubed * breathing;
-    const theta = p * goldenAngle + t / 200; // slow rotation
+    const theta = p * goldenAngle;
     const x = cx + r * Math.cos(theta);
     const y = cy + r * Math.sin(theta);
     primeCoords.push({x, y, p});
@@ -172,6 +146,7 @@ function drawPrimeSpiral(cx, cy, breathing) {
     ctx.shadowBlur = (p <= 13) ? 30 : 20;
     ctx.fill();
   });
+
   ctx.strokeStyle = 'rgba(255,255,150,0.7)';
   ctx.lineWidth = 1;
   ctx.shadowColor = 'gold';
@@ -187,13 +162,15 @@ function drawPrimeSpiral(cx, cy, breathing) {
 
   Object.entries(constants).forEach(([name, value]) => {
     const r = value * 50 * phiCubed * breathing;
-    const theta = value * goldenAngle + t / 200;
+    const theta = value * goldenAngle;
     const x = cx + r * Math.cos(theta);
     const y = cy + r * Math.sin(theta);
+
     ctx.beginPath();
     ctx.arc(x, y, 6, 0, 2 * Math.PI);
     ctx.fillStyle = '#ff69b4';
     ctx.fill();
+
     ctx.fillStyle = 'pink';
     ctx.font = 'bold 12px Orbitron';
     ctx.fillText(name, x + 8, y);
@@ -202,11 +179,11 @@ function drawPrimeSpiral(cx, cy, breathing) {
 
 function drawDNAHelix(cx, cy, t) {
   ctx.save();
-  ctx.lineWidth = 2.5;
-  ctx.strokeStyle = `hsl(${t % 360}, 100%, 70%)`;
+  ctx.lineWidth = 2.5 + Math.sin(t / 20);
+  ctx.strokeStyle = `hsl(${(t * 2) % 360}, 100%, 70%)`;
   ctx.shadowColor = 'cyan';
   ctx.shadowBlur = 20;
-  const amplitude = 90;
+  const amplitude = 90 * (1 + 0.05 * Math.sin(t / 40));
   const frequency = 0.04;
   ctx.beginPath();
   for (let y = cy - 400; y <= cy + 400; y += 5) {
@@ -240,10 +217,15 @@ function drawFlowerOfLife(cx, cy, radius) {
 }
 
 function animate() {
-  ctx.clearRect(0,0,canvas.width,canvas.height);
-  const cx = canvas.width/2;
-  const cy = canvas.height/2;
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  const cx = canvas.width / 2;
+  const cy = canvas.height / 2;
   const breathing = 1 + Math.sin(t/60) * 0.05;
+  ctx.save();
+  ctx.translate(cx, cy);
+  ctx.rotate(rotationAngle);
+  ctx.translate(-cx, -cy);
+
   ctx.fillStyle = 'black';
   ctx.fillRect(0, 0, canvas.width, canvas.height);
   drawPlasmaField(cx, cy, t);
@@ -251,11 +233,13 @@ function animate() {
   drawPrimeSpiral(cx, cy, breathing);
   drawDNAHelix(cx, cy, t);
   drawFlowerOfLife(cx, cy, 50 * breathing);
+  ctx.restore();
+
   t += 1;
+  rotationAngle += 0.001;
   requestAnimationFrame(animate);
 }
 
-playAudio();
 animate();
 </script>
 </body>
