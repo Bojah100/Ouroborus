@@ -1,0 +1,55 @@
+import matplotlib.pyplot as plt
+import numpy as np
+import matplotlib.animation as animation
+
+# Create figure
+fig, ax = plt.subplots(figsize=(6, 6))
+ax.set_xlim(-2, 2)
+ax.set_ylim(-1, 4)
+ax.axis('off')
+
+# Define the two helix lines
+line1, = ax.plot([], [], 'purple')
+line2, = ax.plot([], [], 'purple')
+
+# DNA spiral data
+t = np.linspace(0, 4 * np.pi, 500)
+x1 = np.cos(t)
+y1 = t / (2 * np.pi)
+x2 = -np.cos(t)
+y2 = t / (2 * np.pi)
+
+# Bridges between helices
+bridges = []
+
+# Initialization
+def init():
+    line1.set_data([], [])
+    line2.set_data([], [])
+    return [line1, line2]
+
+# Update function for animation
+def update(frame):
+    step = frame * 5
+    line1.set_data(x1[:step], y1[:step])
+    line2.set_data(x2[:step], y2[:step])
+
+    # Remove old bridges
+    while bridges:
+        bridge = bridges.pop()
+        bridge.remove()
+
+    # Add bridges between spirals
+    for i in range(0, step, 50):
+        bridge, = ax.plot([x1[i], x2[i]], [y1[i], y2[i]], 'gray', linewidth=0.5)
+        bridges.append(bridge)
+
+    return [line1, line2] + bridges
+
+# Create animation
+ani = animation.FuncAnimation(fig, update, frames=100, init_func=init, blit=True)
+
+# Save as animated GIF
+ani.save("DNA_Harmonic_Genome_Animation.gif", writer='pillow', fps=15)
+
+print("Animation saved as 'DNA_Harmonic_Genome_Animation.gif'")
