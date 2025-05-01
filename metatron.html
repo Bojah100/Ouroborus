@@ -187,21 +187,22 @@
     function playHarmonicAudio() {
       const AudioContext = window.AudioContext || window.webkitAudioContext;
       const audioCtx = new AudioContext();
+
       const carrier = audioCtx.createOscillator();
       const modulator = audioCtx.createOscillator();
       const modGain = audioCtx.createGain();
       const outputGain = audioCtx.createGain();
 
       carrier.type = 'sine';
-      carrier.frequency.value = 19.47;
-      modulator.frequency.value = 4.33;
-      modGain.gain.value = 100;
+      carrier.frequency.setValueAtTime(19.47, audioCtx.currentTime);
+      modulator.frequency.setValueAtTime(4.33, audioCtx.currentTime);
+      modGain.gain.setValueAtTime(100, audioCtx.currentTime);
 
       modulator.connect(modGain);
       modGain.connect(carrier.detune);
       carrier.connect(outputGain);
       outputGain.connect(audioCtx.destination);
-      outputGain.gain.value = 0.03;
+      outputGain.gain.setValueAtTime(0.03, audioCtx.currentTime);
 
       carrier.start();
       modulator.start();
@@ -234,7 +235,10 @@
       requestAnimationFrame(animate);
     }
 
-    playHarmonicAudio();
+    window.addEventListener('click', () => {
+      playHarmonicAudio();
+    }, { once: true });
+
     animate();
   </script>
 </body>
