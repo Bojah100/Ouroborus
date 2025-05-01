@@ -56,13 +56,39 @@
       box-shadow: 0 0 20px gold;
       -webkit-text-stroke: 0.5px black;
       z-index: 9999;
-    }
+      
+    #returnButton, #cubeButton {
+  position: fixed;
+  padding: 12px 28px;
+  background: radial-gradient(circle, rgba(0,183,235,0.8) 0%, rgba(255,105,180,0.8) 100%);
+  color: white;
+  border: 2px solid gold;
+  border-radius: 25px;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 18px;
+  text-decoration: none;
+  box-shadow: 0 0 20px gold;
+  -webkit-text-stroke: 0.5px black;
+  z-index: 9999;
+}
+
+#returnButton {
+  top: 30px;
+  left: 20px;
+}
+
+#cubeButton {
+  top: 80px;
+  left: 20px;
+}
+}
   </style>
 </head>
 
 <body>
-<div><a id="metatronButton" href="/index.html">✨ Return to Sgr A* ✨</a></div>
-<div><a id="metatronButton" href="/cubecloseup.html">✨ Metatron Close-up* ✨</a></div>
+<a id="returnButton" href="/index.html">✨ Return to Sgr A* ✨</a>
+<a id="cubeButton" href="/cubecloseup.html">✨ Metatron Close-up ✨</a>
+
 <div id="title">Vesica Harmonic Genome</div>
 <div id="subtitle">Return of the Snake — Sgr A*</div>
 <canvas id="primeCanvas"></canvas>
