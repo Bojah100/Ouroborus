@@ -136,6 +136,54 @@
       ctx.restore();
     }
 
+    function drawMetatronCube(cx, cy, scale, time) {
+      const points = [];
+      const r = scale * Math.sin(Math.PI/3);
+      points.push({x: cx, y: cy});
+      for (let angle = 0; angle < 360; angle += 60) {
+        const rad = angle * Math.PI/180;
+        points.push({x: cx + r * Math.cos(rad), y: cy + r * Math.sin(rad)});
+      }
+      for (let angle = 30; angle < 360; angle += 60) {
+        const rad = angle * Math.PI/180;
+        points.push({x: cx + r * 2 * Math.cos(rad), y: cy + r * 2 * Math.sin(rad)});
+      }
+      ctx.strokeStyle = `rgba(100,200,255,0.6)`;
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      for (let i = 0; i < points.length; i++) {
+        for (let j = i + 1; j < points.length; j++) {
+          ctx.moveTo(points[i].x, points[i].y);
+          ctx.lineTo(points[j].x, points[j].y);
+        }
+      }
+      ctx.stroke();
+    }
+
+    function drawPrimeSpiral(cx, cy, breathing) {
+      let primeCoords = [];
+      primes.forEach((p, i) => {
+        const r = Math.log(p) * 50 * phiCubed * breathing;
+        const theta = p * goldenAngle;
+        const x = cx + r * Math.cos(theta);
+        const y = cy + r * Math.sin(theta);
+        primeCoords.push({x, y});
+        ctx.beginPath();
+        ctx.arc(x, y, 4, 0, 2 * Math.PI);
+        ctx.fillStyle = 'gold';
+        ctx.fill();
+      });
+      ctx.strokeStyle = 'rgba(255,255,150,0.4)';
+      ctx.beginPath();
+      for (let i = 0; i < primeCoords.length; i++) {
+        for (let j = i + 1; j < primeCoords.length; j++) {
+          ctx.moveTo(primeCoords[i].x, primeCoords[i].y);
+          ctx.lineTo(primeCoords[j].x, primeCoords[j].y);
+        }
+      }
+      ctx.stroke();
+    }
+
     function playHarmonicAudio() {
       const AudioContext = window.AudioContext || window.webkitAudioContext;
       const audioCtx = new AudioContext();
@@ -176,6 +224,8 @@
       ctx.translate(-cx, -cy);
 
       drawPlasmaField(cx, cy, t);
+      drawMetatronCube(cx, cy, 100 * breathing, t);
+      drawPrimeSpiral(cx, cy, breathing);
       drawDNAHelix(cx, cy, t);
 
       ctx.restore();
