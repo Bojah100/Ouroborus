@@ -5,10 +5,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Vesica Prime Breath: ln(1) to ln(1836)</title>
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Orbitron:wght@600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Orbitron:wght@600&display=swap" rel="stylesheet"> 
   <style>
-    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-
     body {
       margin: 0;
       overflow: hidden;
@@ -43,12 +41,11 @@
       z-index: 100;
       letter-spacing: 1px;
     }
-    #metatronButton {
+    .button-link {
       position: fixed;
-      top: 30px;
       left: 20px;
       padding: 12px 28px;
-      background: radial-gradient(circle, rgba(0,183,235,0.8) 0%, rgba(255,105,180,0.8) 100%);
+      background: radial-gradient(circle, rgba(0,183,235,0.85), rgba(255,105,180,0.85));
       color: white;
       border: 2px solid gold;
       border-radius: 25px;
@@ -58,254 +55,137 @@
       box-shadow: 0 0 20px gold;
       -webkit-text-stroke: 0.5px black;
       z-index: 9999;
-      
-  .button-link {
-  position: fixed;
-  left: 5vw;
-  padding: 10px 20px;
-  width: max-content;
-  max-width: 90vw;
-  background: radial-gradient(circle, rgba(0,183,235,0.85), rgba(255,105,180,0.85));
-  color: white;
-  border: 2px solid gold;
-  border-radius: 25px;
-  font-family: 'Orbitron', sans-serif;
-  font-size: 16px;
-  text-align: center;
-  text-decoration: none;
-  box-shadow: 0 0 20px gold;
-  -webkit-text-stroke: 0.5px black;
-  z-index: 9999;
-  transform: translateY(0);
-  transition: transform 0.2s ease;
-}
-
-.button-link:hover {
-  transform: translateY(-2px);
-}
-
-#returnButton {
-  top: 20px;
-}
-
-#cubeButton {
-  top: 70px;
-}
-
-}
+      transition: transform 0.2s ease;
+    }
+    .button-link:hover {
+      transform: translateY(-2px);
+    }
+    #returnButton {
+      top: 30px;
+    }
+    #cubeButton {
+      top: 80px;
+    }
   </style>
 </head>
 
 <body>
   <a id="returnButton" class="button-link" href="/index.html">✨ Return to Sgr A* ✨</a>
-<a id="cubeButton" class="button-link" href="/cubecloseup.html">✨ Metatron Close-up ✨</a>
+  <a id="cubeButton" class="button-link" href="/cubecloseup.html">✨ Metatron Close-up ✨</a>
 
+  <div id="title">Vesica Harmonic Genome</div>
+  <div id="subtitle">Return of the Snake — Sgr A*</div>
+  <canvas id="primeCanvas"></canvas>
 
-<div id="title">Vesica Harmonic Genome</div>
-<div id="subtitle">Return of the Snake — Sgr A*</div>
-<canvas id="primeCanvas"></canvas>
-<script>
-const canvas = document.getElementById('primeCanvas');
-const ctx = canvas.getContext('2d');
-resizeCanvas();
-window.addEventListener('resize', resizeCanvas);
-console.log("🔊 Audio started: 19.47 Hz modulated by 4.33 Hz");
-carrier.frequency.value = 440; // A4 test tone
+  <script>
+    const canvas = document.getElementById('primeCanvas');
+    const ctx = canvas.getContext('2d');
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas);
 
-const goldenAngle = 137.5 * (Math.PI / 180);
-const phiCubed = Math.pow((1 + Math.sqrt(5)) / 2, 3);
-const primes = [2,3,5,7,11,13,17,19,23,29,31,37,41,43,47,53,59,61,67,71,73,79,83,89,97,101,103,107,109,113,127,131,137,139,149,151,157,163,167,173,179,181,191,193,197,199,211,223,227,229];
-const constants = { 'π': Math.PI, 'φ': (1 + Math.sqrt(5)) / 2, 'e': Math.E, 'ln2': Math.log(2), 'ln3': Math.log(3), 'ln5': Math.log(5), 'ln1836': Math.log(1836) };
+    const goldenAngle = 137.5 * (Math.PI / 180);
+    const phiCubed = Math.pow((1 + Math.sqrt(5)) / 2, 3);
+    const primes = [2,3,5,7,11,13,17,19,23,29,31,37,41,43,47,53,59,61,67,71,73,79,83,89,97,101,103,107,109,113,127,131,137,139,149,151,157,163,167,173,179,181,191,193,197,199,211,223,227,229];
 
-let t = 0;
-let rotation = 0;
+    let t = 0;
+    let rotation = 0;
 
-function resizeCanvas() {
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
-}
-
-function ln(p) { return Math.log(p); }
-
-function drawPlasmaField(cx, cy, time) {
-  const gradient = ctx.createRadialGradient(cx, cy, 100, cx, cy, Math.max(canvas.width, canvas.height) / 1.5);
-  gradient.addColorStop(0, `rgba(0, 183, 235, ${0.05 + 0.03 * Math.sin(time/200)})`);
-  gradient.addColorStop(0.4, `rgba(255, 105, 180, ${0.03 + 0.02 * Math.cos(time/300)})`);
-  gradient.addColorStop(0.7, `rgba(255, 255, 255, 0.02)`);
-  gradient.addColorStop(1, 'rgba(0,0,0,0)');
-  ctx.save();
-  ctx.globalCompositeOperation = 'lighter';
-  ctx.fillStyle = gradient;
-  ctx.beginPath();
-  ctx.arc(cx, cy, Math.max(canvas.width, canvas.height)/1.5, 0, Math.PI * 2);
-  ctx.fill();
-  ctx.restore();
-}
-
-function drawMetatronCube(cx, cy, scale, time) {
-  const points = [];
-  const r = scale * Math.sin(Math.PI/3);
-
-  points.push({x: cx, y: cy});
-  for (let angle = 0; angle < 360; angle += 60) {
-    const rad = angle * Math.PI/180;
-    points.push({x: cx + r * Math.cos(rad), y: cy + r * Math.sin(rad)});
-  }
-  for (let angle = 30; angle < 360; angle += 60) {
-    const rad = angle * Math.PI/180;
-    points.push({x: cx + r * 2 * Math.cos(rad), y: cy + r * 2 * Math.sin(rad)});
-  }
-
-  const pulse = 0.5 + 0.5 * Math.sin(time / 100);
-  ctx.strokeStyle = `rgba(100,200,255,${0.3 + 0.3 * pulse})`;
-  ctx.lineWidth = 2 + pulse;
-  ctx.beginPath();
-  for (let i = 0; i < points.length; i++) {
-    for (let j = i+1; j < points.length; j++) {
-      ctx.moveTo(points[i].x, points[i].y);
-      ctx.lineTo(points[j].x, points[j].y);
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
     }
-  }
-  ctx.stroke();
-}
 
-function drawPrimeSpiral(cx, cy, breathing) {
-  let primeCoords = [];
-  primes.forEach((p, i) => {
-    const r = ln(p) * 50 * phiCubed * breathing;
-    const theta = p * goldenAngle;
-    const x = cx + r * Math.cos(theta);
-    const y = cy + r * Math.sin(theta);
-    primeCoords.push({x, y, p});
-    const baseSize = 4 + Math.sin((t + i * 10) * 0.01) * 1.5;
-    ctx.beginPath();
-    ctx.arc(x, y, baseSize, 0, Math.PI * 2);
-    ctx.fillStyle = 'black';
-    ctx.shadowColor = (p <= 13) ? "gold" : "cyan";
-    ctx.shadowBlur = (p <= 13) ? 30 : 20;
-    ctx.fill();
-  });
-  ctx.strokeStyle = 'rgba(255,255,150,0.7)';
-  ctx.lineWidth = 1;
-  ctx.shadowColor = 'gold';
-  ctx.shadowBlur = 10;
-  ctx.beginPath();
-  for (let i = 0; i < primeCoords.length; i++) {
-    for (let j = i + 1; j < primeCoords.length; j++) {
-      ctx.moveTo(primeCoords[i].x, primeCoords[i].y);
-      ctx.lineTo(primeCoords[j].x, primeCoords[j].y);
+    function drawPlasmaField(cx, cy, time) {
+      const gradient = ctx.createRadialGradient(cx, cy, 100, cx, cy, Math.max(canvas.width, canvas.height) / 1.5);
+      gradient.addColorStop(0, `rgba(0, 183, 235, ${0.05 + 0.03 * Math.sin(time/200)})`);
+      gradient.addColorStop(0.4, `rgba(255, 105, 180, ${0.03 + 0.02 * Math.cos(time/300)})`);
+      gradient.addColorStop(0.7, `rgba(255, 255, 255, 0.02)`);
+      gradient.addColorStop(1, 'rgba(0,0,0,0)');
+      ctx.save();
+      ctx.globalCompositeOperation = 'lighter';
+      ctx.fillStyle = gradient;
+      ctx.beginPath();
+      ctx.arc(cx, cy, Math.max(canvas.width, canvas.height)/1.5, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
     }
-  }
-  ctx.stroke();
-  Object.entries(constants).forEach(([name, value]) => {
-    const r = value * 50 * phiCubed * breathing;
-    const theta = value * goldenAngle;
-    const x = cx + r * Math.cos(theta);
-    const y = cy + r * Math.sin(theta);
-    ctx.beginPath();
-    ctx.arc(x, y, 6, 0, 2 * Math.PI);
-    ctx.fillStyle = '#ff69b4';
-    ctx.fill();
-    ctx.fillStyle = 'pink';
-    ctx.font = 'bold 12px Orbitron';
-    ctx.fillText(name, x + 8, y);
-  });
-}
 
-function drawDNAHelix(cx, cy, t) {
-  ctx.save();
-  ctx.translate(cx, cy);
-  ctx.rotate(rotation);
-  ctx.translate(-cx, -cy);
-  ctx.lineWidth = 2.5;
-  ctx.strokeStyle = 'rgba(0, 255, 255, 0.8)';
-  ctx.shadowColor = 'cyan';
-  ctx.shadowBlur = 20;
-  const amplitude = 90 + 20 * Math.sin(t/50);
-  const frequency = 0.04;
-  ctx.beginPath();
-  for (let y = cy - 400; y <= cy + 400; y += 5) {
-    const offset = Math.sin((y + t) * frequency) * amplitude;
-    ctx.lineTo(cx + offset, y);
-  }
-  ctx.stroke();
-  ctx.beginPath();
-  for (let y = cy - 400; y <= cy + 400; y += 5) {
-    const offset = Math.sin((y + t + 180) * frequency) * amplitude;
-    ctx.lineTo(cx - offset, y);
-  }
-  ctx.stroke();
-  ctx.restore();
-}
+    function drawDNAHelix(cx, cy, t) {
+      ctx.save();
+      ctx.translate(cx, cy);
+      ctx.rotate(rotation);
+      ctx.translate(-cx, -cy);
+      ctx.lineWidth = 2.5;
+      ctx.strokeStyle = 'rgba(0, 255, 255, 0.8)';
+      ctx.shadowColor = 'cyan';
+      ctx.shadowBlur = 20;
+      const amplitude = 90 + 20 * Math.sin(t/50);
+      const frequency = 0.04;
+      ctx.beginPath();
+      for (let y = cy - 400; y <= cy + 400; y += 5) {
+        const offset = Math.sin((y + t) * frequency) * amplitude;
+        ctx.lineTo(cx + offset, y);
+      }
+      ctx.stroke();
+      ctx.beginPath();
+      for (let y = cy - 400; y <= cy + 400; y += 5) {
+        const offset = Math.sin((y + t + 180) * frequency) * amplitude;
+        ctx.lineTo(cx - offset, y);
+      }
+      ctx.stroke();
+      ctx.restore();
+    }
 
-function drawFlowerOfLife(cx, cy, radius) {
-  ctx.strokeStyle = 'rgba(255,255,255,0.1)';
-  ctx.lineWidth = 1;
-  const points = [{x: cx, y: cy}];
-  const directions = [0,60,120,180,240,300];
-  directions.forEach(angle => {
-    const rad = angle * Math.PI/180;
-    points.push({x: cx + radius * Math.cos(rad), y: cy + radius * Math.sin(rad)});
-  });
-  points.forEach(p => {
-    ctx.beginPath();
-    ctx.arc(p.x, p.y, radius, 0, 2 * Math.PI);
-    ctx.stroke();
-  });
-}
+    function playHarmonicAudio() {
+      const AudioContext = window.AudioContext || window.webkitAudioContext;
+      const audioCtx = new AudioContext();
+      const carrier = audioCtx.createOscillator();
+      const modulator = audioCtx.createOscillator();
+      const modGain = audioCtx.createGain();
+      const outputGain = audioCtx.createGain();
 
-function playHarmonicAudio() {
-  const AudioContext = window.AudioContext || window.webkitAudioContext;
-  const audioCtx = new AudioContext();
-  const carrier = audioCtx.createOscillator();
-  const modulator = audioCtx.createOscillator();
-  const modGain = audioCtx.createGain();
-  const outputGain = audioCtx.createGain();
+      carrier.type = 'sine';
+      carrier.frequency.value = 19.47;
+      modulator.frequency.value = 4.33;
+      modGain.gain.value = 100;
 
-  carrier.type = 'sine';
-  carrier.frequency.value = 19.47;
-  modulator.frequency.value = 4.33;
-  modGain.gain.value = 100;
+      modulator.connect(modGain);
+      modGain.connect(carrier.detune);
+      carrier.connect(outputGain);
+      outputGain.connect(audioCtx.destination);
+      outputGain.gain.value = 0.03;
 
-  modulator.connect(modGain);
-  modGain.connect(carrier.detune);
-  carrier.connect(outputGain);
-  outputGain.connect(audioCtx.destination);
-  outputGain.gain.value = 0.02;
+      carrier.start();
+      modulator.start();
 
-  carrier.start();
-  modulator.start();
+      setTimeout(() => {
+        carrier.stop();
+        modulator.stop();
+      }, 15000);
+    }
 
-  setTimeout(() => {
-    carrier.stop();
-    modulator.stop();
-  }, 15000);
-}
+    function animate() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      const cx = canvas.width / 2;
+      const cy = canvas.height / 2;
+      const breathing = 1 + Math.sin(t / 60) * 0.05;
 
-function animate() {
-  ctx.clearRect(0,0,canvas.width,canvas.height);
-  const cx = canvas.width/2;
-  const cy = canvas.height/2;
-  const breathing = 1 + Math.sin(t/60) * 0.05;
-  ctx.save();
-  ctx.translate(cx, cy);
-  ctx.rotate(rotation);
-  ctx.translate(-cx, -cy);
-  ctx.fillStyle = 'black';
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
-  drawPlasmaField(cx, cy, t);
-  drawMetatronCube(cx, cy, 100 * breathing, t);
-  drawPrimeSpiral(cx, cy, breathing);
-  drawDNAHelix(cx, cy, t);
-  drawFlowerOfLife(cx, cy, 50 * breathing);
-  ctx.restore();
-  t += 1;
-  rotation += 0.0005;
-  requestAnimationFrame(animate);
-}
+      ctx.save();
+      ctx.translate(cx, cy);
+      ctx.rotate(rotation);
+      ctx.translate(-cx, -cy);
 
-playHarmonicAudio();
-animate();
-</script>
+      drawPlasmaField(cx, cy, t);
+      drawDNAHelix(cx, cy, t);
+
+      ctx.restore();
+      t++;
+      rotation += 0.0005;
+      requestAnimationFrame(animate);
+    }
+
+    playHarmonicAudio();
+    animate();
+  </script>
 </body>
 </html>
