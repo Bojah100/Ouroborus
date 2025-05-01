@@ -1,8 +1,46 @@
-import matplotlib.pyplot as plt
-import numpy as np
-import matplotlib.animation as animation
+<!DOCTYPE html>
+<html lang="en">
 
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vesica Prime Breath: ln(1) to ln(1836)</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Orbitron:wght@600&display=swap" rel="stylesheet">
   <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+      background: black;
+      font-family: 'Cinzel', 'Orbitron', sans-serif;
+      color: gold;
+    }
+    canvas {
+      display: block;
+    }
+    #title {
+      position: fixed;
+      top: 20px;
+      width: 100%;
+      text-align: center;
+      font-size: 36px;
+      font-family: 'Cinzel', serif;
+      color: gold;
+      text-shadow: 2px 2px 5px black;
+      z-index: 100;
+      letter-spacing: 2px;
+    }
+    #subtitle {
+      position: fixed;
+      top: 70px;
+      width: 100%;
+      text-align: center;
+      font-size: 20px;
+      font-family: 'Orbitron', sans-serif;
+      color: white;
+      text-shadow: 1px 1px 3px black;
+      z-index: 100;
+      letter-spacing: 1px;
+    }
     #metatronButton {
       position: fixed;
       top: 30px;
@@ -19,57 +57,183 @@ import matplotlib.animation as animation
       -webkit-text-stroke: 0.5px black;
       z-index: 9999;
     }
+    #startOverlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: black;
+      color: gold;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 24px;
+      font-family: 'Orbitron', sans-serif;
+      z-index: 10000;
+      cursor: pointer;
+    }
   </style>
-<a id="metatronButton" href="/metatron.html">✨ Back to normal view* ✨</a>
+</head>
 
-# Create figure
-fig, ax = plt.subplots(figsize=(6, 6))
-ax.set_xlim(-2, 2)
-ax.set_ylim(-1, 4)
-ax.axis('off')
+<body>
+  <div id="startOverlay">▶️ Begin Resonance</div>
+  <a id="metatronButton" href="/index.html">✨ Return to Sgr A* ✨</a>
+  <div id="title">Vesica Harmonic Genome</div>
+  <div id="subtitle">Return of the Snake — Sgr A*</div>
+  <canvas id="primeCanvas"></canvas>
 
-# Define the two helix lines
-line1, = ax.plot([], [], 'purple')
-line2, = ax.plot([], [], 'purple')
+  <script>
+    const canvas = document.getElementById('primeCanvas');
+    const ctx = canvas.getContext('2d');
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas);
 
-# DNA spiral data
-t = np.linspace(0, 4 * np.pi, 500)
-x1 = np.cos(t)
-y1 = t / (2 * np.pi)
-x2 = -np.cos(t)
-y2 = t / (2 * np.pi)
+    const goldenAngle = 137.5 * (Math.PI / 180);
+    const phiCubed = Math.pow((1 + Math.sqrt(5)) / 2, 3);
+    const primes = [2,3,5,7,11,13,17,19,23,29,31,37,41,43,47,53,59,61,67,71,73,79,83,89,97,101,103,107,109,113,127,131,137,139,149,151,157,163,167,173,179,181,191,193,197,199,211,223,227,229];
 
-# Bridges between helices
-bridges = []
+    let t = 0;
+    let rotation = 0;
 
-# Initialization
-def init():
-    line1.set_data([], [])
-    line2.set_data([], [])
-    return [line1, line2]
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
 
-# Update function for animation
-def update(frame):
-    step = frame * 5
-    line1.set_data(x1[:step], y1[:step])
-    line2.set_data(x2[:step], y2[:step])
+    function drawPlasmaField(cx, cy, time) {
+      const gradient = ctx.createRadialGradient(cx, cy, 100, cx, cy, Math.max(canvas.width, canvas.height) / 1.5);
+      gradient.addColorStop(0, `rgba(0, 183, 235, ${0.05 + 0.03 * Math.sin(time / 200)})`);
+      gradient.addColorStop(0.4, `rgba(255, 105, 180, ${0.03 + 0.02 * Math.cos(time / 300)})`);
+      gradient.addColorStop(0.7, 'rgba(255, 255, 255, 0.02)');
+      gradient.addColorStop(1, 'rgba(0,0,0,0)');
+      ctx.save();
+      ctx.globalCompositeOperation = 'lighter';
+      ctx.fillStyle = gradient;
+      ctx.beginPath();
+      ctx.arc(cx, cy, Math.max(canvas.width, canvas.height)/1.5, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+    }
 
-    # Remove old bridges
-    while bridges:
-        bridge = bridges.pop()
-        bridge.remove()
+    function drawMetatronCube(cx, cy, scale, time) {
+      const points = [];
+      const r = scale * Math.sin(Math.PI/3);
+      points.push({x: cx, y: cy});
+      for (let angle = 0; angle < 360; angle += 60) {
+        const rad = angle * Math.PI/180;
+        points.push({x: cx + r * Math.cos(rad), y: cy + r * Math.sin(rad)});
+      }
+      for (let angle = 30; angle < 360; angle += 60) {
+        const rad = angle * Math.PI/180;
+        points.push({x: cx + r * 2 * Math.cos(rad), y: cy + r * 2 * Math.sin(rad)});
+      }
+      ctx.strokeStyle = `rgba(100,200,255,0.5)`;
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      for (let i = 0; i < points.length; i++) {
+        for (let j = i + 1; j < points.length; j++) {
+          ctx.moveTo(points[i].x, points[i].y);
+          ctx.lineTo(points[j].x, points[j].y);
+        }
+      }
+      ctx.stroke();
+    }
 
-    # Add bridges between spirals
-    for i in range(0, step, 50):
-        bridge, = ax.plot([x1[i], x2[i]], [y1[i], y2[i]], 'gray', linewidth=0.5)
-        bridges.append(bridge)
+    function drawPrimeSpiral(cx, cy, breathing) {
+      const coords = [];
+      primes.forEach((p, i) => {
+        const r = Math.log(p) * 50 * phiCubed * breathing;
+        const theta = p * goldenAngle;
+        const x = cx + r * Math.cos(theta);
+        const y = cy + r * Math.sin(theta);
+        coords.push({x, y});
+        ctx.beginPath();
+        ctx.arc(x, y, 3, 0, Math.PI * 2);
+        ctx.fillStyle = 'black';
+        ctx.shadowColor = 'cyan';
+        ctx.shadowBlur = 10;
+        ctx.fill();
+      });
+      ctx.strokeStyle = 'rgba(255,255,150,0.3)';
+      ctx.lineWidth = 0.5;
+      ctx.beginPath();
+      coords.forEach((pt, i) => {
+        if (i > 0) {
+          ctx.moveTo(coords[i-1].x, coords[i-1].y);
+          ctx.lineTo(pt.x, pt.y);
+        }
+      });
+      ctx.stroke();
+    }
 
-    return [line1, line2] + bridges
+    function drawDNAHelix(cx, cy, t) {
+      ctx.lineWidth = 2;
+      ctx.strokeStyle = 'rgba(0,255,255,0.8)';
+      ctx.shadowColor = 'cyan';
+      ctx.shadowBlur = 15;
+      const amp = 100 + Math.sin(t / 20) * 15;
+      const freq = 0.04;
+      ctx.beginPath();
+      for (let y = cy - 300; y <= cy + 300; y += 5) {
+        const offset = Math.sin((y + t) * freq) * amp;
+        ctx.lineTo(cx + offset, y);
+      }
+      ctx.stroke();
+      ctx.beginPath();
+      for (let y = cy - 300; y <= cy + 300; y += 5) {
+        const offset = Math.sin((y + t + 180) * freq) * amp;
+        ctx.lineTo(cx - offset, y);
+      }
+      ctx.stroke();
+    }
 
-# Create animation
-ani = animation.FuncAnimation(fig, update, frames=100, init_func=init, blit=True)
+    function animate() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      const cx = canvas.width / 2;
+      const cy = canvas.height / 2;
+      const breathing = 1 + Math.sin(t / 60) * 0.05;
+      ctx.save();
+      ctx.translate(cx, cy);
+      ctx.rotate(rotation);
+      ctx.translate(-cx, -cy);
+      ctx.fillStyle = 'black';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      drawPlasmaField(cx, cy, t);
+      drawMetatronCube(cx, cy, 100 * breathing, t);
+      drawPrimeSpiral(cx, cy, breathing);
+      drawDNAHelix(cx, cy, t);
+      ctx.restore();
+      t++;
+      rotation += 0.0005;
+      requestAnimationFrame(animate);
+    }
 
-# Save as animated GIF
-ani.save("DNA_Harmonic_Genome_Animation.gif", writer='pillow', fps=15)
-
-print("Animation saved as 'DNA_Harmonic_Genome_Animation.gif'")
+    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    document.getElementById("startOverlay").addEventListener("click", async () => {
+      await audioCtx.resume();
+      const carrier = audioCtx.createOscillator();
+      const modulator = audioCtx.createOscillator();
+      const modGain = audioCtx.createGain();
+      const outputGain = audioCtx.createGain();
+      carrier.type = 'sine';
+      carrier.frequency.value = 19.47;
+      modulator.frequency.value = 4.33;
+      modGain.gain.value = 100;
+      modulator.connect(modGain);
+      modGain.connect(carrier.detune);
+      carrier.connect(outputGain);
+      outputGain.connect(audioCtx.destination);
+      outputGain.gain.value = 0.05;
+      carrier.start();
+      modulator.start();
+      setTimeout(() => {
+        carrier.stop();
+        modulator.stop();
+      }, 15000);
+      document.getElementById("startOverlay").style.display = 'none';
+      animate();
+    });
+  </script>
+</body>
+</html>
