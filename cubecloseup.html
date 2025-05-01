@@ -2,6 +2,25 @@ import matplotlib.pyplot as plt
 import numpy as np
 import matplotlib.animation as animation
 
+  <style>
+    #metatronButton {
+      position: fixed;
+      top: 30px;
+      left: 20px;
+      padding: 12px 28px;
+      background: radial-gradient(circle, rgba(0,183,235,0.8) 0%, rgba(255,105,180,0.8) 100%);
+      color: white;
+      border: 2px solid gold;
+      border-radius: 25px;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 18px;
+      text-decoration: none;
+      box-shadow: 0 0 20px gold;
+      -webkit-text-stroke: 0.5px black;
+      z-index: 9999;
+    }
+  </style>
+
 # Create figure
 fig, ax = plt.subplots(figsize=(6, 6))
 ax.set_xlim(-2, 2)
