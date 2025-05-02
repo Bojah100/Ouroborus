@@ -86,6 +86,16 @@
     const goldenAngle = 137.5 * (Math.PI / 180);
     const phiCubed = Math.pow((1 + Math.sqrt(5)) / 2, 3);
     const primes = [2,3,5,7,11,13,17,19,23,29,31,37,41,43,47,53,59,61,67,71,73,79,83,89,97,101,103,107,109,113,127,131,137,139,149,151,157,163,167,173,179,181,191,193,197,199,211,223,227,229];
+    const constants = {
+      'π': Math.PI,
+      'φ': (1 + Math.sqrt(5)) / 2,
+      'e': Math.E,
+      'ln(1)': Math.log(1),
+      'ln(2)': Math.log(2),
+      'ln(3)': Math.log(3),
+      'ln(5)': Math.log(5),
+      'ln(1836)': Math.log(1836)
+    };
 
     let t = 0;
     let rotation = 0;
@@ -110,7 +120,7 @@
       ctx.restore();
     }
 
-    function drawMetatronCube(cx, cy, scale) {
+    function drawMetatronCube(cx, cy, scale, time) {
       const points = [];
       const r = scale * Math.sin(Math.PI/3);
       points.push({x: cx, y: cy});
@@ -122,7 +132,7 @@
         const rad = angle * Math.PI/180;
         points.push({x: cx + r * 2 * Math.cos(rad), y: cy + r * 2 * Math.sin(rad)});
       }
-      ctx.strokeStyle = 'rgba(100,200,255,0.5)';
+      ctx.strokeStyle = `rgba(100,200,255,0.6)`;
       ctx.lineWidth = 2;
       ctx.beginPath();
       for (let i = 0; i < points.length; i++) {
@@ -135,7 +145,7 @@
     }
 
     function drawPrimeSpiral(cx, cy, breathing) {
-      const primeCoords = [];
+      let primeCoords = [];
       primes.forEach((p, i) => {
         const r = Math.log(p) * 50 * phiCubed * breathing;
         const theta = p * goldenAngle;
@@ -146,12 +156,11 @@
         ctx.arc(x, y, 4, 0, 2 * Math.PI);
         ctx.fillStyle = 'gold';
         ctx.fill();
-        ctx.fillStyle = 'white';
         ctx.font = '12px Orbitron';
+        ctx.fillStyle = 'white';
         ctx.fillText(p, x + 6, y);
       });
-      ctx.strokeStyle = 'rgba(255,255,150,0.3)';
-      ctx.lineWidth = 1;
+      ctx.strokeStyle = 'rgba(255,255,150,0.4)';
       ctx.beginPath();
       for (let i = 0; i < primeCoords.length; i++) {
         for (let j = i + 1; j < primeCoords.length; j++) {
@@ -160,6 +169,19 @@
         }
       }
       ctx.stroke();
+
+      Object.entries(constants).forEach(([label, value]) => {
+        const r = value * 50 * phiCubed * breathing;
+        const theta = value * goldenAngle;
+        const x = cx + r * Math.cos(theta);
+        const y = cy + r * Math.sin(theta);
+        ctx.beginPath();
+        ctx.arc(x, y, 6, 0, 2 * Math.PI);
+        ctx.fillStyle = 'hotpink';
+        ctx.fill();
+        ctx.fillStyle = 'white';
+        ctx.fillText(label, x + 8, y);
+      });
     }
 
     function drawDNAHelix(cx, cy, t) {
@@ -195,20 +217,17 @@
       const modulator = audioCtx.createOscillator();
       const modGain = audioCtx.createGain();
       const outputGain = audioCtx.createGain();
-
       carrier.type = 'sine';
-      carrier.frequency.value = 19.47;
-      modulator.frequency.value = 4.33;
-      modGain.gain.value = 100;
+      carrier.frequency.setValueAtTime(19.47, audioCtx.currentTime);
+      modulator.frequency.setValueAtTime(4.33, audioCtx.currentTime);
+      modGain.gain.setValueAtTime(100, audioCtx.currentTime);
       modulator.connect(modGain);
       modGain.connect(carrier.detune);
       carrier.connect(outputGain);
       outputGain.connect(audioCtx.destination);
-      outputGain.gain.value = 0.03;
-
+      outputGain.gain.setValueAtTime(0.03, audioCtx.currentTime);
       carrier.start();
       modulator.start();
-
       setTimeout(() => {
         carrier.stop();
         modulator.stop();
@@ -220,17 +239,15 @@
       const cx = canvas.width / 2;
       const cy = canvas.height / 2;
       const breathing = 1 + Math.sin(t / 60) * 0.05;
-
       ctx.save();
       ctx.translate(cx, cy);
       ctx.rotate(rotation);
       ctx.translate(-cx, -cy);
       drawPlasmaField(cx, cy, t);
-      drawMetatronCube(cx, cy, 100 * breathing);
+      drawMetatronCube(cx, cy, 100 * breathing, t);
       drawPrimeSpiral(cx, cy, breathing);
       drawDNAHelix(cx, cy, t);
       ctx.restore();
-
       t++;
       rotation += 0.0005;
       requestAnimationFrame(animate);
