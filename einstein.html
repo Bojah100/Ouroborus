@@ -1,0 +1,70 @@
+import plotly.graph_objects as go
+import numpy as np
+
+# Create grid and radius field
+x = np.linspace(-2, 2, 100)
+y = np.linspace(-2, 2, 100)
+x, y = np.meshgrid(x, y)
+r = np.sqrt(x**2 + y**2)
+
+# Relativity model: gravitational curvature well
+z_relativity_base = -1 / (r + 0.1)
+
+# BHC model: harmonic standing wave field
+z_bhc_base = np.cos(4 * np.pi * r) * np.exp(-r)
+
+# Create animation frames with phase shift
+frames = []
+num_frames = 30
+for i in range(num_frames):
+    phase = i * 2 * np.pi / num_frames
+    z_bhc_frame = np.cos(4 * np.pi * r + phase) * np.exp(-r)
+    frames.append(go.Frame(
+        data=[
+            go.Surface(z=z_relativity_base, x=x, y=y, colorscale='Blues', showscale=False, opacity=0.9),
+            go.Surface(z=z_bhc_frame, x=x + 5, y=y, colorscale='Inferno', showscale=False, opacity=0.9),
+            go.Scatter3d(x=[0], y=[0], z=[-5], text=["Einstein's\nSpacetime Curvature"], mode="text",
+                         textfont=dict(size=16, color="white")),
+            go.Scatter3d(x=[5], y=[0], z=[-5], text=["BHC\nHarmonic Standing Wave"], mode="text",
+                         textfont=dict(size=16, color="white"))
+        ],
+        name=str(i)
+    ))
+
+# Initialize the figure with the base models and labels
+fig = go.Figure(
+    data=[
+        go.Surface(z=z_relativity_base, x=x, y=y, colorscale='Blues', showscale=False, opacity=0.9),
+        go.Surface(z=z_bhc_base, x=x + 5, y=y, colorscale='Inferno', showscale=False, opacity=0.9),
+        go.Scatter3d(x=[0], y=[0], z=[-5], text=["Einstein's\nSpacetime Curvature"], mode="text",
+                     textfont=dict(size=16, color="white")),
+        go.Scatter3d(x=[5], y=[0], z=[-5], text=["BHC\nHarmonic Standing Wave"], mode="text",
+                     textfont=dict(size=16, color="white"))
+    ],
+    frames=frames
+)
+
+# Layout configuration
+fig.update_layout(
+    title='Relativity vs BHC — Animated Harmonic Field with Labels',
+    scene=dict(
+        xaxis_title='X-Axis',
+        yaxis_title='Y-Axis',
+        zaxis_title='Z-Axis',
+        aspectratio=dict(x=2, y=1, z=0.5),
+        bgcolor="black"
+    ),
+    margin=dict(l=0, r=0, b=0, t=40),
+    paper_bgcolor="black",
+    font=dict(color="white"),
+    updatemenus=[dict(
+        type='buttons',
+        showactive=False,
+        buttons=[dict(label='Play',
+                      method='animate',
+                      args=[None, dict(frame=dict(duration=100, redraw=True), fromcurrent=True)])]
+    )]
+)
+
+# Save as an HTML file
+fig.write_html("Relativity_vs_BHC_Animated_Labeled.html")
