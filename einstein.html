@@ -1,70 +1,115 @@
-import plotly.graph_objects as go
-import numpy as np
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Relativity vs BHC — Animated Field</title>
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+  <style>
+    body {
+      margin: 0;
+      background-color: black;
+      color: white;
+    }
+    #plot {
+      width: 100vw;
+      height: 100vh;
+    }
+  </style>
+</head>
+<body>
+  <div id="plot"></div>
+  <script>
+    const size = 100;
+    const range = 2;
+    const x = [];
+    const y = [];
+    for (let i = 0; i < size; i++) {
+      x.push(-range + (2 * range * i / (size - 1)));
+      y.push(-range + (2 * range * i / (size - 1)));
+    }
 
-# Create grid and radius field
-x = np.linspace(-2, 2, 100)
-y = np.linspace(-2, 2, 100)
-x, y = np.meshgrid(x, y)
-r = np.sqrt(x**2 + y**2)
+    const r = x.map(xi => y.map(yi => Math.sqrt(xi * xi + yi * yi)));
+    const zRel = r.map(row => row.map(val => -1 / (val + 0.1)));
 
-# Relativity model: gravitational curvature well
-z_relativity_base = -1 / (r + 0.1)
+    const frames = [];
+    for (let f = 0; f < 30; f++) {
+      const phase = 2 * Math.PI * f / 30;
+      const zBhc = r.map(row => row.map(val => Math.cos(4 * Math.PI * val + phase) * Math.exp(-val)));
+      frames.push({
+        name: f.toString(),
+        data: [
+          {z: zRel},
+          {z: zBhc}
+        ]
+      });
+    }
 
-# BHC model: harmonic standing wave field
-z_bhc_base = np.cos(4 * np.pi * r) * np.exp(-r)
+    const traceRel = {
+      type: 'surface',
+      x: x,
+      y: y,
+      z: zRel,
+      colorscale: 'Blues',
+      opacity: 0.9,
+      showscale: false
+    };
 
-# Create animation frames with phase shift
-frames = []
-num_frames = 30
-for i in range(num_frames):
-    phase = i * 2 * np.pi / num_frames
-    z_bhc_frame = np.cos(4 * np.pi * r + phase) * np.exp(-r)
-    frames.append(go.Frame(
-        data=[
-            go.Surface(z=z_relativity_base, x=x, y=y, colorscale='Blues', showscale=False, opacity=0.9),
-            go.Surface(z=z_bhc_frame, x=x + 5, y=y, colorscale='Inferno', showscale=False, opacity=0.9),
-            go.Scatter3d(x=[0], y=[0], z=[-5], text=["Einstein's\nSpacetime Curvature"], mode="text",
-                         textfont=dict(size=16, color="white")),
-            go.Scatter3d(x=[5], y=[0], z=[-5], text=["BHC\nHarmonic Standing Wave"], mode="text",
-                         textfont=dict(size=16, color="white"))
-        ],
-        name=str(i)
-    ))
+    const zBhcInitial = r.map(row => row.map(val => Math.cos(4 * Math.PI * val) * Math.exp(-val)));
+    const traceBhc = {
+      type: 'surface',
+      x: x.map(v => v + 5),
+      y: y,
+      z: zBhcInitial,
+      colorscale: 'Inferno',
+      opacity: 0.9,
+      showscale: false
+    };
 
-# Initialize the figure with the base models and labels
-fig = go.Figure(
-    data=[
-        go.Surface(z=z_relativity_base, x=x, y=y, colorscale='Blues', showscale=False, opacity=0.9),
-        go.Surface(z=z_bhc_base, x=x + 5, y=y, colorscale='Inferno', showscale=False, opacity=0.9),
-        go.Scatter3d(x=[0], y=[0], z=[-5], text=["Einstein's\nSpacetime Curvature"], mode="text",
-                     textfont=dict(size=16, color="white")),
-        go.Scatter3d(x=[5], y=[0], z=[-5], text=["BHC\nHarmonic Standing Wave"], mode="text",
-                     textfont=dict(size=16, color="white"))
-    ],
-    frames=frames
-)
+    const labels = [
+      {
+        type: 'scatter3d',
+        mode: 'text',
+        x: [0],
+        y: [0],
+        z: [-5],
+        text: ["Einstein's<br>Spacetime Curvature"],
+        textfont: {size: 16, color: "white"}
+      },
+      {
+        type: 'scatter3d',
+        mode: 'text',
+        x: [5],
+        y: [0],
+        z: [-5],
+        text: ["BHC<br>Harmonic Standing Wave"],
+        textfont: {size: 16, color: "white"}
+      }
+    ];
 
-# Layout configuration
-fig.update_layout(
-    title='Relativity vs BHC — Animated Harmonic Field with Labels',
-    scene=dict(
-        xaxis_title='X-Axis',
-        yaxis_title='Y-Axis',
-        zaxis_title='Z-Axis',
-        aspectratio=dict(x=2, y=1, z=0.5),
-        bgcolor="black"
-    ),
-    margin=dict(l=0, r=0, b=0, t=40),
-    paper_bgcolor="black",
-    font=dict(color="white"),
-    updatemenus=[dict(
-        type='buttons',
-        showactive=False,
-        buttons=[dict(label='Play',
-                      method='animate',
-                      args=[None, dict(frame=dict(duration=100, redraw=True), fromcurrent=True)])]
-    )]
-)
-
-# Save as an HTML file
-fig.write_html("Relativity_vs_BHC_Animated_Labeled.html")
+    Plotly.newPlot('plot', [traceRel, traceBhc, ...labels], {
+      title: 'Relativity vs BHC — Animated Harmonic Field',
+      scene: {
+        xaxis: {title: 'X-Axis'},
+        yaxis: {title: 'Y-Axis'},
+        zaxis: {title: 'Z-Axis'},
+        aspectratio: {x: 2, y: 1, z: 0.5},
+        bgcolor: "black"
+      },
+      margin: {l: 0, r: 0, b: 0, t: 40},
+      paper_bgcolor: "black",
+      font: {color: "white"},
+      updatemenus: [{
+        type: 'buttons',
+        showactive: false,
+        buttons: [{
+          label: 'Play',
+          method: 'animate',
+          args: [null, {frame: {duration: 100, redraw: true}, fromcurrent: true}]
+        }]
+      }]
+    }, {responsive: true}).then(function() {
+      Plotly.addFrames('plot', frames);
+    });
+  </script>
+</body>
+</html>
