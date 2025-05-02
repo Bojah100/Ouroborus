@@ -14,9 +14,34 @@
       width: 100vw;
       height: 100vh;
     }
+    .button-link {
+  position: fixed;
+  padding: 12px 28px;
+  background: radial-gradient(circle, rgba(0,183,235,0.85), rgba(255,105,180,0.85));
+  color: white;
+  border: 2px solid gold;
+  border-radius: 25px;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 18px;
+  text-decoration: none;
+  box-shadow: 0 0 20px gold;
+  -webkit-text-stroke: 0.5px black;
+  z-index: 9999;
+  transition: transform 0.2s ease;
+}
+.button-link:hover {
+  transform: translateY(-2px);
+}
+#metatronButton {
+  top: 30px;
+  left: 20px;
+}
+
   </style>
 </head>
 <body>
+  <a id="metatronButton" class="button-link" href="/metatron2.html">✨ Back to Harmonic Genome ✨</a>
+
   <div id="plot"></div>
   <script>
     const size = 100;
