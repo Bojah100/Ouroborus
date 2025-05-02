@@ -57,30 +57,13 @@
       -webkit-text-stroke: 0.5px black;
       z-index: 9999;
     }
-    #startOverlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: black;
-      color: gold;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-size: 24px;
-      font-family: 'Orbitron', sans-serif;
-      z-index: 10000;
-      cursor: pointer;
-    }
   </style>
 </head>
 
 <body>
-  <div id="startOverlay">▶️ Begin Resonance</div>
-  <a id="metatronButton" href="/metatron.html">✨ Back to Normal View ✨</a>
+  <a id="metatronButton" href="/metatron2.html">✨ Back to Normal View ✨</a>
   <div id="title">Vesica Harmonic Genome</div>
-  <div id="subtitle">Return of the Snake — Sgr A*</div>
+  <div id="subtitle">Return of the Snake — Sagittarius A*</div>
   <canvas id="primeCanvas"></canvas>
 
   <script>
@@ -210,8 +193,7 @@
     }
 
     const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-    document.getElementById("startOverlay").addEventListener("click", async () => {
-      await audioCtx.resume();
+      audioCtx.resume();
       const carrier = audioCtx.createOscillator();
       const modulator = audioCtx.createOscillator();
       const modGain = audioCtx.createGain();
@@ -231,7 +213,6 @@
         carrier.stop();
         modulator.stop();
       }, 15000);
-      document.getElementById("startOverlay").style.display = 'none';
       animate();
     });
   </script>
