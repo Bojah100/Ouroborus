@@ -1,2 +1,2 @@
-# Ouroborus
-Ouroborus Website
+# Ouroboros
+Ouroboros Website
