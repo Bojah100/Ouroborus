@@ -158,14 +158,14 @@
       ctx.strokeStyle = 'rgba(255,255,150,0.3)';
       ctx.lineWidth = 0.5;
       ctx.beginPath();
-      coords.forEach((pt, i) => {
-        coords.forEach((pt2, j) => {
-          if (i !== j) {
-            ctx.moveTo(pt.x, pt.y);
-            ctx.lineTo(pt2.x, pt2.y);
+      for (let i = 0; i < coords.length; i++) {
+        for (let j = i + 1; j < coords.length; j++) {
+          if (j - i === 1) {
+            ctx.moveTo(coords[i].x, coords[i].y);
+            ctx.lineTo(coords[j].x, coords[j].y);
           }
-        });
-      });
+        }
+      }
       ctx.stroke();
     }
 
