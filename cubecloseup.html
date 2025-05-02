@@ -57,10 +57,27 @@
       -webkit-text-stroke: 0.5px black;
       z-index: 9999;
     }
+    #startOverlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: black;
+      color: gold;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 24px;
+      font-family: 'Orbitron', sans-serif;
+      z-index: 10000;
+      cursor: pointer;
+    }
   </style>
 </head>
 
 <body>
+  <div id="startOverlay">▶️ Begin Resonance</div>
   <a id="metatronButton" href="/metatron2.html">✨ Back to Normal View ✨</a>
   <div id="title">Vesica Harmonic Genome</div>
   <div id="subtitle">Return of the Snake — Sagittarius A*</div>
@@ -142,10 +159,12 @@
       ctx.lineWidth = 0.5;
       ctx.beginPath();
       coords.forEach((pt, i) => {
-        if (i > 0) {
-          ctx.moveTo(coords[i-1].x, coords[i-1].y);
-          ctx.lineTo(pt.x, pt.y);
-        }
+        coords.forEach((pt2, j) => {
+          if (i !== j) {
+            ctx.moveTo(pt.x, pt.y);
+            ctx.lineTo(pt2.x, pt2.y);
+          }
+        });
       });
       ctx.stroke();
     }
@@ -180,8 +199,6 @@
       ctx.translate(cx, cy);
       ctx.rotate(rotation);
       ctx.translate(-cx, -cy);
-      ctx.fillStyle = 'black';
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
       drawPlasmaField(cx, cy, t);
       drawMetatronCube(cx, cy, 100 * breathing, t);
       drawPrimeSpiral(cx, cy, breathing);
@@ -192,12 +209,14 @@
       requestAnimationFrame(animate);
     }
 
-    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-      audioCtx.resume();
+    document.getElementById('startOverlay').addEventListener('click', () => {
+      const AudioContext = window.AudioContext || window.webkitAudioContext;
+      const audioCtx = new AudioContext();
       const carrier = audioCtx.createOscillator();
       const modulator = audioCtx.createOscillator();
       const modGain = audioCtx.createGain();
       const outputGain = audioCtx.createGain();
+
       carrier.type = 'sine';
       carrier.frequency.value = 19.47;
       modulator.frequency.value = 4.33;
@@ -207,12 +226,16 @@
       carrier.connect(outputGain);
       outputGain.connect(audioCtx.destination);
       outputGain.gain.value = 0.05;
+
       carrier.start();
       modulator.start();
+
       setTimeout(() => {
         carrier.stop();
         modulator.stop();
       }, 15000);
+
+      document.getElementById('startOverlay').style.display = 'none';
       animate();
     });
   </script>
