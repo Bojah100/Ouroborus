@@ -7,6 +7,29 @@
   <title>Vesica Prime Breath: ln(1) to ln(1836)</title>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Orbitron:wght@600&display=swap" rel="stylesheet">
   <style>
+    .button-link {
+  position: fixed;
+  padding: 12px 28px;
+  background: radial-gradient(circle, rgba(0,183,235,0.85), rgba(255,105,180,0.85));
+  color: white;
+  border: 2px solid gold;
+  border-radius: 25px;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 18px;
+  text-decoration: none;
+  box-shadow: 0 0 20px gold;
+  -webkit-text-stroke: 0.5px black;
+  z-index: 9999;
+  transition: transform 0.2s ease;
+}
+.button-link:hover {
+  transform: translateY(-2px);
+}
+#storeButton {
+  top: 30px;
+  right: 20px;
+}
+
     body {
       margin: 0;
       overflow: hidden;
@@ -79,6 +102,8 @@
 <body>
   <div id="startOverlay">▶️ Begin Resonance</div>
   <a id="metatronButton" href="/metatron2.html">✨ Back to Normal View ✨</a>
+  <a id="storeButton" class="button-link" href="/store.html">🌌 Celestial Objects</a>
+
   <div id="title">Vesica Harmonic Genome</div>
   <div id="subtitle">Return of the Snake — Sagittarius A*</div>
   <canvas id="primeCanvas"></canvas>
