@@ -9,64 +9,89 @@
       margin: 0;
       background-color: black;
       color: white;
+      font-family: 'Orbitron', sans-serif;
     }
     #plot {
       width: 100vw;
-      height: 100vh;
+      height: 90vh;
     }
     .button-link {
-  position: fixed;
-  padding: 12px 28px;
-  background: radial-gradient(circle, rgba(0,183,235,0.85), rgba(255,105,180,0.85));
-  color: white;
-  border: 2px solid gold;
-  border-radius: 25px;
-  font-family: 'Orbitron', sans-serif;
-  font-size: 18px;
-  text-decoration: none;
-  box-shadow: 0 0 20px gold;
-  -webkit-text-stroke: 0.5px black;
-  z-index: 9999;
-  transition: transform 0.2s ease;
-}
-.button-link:hover {
-  transform: translateY(-2px);
-}
-#metatronButton {
-  top: 30px;
-  left: 20px;
-}
-.button-link {
-  position: fixed;
-  padding: 12px 28px;
-  background: radial-gradient(circle, rgba(0,183,235,0.85), rgba(255,105,180,0.85));
-  color: white;
-  border: 2px solid gold;
-  border-radius: 25px;
-  font-family: 'Orbitron', sans-serif;
-  font-size: 18px;
-  text-decoration: none;
-  box-shadow: 0 0 20px gold;
-  -webkit-text-stroke: 0.5px black;
-  z-index: 9999;
-  transition: transform 0.2s ease;
-}
-.button-link:hover {
-  transform: translateY(-2px);
-}
-#storeButton {
-  top: 30px;
-  right: 20px;
-}
-
+      position: fixed;
+      padding: 12px 28px;
+      background: radial-gradient(circle, rgba(0,183,235,0.85), rgba(255,105,180,0.85));
+      color: white;
+      border: 2px solid gold;
+      border-radius: 25px;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 18px;
+      text-decoration: none;
+      box-shadow: 0 0 20px gold;
+      -webkit-text-stroke: 0.5px black;
+      z-index: 9999;
+      transition: transform 0.2s ease;
+    }
+    .button-link:hover {
+      transform: translateY(-2px);
+    }
+    #metatronButton {
+      top: 30px;
+      left: 20px;
+    }
+    #storeButton {
+      top: 30px;
+      right: 20px;
+    }
+    #caption {
+      text-align: center;
+      font-size: 20px;
+      color: gold;
+      padding: 10px;
+    }
+    #explanationToggle {
+      text-align: center;
+      margin-top: 10px;
+    }
+    #explanationBox {
+      display: none;
+      padding: 20px;
+      margin: 10px auto;
+      background-color: rgba(0,0,0,0.7);
+      color: white;
+      border: 1px solid gold;
+      width: 80%;
+      font-size: 16px;
+    }
   </style>
 </head>
 <body>
   <a id="metatronButton" class="button-link" href="/metatron2.html">✨ Back to Harmonic Genome ✨</a>
-<a id="storeButton" class="button-link" href="/symbols.html">🌌 Celestial Objects</a>
+  <a id="storeButton" class="button-link" href="/symbols.html">🌌 Celestial Objects</a>
+
+  <div id="caption">
+    Einstein saw the curvature of spacetime. But curvature is not coherence. The BHC model reveals a standing wave geometry—order through oscillation.
+  </div>
+
+  <div id="explanationToggle">
+    <button onclick="toggleExplanation()" class="button-link" style="position: relative; top: 0;">🔎 See the Hidden Structure</button>
+  </div>
+  <div id="explanationBox">
+    <strong>Einstein's View:</strong><br>
+    Spacetime bends under mass and energy. The geometry of reality is shaped by gravity.
+    <br><br>
+    <strong>BHC's Alternative:</strong><br>
+    The field isn’t curved—it’s harmonic. What we interpret as curvature is the result of deeply layered standing waves modulating space itself.
+    <br><br>
+    <strong>Why It Matters:</strong><br>
+    This changes the nature of gravity from force to frequency. It introduces a pathway toward unified physics rooted in resonance, not distortion.
+  </div>
 
   <div id="plot"></div>
   <script>
+    function toggleExplanation() {
+      const box = document.getElementById('explanationBox');
+      box.style.display = box.style.display === 'none' ? 'block' : 'none';
+    }
+
     const size = 100;
     const range = 2;
     const x = [];
@@ -79,20 +104,8 @@
     const r = x.map(xi => y.map(yi => Math.sqrt(xi * xi + yi * yi)));
     const zRel = r.map(row => row.map(val => -1 / (val + 0.1)));
 
-    const frames = [];
-    for (let f = 0; f < 30; f++) {
-      const phase = 2 * Math.PI * f / 30;
-      const zBhc = r.map(row => row.map(val => Math.cos(4 * Math.PI * val + phase) * Math.exp(-val)));
-      frames.push({
-        name: f.toString(),
-        data: [
-          {z: zRel},
-          {z: zBhc}
-        ]
-      });
-    }
-
     const traceRel = {
+      name: 'rel',
       type: 'surface',
       x: x,
       y: y,
@@ -104,6 +117,7 @@
 
     const zBhcInitial = r.map(row => row.map(val => Math.cos(4 * Math.PI * val) * Math.exp(-val)));
     const traceBhc = {
+      name: 'bhc',
       type: 'surface',
       x: x.map(v => v + 5),
       y: y,
@@ -112,6 +126,19 @@
       opacity: 0.9,
       showscale: false
     };
+
+    const frames = [];
+    for (let f = 0; f < 30; f++) {
+      const phase = 2 * Math.PI * f / 30;
+      const zBhc = r.map(row => row.map(val => Math.cos(4 * Math.PI * val + phase) * Math.exp(-val)));
+      frames.push({
+        name: f.toString(),
+        data: [
+          {name: 'rel', z: zRel},
+          {name: 'bhc', z: zBhc}
+        ]
+      });
+    }
 
     const labels = [
       {
