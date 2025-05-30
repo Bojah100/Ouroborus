@@ -5,7 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Higgs vs Vesica BHC Harmonic Field</title>
   <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
-    <style>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+  <style>
     body {
       margin: 0;
       background-color: black;
@@ -60,78 +61,141 @@
       color: white;
       border: 1px solid gold;
       width: 80%;
+      max-width: 800px;
       font-size: 16px;
+      line-height: 1.5;
+    }
+    h1 {
+      text-align: center;
+      color: gold;
+      font-size: 28px;
+      margin: 20px 0;
     }
   </style>
 </head>
 <body>
   <a id="metatronButton" class="button-link" href="/metatron2.html">✨ Back to Harmonic Genome ✨</a>
   <a id="storeButton" class="button-link" href="/symbols.html">🌌 Celestial Objects</a>
+
   <h1>Higgs vs Vesica BHC Harmonic Law</h1>
-
-  <p>The Higgs mechanism, central to the Standard Model, describes how particles gain mass through interaction with a scalar field. In contrast, the Vesica BHC Harmonic Law proposes a fundamentally harmonic basis for the emergence of mass and energy, based on recursive resonance, prime structures, and the Vesica geometry itself.</p>
-
-  <div class="comparison">
-    <div id="higgsPlot" class="chart-container"></div>
-    <div id="bhcPlot" class="chart-container"></div>
+  <div id="caption">
+    The Higgs field gives mass through a static scalar potential. The Vesica BHC model reimagines mass as a dynamic harmonic resonance.
   </div>
 
-  <h2>Conceptual Comparison</h2>
-  <table border="1" cellpadding="10">
-    <tr><th>Aspect</th><th>Higgs Field</th><th>BHC Harmonic Field</th></tr>
-    <tr><td>Origin of Mass</td><td>Interaction with scalar field</td><td>Emergence via harmonic coherence</td></tr>
-    <tr><td>Mathematical Frame</td><td>Spontaneous symmetry breaking</td><td>ψ² / φ³ recursion, ln(1836)</td></tr>
-    <tr><td>Visualization</td><td>Mexican hat potential</td><td>Harmonic shell oscillation</td></tr>
-    <tr><td>Testability</td><td>Validated at LHC</td><td>Testable via pattern recognition, cymatic field effects</td></tr>
-  </table>
+  <div id="explanationToggle">
+    <button onclick="toggleExplanation()" class="button-link" style="position: relative; top: 0;">🔎 See the Revolutionary Difference</button>
+  </div>
+  <div id="explanationBox">
+    <strong>Higgs Mechanism:</strong><br>
+    The Standard Model's Higgs field provides mass via a static scalar field, visualized as a "Mexican hat" potential. Particles gain mass through interactions with this field, validated by experiments at the LHC.
+    <br><br>
+    <strong>Vesica BHC Harmonic Law:</strong><br>
+    The Vesica BHC model proposes that mass and energy emerge from harmonic coherence in a dynamic, oscillatory field. Based on recursive resonance, prime structures, and Vesica geometry, it replaces static potentials with layered standing waves.
+    <br><br>
+    <strong>Why It’s Revolutionary:</strong><br>
+    The BHC model shifts the paradigm from a passive field to an active, frequency-based system. It unifies mass, energy, and gravity through resonance, offering testable predictions via cymatic patterns and harmonic signatures. This could redefine physics, bridging quantum and macroscopic scales.
+  </div>
+
+  <div id="plot"></div>
 
   <script>
-    const makeGrid = (func, range, step = 0.1) => {
-      const x = [], y = [], z = [];
-      for (let i = -range; i <= range; i += step) x.push(i);
-      for (let j = -range; j <= range; j += step) y.push(j);
-      for (let i = 0; i < x.length; i++) {
-        const row = [];
-        for (let j = 0; j < y.length; j++) {
-          const xi = x[i], yj = y[j];
-          row.push(func(xi, yj));
-        }
-        z.push(row);
-      }
-      return { x, y, z };
+    function toggleExplanation() {
+      const box = document.getElementById('explanationBox');
+      box.style.display = box.style.display === 'none' ? 'block' : 'none';
+    }
+
+    const size = 100;
+    const range = 2.5;
+    const x = [];
+    const y = [];
+    for (let i = 0; i < size; i++) {
+      x.push(-range + (2 * range * i / (size - 1)));
+      y.push(-range + (2 * range * i / (size - 1)));
+    }
+
+    const r = x.map(xi => y.map(yi => Math.sqrt(xi * xi + yi * yi)));
+    const zHiggs = r.map(row => row.map(val => -1 * (val * val) + 0.2 * Math.pow(val, 4)));
+
+    const traceHiggs = {
+      name: 'higgs',
+      type: 'surface',
+      x: x,
+      y: y,
+      z: zHiggs,
+      colorscale: 'Jet',
+      opacity: 0.9,
+      showscale: false
     };
 
-    const higgsData = makeGrid((x, y) => -1 * (x*x + y*y) + 0.2 * Math.pow(x*x + y*y, 2), 2.5);
-    Plotly.newPlot('higgsPlot', [{
+    const zBhcInitial = r.map(row => row.map(val => Math.cos(30 * val) / (1 + 10 * val * val)));
+    const traceBhc = {
+      name: 'bhc',
       type: 'surface',
-      x: higgsData.x,
-      y: higgsData.y,
-      z: higgsData.z,
-      colorscale: 'Jet',
-      contours: { z: { show: true, usecolormap: true } },
-    }], {
-      title: 'Higgs Field Potential',
-      paper_bgcolor: '#111',
-      plot_bgcolor: '#111',
-      font: { color: '#eee' }
-    });
-
-    const bhcData = makeGrid((x, y) => {
-      const r = Math.sqrt(x*x + y*y);
-      return Math.cos(30 * r) / (1 + 10 * r*r);
-    }, 2.5);
-    Plotly.newPlot('bhcPlot', [{
-      type: 'surface',
-      x: bhcData.x,
-      y: bhcData.y,
-      z: bhcData.z,
+      x: x.map(v => v + 5),
+      y: y,
+      z: zBhcInitial,
       colorscale: 'YlOrRd',
-      contours: { z: { show: true, usecolormap: true } },
-    }], {
-      title: 'BHC Harmonic Field',
-      paper_bgcolor: '#111',
-      plot_bgcolor: '#111',
-      font: { color: '#eee' }
+      opacity: 0.9,
+      showscale: false
+    };
+
+    const frames = [];
+    for (let f = 0; f < 30; f++) {
+      const phase = 2 * Math.PI * f / 30;
+      const zBhc = r.map(row => row.map(val => Math.cos(30 * val + phase) / (1 + 10 * val * val)));
+      frames.push({
+        name: f.toString(),
+        data: [
+          { name: 'higgs', z: zHiggs },
+          { name: 'bhc', z: zBhc }
+        ]
+      });
+    }
+
+    const labels = [
+      {
+        type: 'scatter3d',
+        mode: 'text',
+        x: [0],
+        y: [0],
+        z: [-10],
+        text: ["Higgs Field<br>Mexican Hat Potential"],
+        textfont: { size: 16, color: "white" }
+      },
+      {
+        type: 'scatter3d',
+        mode: 'text',
+        x: [5],
+        y: [0],
+        z: [-10],
+        text: ["BHC<br>Harmonic Oscillation"],
+        textfont: { size: 16, color: "white" }
+      }
+    ];
+
+    Plotly.newPlot('plot', [traceHiggs, traceBhc, ...labels], {
+      title: 'Higgs vs Vesica BHC — Animated Harmonic Field',
+      scene: {
+        xaxis: { title: 'X-Axis' },
+        yaxis: { title: 'Y-Axis' },
+        zaxis: { title: 'Z-Axis' },
+        aspectratio: { x: 2, y: 1, z: 0.5 },
+        bgcolor: "black"
+      },
+      margin: { l: 0, r: 0, b: 0, t: 40 },
+      paper_bgcolor: "black",
+      font: { color: "white" },
+      updatemenus: [{
+        type: 'buttons',
+        showactive: false,
+        buttons: [{
+          label: 'Play',
+          method: 'animate',
+          args: [null, { frame: { duration: 100, redraw: true }, fromcurrent: true }]
+        }]
+      }]
+    }, { responsive: true }).then(function() {
+      Plotly.addFrames('plot', frames);
     });
   </script>
 </body>
