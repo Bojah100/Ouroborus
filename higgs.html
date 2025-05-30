@@ -5,15 +5,68 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Higgs vs Vesica BHC Harmonic Field</title>
   <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
-  <style>
-    body { background-color: #111; color: #eee; font-family: Georgia, serif; padding: 2em; }
-    h1, h2, h3 { color: #fcd34d; }
-    p { line-height: 1.7; }
-    .comparison { display: flex; flex-wrap: wrap; gap: 2em; }
-    .chart-container { width: 100%; max-width: 45vw; min-width: 320px; height: 500px; }
+    <style>
+    body {
+      margin: 0;
+      background-color: black;
+      color: white;
+      font-family: 'Orbitron', sans-serif;
+    }
+    #plot {
+      width: 100vw;
+      height: 90vh;
+    }
+    .button-link {
+      position: fixed;
+      padding: 12px 28px;
+      background: radial-gradient(circle, rgba(0,183,235,0.85), rgba(255,105,180,0.85));
+      color: white;
+      border: 2px solid gold;
+      border-radius: 25px;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 18px;
+      text-decoration: none;
+      box-shadow: 0 0 20px gold;
+      -webkit-text-stroke: 0.5px black;
+      z-index: 9999;
+      transition: transform 0.2s ease;
+    }
+    .button-link:hover {
+      transform: translateY(-2px);
+    }
+    #metatronButton {
+      top: 30px;
+      left: 20px;
+    }
+    #storeButton {
+      top: 30px;
+      right: 20px;
+    }
+    #caption {
+      text-align: center;
+      font-size: 20px;
+      color: gold;
+      padding: 10px;
+    }
+    #explanationToggle {
+      text-align: center;
+      margin-top: 10px;
+    }
+    #explanationBox {
+      display: none;
+      padding: 20px;
+      margin: 10px auto;
+      background-color: rgba(0,0,0,0.7);
+      color: white;
+      border: 1px solid gold;
+      width: 80%;
+      font-size: 16px;
+    }
   </style>
 </head>
 <body>
+  <a id="metatronButton" class="button-link" href="/metatron2.html">✨ Back to Harmonic Genome ✨</a>
+  <a id="storeButton" class="button-link" href="/symbols.html">🌌 Celestial Objects</a>
   <h1>Higgs vs Vesica BHC Harmonic Law</h1>
 
   <p>The Higgs mechanism, central to the Standard Model, describes how particles gain mass through interaction with a scalar field. In contrast, the Vesica BHC Harmonic Law proposes a fundamentally harmonic basis for the emergence of mass and energy, based on recursive resonance, prime structures, and the Vesica geometry itself.</p>
